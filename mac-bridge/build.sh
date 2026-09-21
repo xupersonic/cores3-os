@@ -12,6 +12,11 @@ cd "$HERE"
 echo "→ 编译"
 swiftc -O Bridge.swift -o MusicBridge || { echo "✗ 编译失败"; exit 1; }
 
+# .app 包骨架不在仓库里（二进制不入库），这里现搭一个
+echo "→ 准备 app 包骨架"
+mkdir -p MusicBridge.app/Contents/MacOS
+cp -f Info.plist MusicBridge.app/Contents/Info.plist
+
 echo "→ 装进 app 包"
 cp -f MusicBridge MusicBridge.app/Contents/MacOS/MusicBridge
 

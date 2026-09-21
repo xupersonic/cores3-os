@@ -1,0 +1,88 @@
+// 应用 5：传感器（BMI270 加速度 / 陀螺仪 / BMM150 地磁 / 温度）
+// 左侧是终端读数行（标签 + 三轴一行显示），右侧是像素气泡水平仪
+
+#include "shell.h"
+
+static const int SEN_X = 12;
+static const int SEN_LV_X = 196, SEN_LV_Y = 62, SEN_LV_W = 104, SEN_LV_H = 104;
+
+// 一块 = 8px 标签行 + 下方 8px 数据行
+static void senLine(int ty, const char* tag, bool ok, const char* fmt,
+                    float a, float b, float c) {
+  setPxFont();
+  M5.Display.setTextColor(C_DIM);
+  M5.Display.drawString(tag, SEN_X, ty);
+  char v[40];
+  if (ok) snprintf(v, sizeof(v), fmt, a, b, c);
+  else    snprintf(v, sizeof(v), "NO DATA");
+  M5.Display.setTextColor(ok ? C_VIOLET : C_DARK);
+  M5.Display.drawString(v, SEN_X, ty + 12);
+}
+
+// 像素气泡水平仪：方框 + 十字 + 随倾斜移动的小方块
+static void drawLevel(bool ok, float ax, float ay) {
+  int x = SEN_LV_X, y = SEN_LV_Y, w = SEN_LV_W, h = SEN_LV_H;
+  M5.Display.fillRect(x, y, w, h, C_PANEL);
+  drawFrame(x, y, w, h, C_GRID);
+  M5.Display.drawLine(x + w / 2, y + 4, x + w / 2, y + h - 4, C_DARK);
+  M5.Display.drawLine(x + 4, y + h / 2, x + w - 4, y + h / 2, C_DARK);
+  if (!ok) {
+    setPxFont();
+    M5.Display.setTextColor(C_DARK);
+    M5.Display.drawCenterString("N/A", x + w / 2, y + h / 2 - 4);
+    return;
+  }
+  float fx = ax, fy = ay;
+  if (fx > 1) fx = 1; if (fx < -1) fx = -1;
+  if (fy > 1) fy = 1; if (fy < -1) fy = -1;
+  int cx = x + w / 2 + (int)(fx * (w / 2 - 16));
+  int cy = y + h / 2 - (int)(fy * (h / 2 - 16));   // 屏幕 y 向下，取反
+  M5.Display.fillRect(cx - 6, cy - 6, 12, 12, C_VIOLET);
+}
+
+static void drawSensors() {
+  clearCanvas();
+
+  float ax = 0, ay = 0, az = 0;
+  float gx = 0, gy = 0, gz = 0;
+  float mx = 0, my = 0, mz = 0;
+  float tp = 0;
+  bool a = M5.Imu.getAccel(&ax, &ay, &az);
+  bool g = M5.Imu.getGyro(&gx, &gy, &gz);
+  bool m = M5.Imu.getMag(&mx, &my, &mz);
+  bool t = M5.Imu.getTemp(&tp);
+
+  clearArea(0, 38, 320, 20);
+  drawTitle(40, S(S_SENSORS_TITLE), C_VIOLET);
+  M5.Display.drawLine(12, 60, 308, 60, C_GRID);
+
+  senLine(66,  "ACCEL /G",   a, "X%+5.2f Y%+5.2f Z%+5.2f", ax, ay, az);
+  senLine(98,  "GYRO /DPS",  g, "X%+5.1f Y%+5.1f Z%+5.1f", gx, gy, gz);
+  senLine(130, "MAG /UT",    m, "X%+5.1f Y%+5.1f Z%+5.1f", mx, my, mz);
+
+  drawLevel(a, ax, ay);
+
+  clearArea(0, 176, 320, 24);
+  const char* tl = S(S_TEMP);
+  setAutoFont(tl);
+  M5.Display.setTextColor(C_DIM);
+  M5.Display.drawString(tl, SEN_X, 176 + (16 - textHeight(tl)) / 2);
+  char v[24];
+  if (t) snprintf(v, sizeof(v), "%.1f C", tp);
+  else   snprintf(v, sizeof(v), "N/A");
+  setPxFont();
+  M5.Display.setTextColor(t ? C_VIOLET : C_DARK);
+  M5.Display.drawString(v, 60, 180);
+
+  clearArea(0, 200, 320, 24);
+  drawCenterText(160, 202, 16, S(S_SENSOR_FOOT), C_DIM);
+}
+
+void appSensorsStart() { drawSensors(); }
+void appSensorsLoop() {
+  static uint32_t last = 0;
+  if (uiTick(last)) drawSensors();
+}
+void appSensorsTouch(int16_t x, int16_t y) {}
+void appSensorsKey(uint8_t raw) {}
+void appSensorsStop() {}

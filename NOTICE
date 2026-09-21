@@ -1,0 +1,46 @@
+CoreS3 OS
+Copyright (c) 2026 xupersonic
+
+本项目本体以 MIT 许可证发布（见 LICENSE）。以下是第三方依赖、商标与兼容性声明。
+
+
+一、第三方库（本仓库不包含其源码，编译前请自行安装）
+
+  库                        版本(本机实测)  许可证                安装方式
+  ------------------------------------------------------------------------------------------------
+  M5Unified                 0.2.22          MIT © M5Stack        arduino-cli lib install M5Unified
+  M5GFX                     0.2.29          MIT © M5Stack        arduino-cli lib install M5GFX
+  M5Faces                   0.1.0           MIT © M5Stack        arduino-cli lib install M5Faces
+  NimBLE-Arduino            2.5.1           Apache-2.0           arduino-cli lib install NimBLE-Arduino
+  HijelHID_BLEKeyboard      0.5.0           Apache-2.0 © Hijel   ★ 不在 arduino-cli 索引里，需手动 clone：
+                                                                  git clone https://github.com/HijelHub/HijelHID_BLEKeyboard \
+                                                                      ~/Documents/Arduino/libraries/
+
+  各库的许可证以其自身仓库中的 LICENSE 为准。
+
+
+二、编译工具链
+
+  - arduino-cli + ESP32 Arduino Core 3.x（FQBN: m5stack:esp32:m5stack_cores3）。
+    ESP32 Arduino Core 为 LGPL-2.1；本仓库只发布自己的 sketch 源码，不发布也不修改
+    Arduino Core 本身，属于正常的编译/链接使用，不影响本项目以 MIT 发布。
+  - 分区表 partitions.csv 中 9.9MB 数据分区使用 subtype 0x83（littlefs）。
+
+
+三、商标
+
+  M5Stack、CoreS3、Faces、Bottom3、Keyboard3 为 M5Stack Technology Co., Ltd. 的商标。
+  本项目为个人作品，与 M5Stack 无任何隶属或合作关系。
+
+
+四、关于 WorkBuddy
+
+  「WorkBuddy」是第三方桌面产品。本项目的控制器应用只是通过标准 BLE HID 键盘/消费类
+  控制键与其快捷键交互，并不调用其任何私有接口。本项目与 WorkBuddy 非官方、无关联、
+  未获授权。快捷键映射基于 2026-09 的 WorkBuddy 版本实测有效，对方版本更新后可能失效。
+
+
+五、可选外部依赖（不在本仓库内，也不随本项目分发）
+
+  - media-control（Mac 端读取「正在播放」曲目信息用的命令行工具，通过 Homebrew 安装）。
+    缺失时音乐遥控应用仍能发媒体键，只是屏上不显示歌名/封面。

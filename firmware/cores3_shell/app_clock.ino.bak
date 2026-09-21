@@ -1,0 +1,96 @@
+// 应用 2：时钟（读 CoreS3 板载 RTC BM8563）
+// 大号时间用 C64 8x8 点阵放大 4 倍 → 32x32 像素块，天然复古感
+
+#include "shell.h"
+
+static bool g_showSec = false;
+
+// 星期在 i18n 表里是连续的 7 个（S_WEEK_SUN..S_WEEK_SAT）
+static const char* weekName(int wd) {
+  if (wd < 0 || wd > 6) return "";
+  return S(S_WEEK_SUN + wd);
+}
+
+static void drawClock(bool full) {
+  if (full) clearCanvas();
+
+  auto t = M5.Rtc.getTime();
+  auto d = M5.Rtc.getDate();
+
+  clearArea(0, 40, 320, 20);
+  drawTitle(40, S(S_CLOCK_TITLE), C_GREEN);
+
+  // 大号时间
+  char buf[16];
+  if (t.hours < 0) snprintf(buf, sizeof(buf), "--:--");
+  else             snprintf(buf, sizeof(buf), "%02d:%02d", t.hours, t.minutes);
+  clearArea(0, 66, 320, 40);
+  setPxFont();
+  M5.Display.setTextSize(4);
+  M5.Display.setTextColor(C_GREEN);
+  M5.Display.drawCenterString(buf, 160, 68);
+  M5.Display.setTextSize(1);
+
+  // 秒
+  clearArea(0, 108, 320, 22);
+  if (g_showSec && t.hours >= 0) {
+    char sb[8];
+    snprintf(sb, sizeof(sb), ":%02d", t.seconds);
+    setPxFont();
+    M5.Display.setTextSize(2);
+    M5.Display.setTextColor(C_DIM);
+    M5.Display.drawCenterString(sb, 160, 110);
+    M5.Display.setTextSize(1);
+  }
+
+  // 日期：中文「2026年09月20日」，英文「2026-09-20」
+  clearArea(0, 136, 320, 48);
+  if (d.year > 0) {
+    char db[40];
+    if (g_lang == LANG_CN)
+      snprintf(db, sizeof(db), "%04d年%02d月%02d日", (int)d.year, (int)d.month, (int)d.date);
+    else
+      snprintf(db, sizeof(db), "%04d-%02d-%02d", (int)d.year, (int)d.month, (int)d.date);
+    drawCenterText(160, 138, 18, db, C_TEXT);
+    if (d.weekDay >= 0 && d.weekDay <= 6) {
+      char wb[24];
+      if (g_lang == LANG_CN) snprintf(wb, sizeof(wb), "星期%s", weekName(d.weekDay));
+      else                   snprintf(wb, sizeof(wb), "%s",     weekName(d.weekDay));
+      drawCenterText(160, 158, 18, wb, C_TEXT);
+    }
+  } else {
+    drawCenterText(160, 146, 20, S(S_RTC_UNSET), C_TEXT);
+  }
+
+  clearArea(0, 196, 320, 24);
+  char bb[32];
+  snprintf(bb, sizeof(bb), S(S_CLOCK_FOOT), batPercent());
+  drawCenterText(160, 198, 16, bb, C_DIM);
+}
+
+void appClockStart() { drawClock(true); }
+
+void appClockLoop() {
+  static uint32_t last = 0;
+  static int32_t  lastKey = -1;
+  if (!uiTick(last)) return;
+
+  // 内容没变就不重绘：不显示秒时一分钟才动一次，电量变了才画
+  auto t = M5.Rtc.getTime();
+  int32_t key;
+  if (t.hours < 0) key = -1;
+  else key = (int32_t)batPercent() * 100000
+           + t.hours * 3600 + t.minutes * 60
+           + (g_showSec ? t.seconds : 0);
+  if (key == lastKey) return;
+  lastKey = key;
+  drawClock(false);
+}
+
+void appClockTouch(int16_t x, int16_t y) { g_showSec = !g_showSec; drawClock(false); }
+
+void appClockKey(uint8_t raw) {
+  if (raw == ' ' || raw == 0x0D) { g_showSec = !g_showSec; drawClock(false); }
+}
+
+void appClockStop() {}

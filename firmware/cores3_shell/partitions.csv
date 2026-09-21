@@ -1,0 +1,9 @@
+# Name,   Type, SubType, Offset,  Size, Flags
+# Same as app3M_fat9M_16MB but the 9.9MB data partition uses subtype 0x83 (littlefs) instead of 0x82 (fat).
+# FFat can mount but cannot write on this board, so the notes queue/draft use LittleFS.
+nvs,      data, nvs,     0x9000,  0x5000,
+otadata,  data, ota,     0xe000,  0x2000,
+app0,     app,  ota_0,   0x10000, 0x300000,
+app1,     app,  ota_1,   0x310000,0x300000,
+lfs,      data, 0x83,    0x610000,0x9E0000,
+coredump, data, coredump,0xFF0000,0x10000,

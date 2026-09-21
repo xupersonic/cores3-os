@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CoreS3 × WorkBuddy 控制器 · 使用速查卡</title>
+<style>
+:root {
+  --bg:#f2f6fc; --card:#ffffff; --line:#e1ebf5; --text:#1f2d3d;
+  --sub:#6b7c90; --brand:#006EFF; --brand-soft:#e6f1ff;
+  --red:#e0483b; --orange:#f0932b; --green:#27ae60; --blue:#1677ff;
+}
+* { box-sizing: border-box; }
+body { margin:0; font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,system-ui,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
+header { background:linear-gradient(135deg,#f6faff,#e6f1ff); border-bottom:1px solid var(--line); padding:30px 28px; }
+header h1 { margin:0; font-size:25px; font-weight:700; letter-spacing:.01em; color:#16263a; }
+header .sub { margin-top:6px; font-size:13px; color:var(--sub); }
+.wrap { max-width:1100px; margin:0 auto; padding:30px 24px 80px; }
+.banner { background:#eef5ff; border:1px solid var(--line); color:#3a5b8a; border-radius:14px;
+  padding:12px 16px; font-size:13px; margin-bottom:24px; }
+.banner b { color:#006EFF; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+.stat { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 16px; box-shadow:0 2px 10px rgba(0,110,255,.06); }
+.stat .n { font-size:22px; font-weight:700; color:#16263a; word-break:break-all; }
+.stat .l { font-size:12px; color:var(--sub); margin-top:4px; }
+.stat.blue .n { color:var(--blue); } .stat.green .n { color:var(--green); } .stat.orange .n { color:var(--orange); }
+.panel { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px; box-shadow:0 2px 14px rgba(0,110,255,.05); margin-bottom:20px; }
+.panel h2 { margin:0 0 18px; font-size:17px; display:flex; align-items:center; gap:8px; color:#16263a; }
+.panel h2 .tag { font-size:11px; font-weight:500; color:var(--brand); background:var(--brand-soft); padding:2px 10px; border-radius:20px; }
+.grid2 { display:grid; grid-template-columns:1.1fr .9fr; gap:20px; }
+table { width:100%; border-collapse:collapse; font-size:13.5px; }
+th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-size:12px; color:var(--sub); font-weight:600; background:#f7fbff; }
+tr:last-child td { border-bottom:none; }
+kbd { display:inline-block; background:var(--brand-soft); color:#006EFF; border:1px solid #cfe2ff;
+  border-radius:7px; padding:1px 8px; font-size:12px; font-family:ui-monospace,Menlo,monospace; font-weight:600; }
+code { background:#f4f8ff; border:1px solid var(--line); border-radius:6px; padding:1px 6px;
+  font-size:12.5px; font-family:ui-monospace,Menlo,monospace; color:#3a5b8a; word-break:break-all; }
+.pill { display:inline-block; font-size:11px; padding:2px 10px; border-radius:20px; font-weight:600; }
+.p-low { background:#eef4ea; color:var(--green); }
+.p-mid { background:#fbf0e0; color:var(--orange); }
+.p-high { background:#fbe9e4; color:var(--red); }
+.screen { background:#0f1b2d; border-radius:16px; padding:14px; color:#dfe9f5; }
+.screen .bar { display:flex; justify-content:space-between; font-size:11px; color:#8fb0d8; padding:2px 6px 8px; border-bottom:1px solid #22344d; }
+.screen .rowb { display:flex; gap:8px; margin:10px 6px; }
+.screen .btnx { flex:1; text-align:center; font-size:12px; padding:7px 0; border-radius:9px; background:#1a2c44; border:1px solid #2b4363; }
+.screen .btnx.on { background:#006EFF; border-color:#006EFF; color:#fff; }
+.screen .inp { margin:6px; padding:10px; min-height:46px; border-radius:10px; background:#16263c; border:1px solid #2b4363; font-size:13px; }
+.screen .hint { margin:2px 8px; font-size:11px; color:#7e9dc4; }
+.screen .res { margin:10px 6px 4px; padding:10px; min-height:52px; border-radius:10px; background:#12203a; border:1px solid #23405f; font-size:12px; color:#a9c6e8; }
+.screen .lab { font-size:10px; color:#6f8db3; margin:8px 8px 2px; letter-spacing:.05em; }
+.steps { counter-reset:s; margin:0; padding:0; list-style:none; }
+.steps li { position:relative; padding-left:34px; margin-bottom:12px; font-size:13.5px; }
+.steps li::before { counter-increment:s; content:counter(s); position:absolute; left:0; top:1px;
+  width:22px; height:22px; border-radius:50%; background:var(--brand-soft); color:var(--brand);
+  font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.note { background:#fff8ec; border:1px solid #f6e2c2; color:#8a6a2f; border-radius:12px; padding:11px 14px; font-size:12.5px; margin-top:12px; }
+.ok { background:#eefaf2; border:1px solid #c9ecd8; color:#1f7a45; border-radius:12px; padding:11px 14px; font-size:12.5px; margin-top:12px; }
+@media (max-width:1000px){ .stats{grid-template-columns:repeat(2,1fr);} .grid2{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header>
+  <h1>CoreS3 × WorkBuddy 控制器 · 使用速查卡</h1>
+  <div class="sub">M5Stack CoreS3 + Faces Bottom3 + Keyboard3 → Mac 上的 WorkBuddy 派活遥控器 · 2026-09-19 全链路验证通过</div>
+</header>
+
+<div class="wrap">
+
+  <div style="margin:0 0 18px;padding:12px 16px;border-radius:10px;background:#fff4e5;border:1px solid #f0b37e;color:#7a4b12;font-size:14px;line-height:1.6">
+    <b>⚠️ 本页是 v0.3 时代的存档，讲的已不是当前方案。</b>
+    那时候 CoreS3 走的是「连 Wi-Fi → HTTP 轮询 Mac 上的桥接服务」，所以要配 SSID/密码、看 IP、装 launchd。
+    现行固件（v0.7.x）<b>完全改成 BLE</b>：不需要 Wi-Fi，不要 IP，Mac 端跑 <code>mac-bridge/MusicBridge.app</code> 即可。
+    本页保留只为说明思路演进，实操请看 <a href="cheat-sheet.html" style="color:#7a4b12">速查卡</a> 与 README。
+  </div>
+
+  <div class="stats">
+    <div class="stat blue"><div class="n">192.168.1.x</div><div class="l">CoreS3 的 IP（设备自己）</div></div>
+    <div class="stat"><div class="n">192.168.1.y:8788</div><div class="l">Mac 上桥接服务地址</div></div>
+    <div class="stat green"><div class="n">YOUR_SSID</div><div class="l">已连 Wi-Fi（2.4G 频段）</div></div>
+    <div class="stat orange"><div class="n">kb=1 / wifi=1</div><div class="l">键盘已识别 / 网络已通</div></div>
+  </div>
+
+  <div class="banner">
+    <b>怎么用一句话说清：</b>在 Keyboard3 上敲一句英文任务 → 按 <kbd>Enter</kbd> → Mac 后台的 WorkBuddy 真的去执行 → 结果自动回传到 CoreS3 屏幕上显示。全程不动 Mac、不抢焦点。
+  </div>
+
+  <div class="grid2">
+
+    <div class="panel">
+      <h2>屏幕长什么样 <span class="tag">5 个区域</span></h2>
+      <div class="screen">
+        <div class="bar"><span>WiFi 192.168.1.x</span><span>BAT 84%</span></div>
+        <div class="rowb">
+          <div class="btnx">清空</div>
+          <div class="btnx on">发送</div>
+        </div>
+        <div class="lab">输入区（你敲的字出现在这）</div>
+        <div class="inp">check today's calendar</div>
+        <div class="hint">提示行：Enter 发送 · ESC 清空</div>
+        <div class="lab">结果区（WorkBuddy 的回话）</div>
+        <div class="res">CoreS3 控制器链路测试成功。</div>
+      </div>
+      <div class="ok">上面「结果区」显示的，就是 WorkBuddy 真实执行后回传的原话。</div>
+    </div>
+
+    <div class="panel">
+      <h2>键盘按键对照 <span class="tag">Keyboard3</span></h2>
+      <table>
+        <tr><th>按键</th><th>作用</th></tr>
+        <tr><td><kbd>A-Z 0-9 空格 , .</kbd></td><td>正常输入字符（进输入区）</td></tr>
+        <tr><td><kbd>Backspace</kbd></td><td>删掉一个字符</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td><b>发送任务给 WorkBuddy</b></td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>清空输入区</td></tr>
+        <tr><td>触屏「清空 / 发送」</td><td>和上面两个键等价，可直接点屏幕</td></tr>
+        <tr><td><kbd>aA</kbd> <kbd>sym</kbd> <kbd>Fn</kbd> <kbd>alt</kbd></td><td>切换输入层，按下时蓝灯会亮（设计如此）</td></tr>
+      </table>
+      <div class="note"><b>一个重要限制：</b>Keyboard3 是物理英文键盘，<b>只能敲 ASCII</b>，没法直接输中文。中文任务请写拼音或英文，后面可以加语音通道解决。</div>
+    </div>
+
+  </div>
+
+  <div class="panel">
+    <h2>出问题先看这张表 <span class="tag">排查</span></h2>
+    <table>
+      <tr><th style="width:26%">现象</th><th style="width:37%">最可能的原因</th><th>怎么办</th></tr>
+      <tr>
+        <td>屏幕顶行没有 IP</td>
+        <td>Wi-Fi 没连上（密码错 / 只有 5G 频段）</td>
+        <td>串口发 <code>status</code>，看 <code>wifi=</code> 是 0 还是 1；改网络用 <code>wifi 名称 密码</code></td>
+      </tr>
+      <tr>
+        <td>发送后一直是「执行中」，最后超时</td>
+        <td>Mac 上桥接服务没在跑；或 CLI 登录态过期（约 3 天）</td>
+        <td>双击 <code>~/.workbuddy/m5-bridge/启动桥接.command</code>；仍不行就双击 <code>登录.command</code> 重新登录一次</td>
+      </tr>
+      <tr>
+        <td>键盘敲了屏幕没反应</td>
+        <td>Keyboard3 没插紧，或 I2C 未初始化</td>
+        <td>串口发 <code>status</code> 看 <code>kb=</code>；为 0 就把面板拔下重插后按 CoreS3 复位键</td>
+      </tr>
+      <tr>
+        <td>两侧灯带全白不动</td>
+        <td>Bottom3 主板上的 SELECTION 拨错了档</td>
+        <td>拨到标着 <b>Core2 / CoreS3</b> 那一侧（靠下那档），正常应是流动淡蓝光</td>
+      </tr>
+      <tr>
+        <td>键盘两个蓝灯不亮</td>
+        <td>固件默认 <code>led_mode=0</code>，本来就灭着</td>
+        <td>不是故障。按 <kbd>aA</kbd>/<kbd>sym</kbd>/<kbd>Fn</kbd>/<kbd>alt</kbd> 才会亮，开机瞬间也会闪一下</td>
+      </tr>
+      <tr>
+        <td>改了 config.h 重新烧录，行为没变</td>
+        <td>Arduino 用了旧编译缓存</td>
+        <td>先删 <code>~/Library/Caches/arduino/sketches/&lt;HASH&gt;</code> 再编译；确认 <code>strings *.bin | grep 新内容</code> 有命中</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Mac 侧日常维护 <span class="tag">3 件事</span></h2>
+      <ol class="steps">
+        <li><b>开机自动跑：</b>注册 launchd（<code>com.cores3os.bridge</code>）后，下次登录生效；这次想手动开就双击 <code>启动桥接.command</code>。</li>
+        <li><b>改 Wi-Fi：</b>不用重新烧固件。串口发 <code>wifi YOUR_SSID YOUR_PASSWORD</code>，设备会存进闪存并重启；<code>reset</code> 可恢复默认。</li>
+        <li><b>登录过期：</b>CLI 的令牌约 3 天到期，到期后双击 <code>登录.command</code> 走一次交互登录即可。</li>
+      </ol>
+      <div class="note">桥接服务只做一件事：收 HTTP 请求 → 起一个 CLI 子进程 → 把结果写回 outbox 供设备轮询。它不碰你的界面、不需要辅助功能权限。</div>
+    </div>
+
+    <div class="panel">
+      <h2>反向：让 WorkBuddy 主动找设备 <span class="tag">MCP</span></h2>
+      <ol class="steps">
+        <li>已写好 MCP Server：<code>~/.workbuddy/m5-bridge/mcp_cores3.py</code>（零依赖，stdio）。</li>
+        <li>已登记进 <code>~/.workbuddy/mcp.json</code>，名字 <code>m5-cores3</code>。</li>
+        <li><b>还需你做一步：</b>重启 WorkBuddy，到连接器管理页对新出现的 <code>m5-cores3</code> 点「信任」。</li>
+      </ol>
+      <table style="margin-top:8px">
+        <tr><th>工具</th><th>效果</th></tr>
+        <tr><td><code>cores3_display</code></td><td>在 CoreS3 屏幕上显示一段文字（中文可）</td></tr>
+        <tr><td><code>cores3_led</code></td><td>控制 Bottom3 两侧 10 颗 RGB 灯</td></tr>
+        <tr><td><code>cores3_status</code></td><td>查设备在线状态、电量</td></tr>
+        <tr><td><code>cores3_last_result</code></td><td>取回最近一次任务的结果</td></tr>
+      </table>
+      <div class="note">方向说明：MCP 只能<b>由 WorkBuddy 主动发起</b>，所以「设备 → 派活」走 HTTP 桥接、「WorkBuddy → 设备」走 MCP，两条路是分开的、各自都通了。</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>现在可以试的三句 <span class="tag">建议先试短的</span></h2>
+    <table>
+      <tr><th style="width:44%">在键盘上敲</th><th>会发生什么</th></tr>
+      <tr><td><code>what time is it</code></td><td>WorkBuddy 去查当前时间，结果回屏（最快，几秒）</td></tr>
+      <tr><td><code>list files in WorkBuddy folder</code></td><td>真的去列目录，验证它有权限干活</td></tr>
+      <tr><td><code>summarize my day in one line</code></td><td>验证长一点的任务，观察结果区换行显示</td></tr>
+    </table>
+    <div class="ok"><b>已实测通过的一次：</b>派发「只回复一句话：CoreS3 控制器链路测试成功。」→ 10 秒内拿到 <code>done:true</code>，回文「CoreS3 控制器链路测试成功。」</div>
+  </div>
+
+</div>
+</body>
+</html>

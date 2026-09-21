@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cores3os.bridge</string>
+
+    <!-- ⚠️ 把下面这行换成你自己机器上的绝对路径
+         （./build.sh 之后，真实路径形如 /Users/你/…/cores3-os/mac-bridge/MusicBridge.app/…）。
+         ./bridge.sh install 会自动读本文件、替换路径并装到 ~/Library/LaunchAgents。
+         直接跑 app 包里的二进制，不能用 `open MusicBridge.app`：
+         open 会立刻返回，launchd 以为进程退了，会无限重启。 -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/PATH/TO/cores3-os/mac-bridge/MusicBridge.app/Contents/MacOS/MusicBridge</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Bridge 是常驻服务：崩了要自动拉起来，否则设备上的速记只能一直排队 -->
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <!-- 速记落点（可选）：想直接写进 Obsidian vault 就设这个环境变量，
+         不设则默认落到 ~/Documents/face3notes.md -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>CORES3_NOTES_FILE</key>
+        <string>/PATH/TO/YourVault/face3notes.md</string>
+    </dict>
+
+    <!-- 应用自己已经往 /tmp/cores3-bridge.log 写了，这里只兜 stdout/stderr -->
+    <key>StandardOutPath</key>
+    <string>/tmp/cores3-bridge.launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/cores3-bridge.launchd.log</string>
+</dict>
+</plist>

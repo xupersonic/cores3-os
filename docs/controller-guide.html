@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoreS3 控制器 · 配对与设置</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+background:#F5F7FA;color:#1F2933;line-height:1.7;padding:32px 20px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font-size:24px;font-weight:600;margin-bottom:6px}
+.sub{color:#6B7280;font-size:14px;margin-bottom:28px}
+.card{background:#fff;border-radius:16px;padding:24px 28px;margin-bottom:18px;border:1px solid rgba(0,0,0,.06)}
+h2{font-size:17px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.num{width:26px;height:26px;border-radius:8px;background:#006EFF;color:#fff;font-size:13px;
+display:flex;align-items:center;justify-content:center;flex:0 0 26px}
+.h2sub{color:#6B7280;font-size:13px;margin:0 0 16px 36px}
+ol,ul{margin-left:36px}
+ol li,ul li{margin-bottom:8px;font-size:14px}
+code{background:#F0F4F8;padding:2px 7px;border-radius:5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#006EFF}
+strong{font-weight:600}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th{text-align:left;padding:10px 12px;background:#F0F4F8;font-weight:600;font-size:13px;color:#374151}
+td{padding:10px 12px;border-top:1px solid rgba(0,0,0,.06);vertical-align:top}
+.note{background:#E8F1FF;border-radius:10px;padding:12px 16px;font-size:13px;color:#0B4DA2;margin-top:14px}
+.warn{background:#FFF4E5;border-radius:10px;padding:12px 16px;font-size:13px;color:#8A4B00;margin-top:14px}
+.kbd{display:inline-block;background:#fff;border:1px solid rgba(0,0,0,.14);border-bottom-width:2px;
+border-radius:6px;padding:1px 7px;font-size:12px;font-family:ui-monospace,Menlo,monospace;margin:0 2px}
+.ok{color:#0F9960;font-weight:600}
+.foot{text-align:center;color:#9AA3AF;font-size:12px;margin-top:24px}
+@media(max-width:600px){body{padding:20px 14px}.card{padding:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>CoreS3 控制器 · 配对与设置</h1>
+<p class="sub">固件已刷好。设备上电后屏幕顶部显示「BLE 等待配对」，按下面三步走完即可使用。</p>
+
+<div class="card">
+<h2><span class="num">1</span>蓝牙配对（只需做一次）</h2>
+<p class="h2sub">免密配对，不会出现输密码的弹窗。</p>
+<ol>
+<li>Mac 打开 <strong>系统设置 → 蓝牙</strong>（或点菜单栏蓝牙图标）。</li>
+<li>稍等几秒，下方「附近的设备」里会出现 <strong>CoreS3 Controller</strong>。</li>
+<li>点 <strong>连接</strong>。不需要输入配对码。</li>
+<li>连上后 CoreS3 屏幕顶部会变成 <span class="ok">「BLE 已连接」</span>。</li>
+</ol>
+<div class="note">配对成功后是永久记住的，以后 CoreS3 一开机就会自动连上，不用再操作。</div>
+</div>
+
+<div class="card">
+<h2><span class="num">2</span>设置听写快捷键（只需做一次）</h2>
+<p class="h2sub">让 CoreS3 的语音键能唤起 Mac 自带的听写。</p>
+<ol>
+<li>打开 <strong>系统设置 → 键盘</strong>，往下找到 <strong>「听写」</strong>。</li>
+<li>打开听写的开关，语言选 <strong>普通话（中国大陆）</strong>。</li>
+<li>点 <strong>「快捷键」</strong> 弹出菜单 → 选 <strong>「自定…」</strong> → 按下 <span class="kbd">Control</span>+<span class="kbd">Option</span>+<span class="kbd">D</span>。</li>
+</ol>
+<div class="note">固件默认发的就是 <code>Control + Option + D</code>。若你想换组合，改 <code>config.h</code> 里的 <code>DICT_MODS</code> / <code>DICT_KEY</code> 重新烧录，两边保持一致即可。<br>
+想更快更私密：在同一页勾选「仅离线听写」（需先下载离线语言包）。</div>
+</div>
+
+<div class="card">
+<h2><span class="num">3</span>设置中文预设（可选，但很值）</h2>
+<p class="h2sub">HID 键盘打不了中文，靠系统「文本替换」把缩写码展开成中文长指令。</p>
+<ol>
+<li>打开 <strong>系统设置 → 键盘 → 文本替换</strong>，点 <strong>+</strong>。</li>
+<li>「输入」填缩写码，「替换为」填你想要的那句中文指令。</li>
+</ol>
+<table>
+<tr><th style="width:34%">输入（缩写码）</th><th>替换为（改成你常用的）</th></tr>
+<tr><td><code>;;daily</code></td><td>帮我列出今天要做的事，按优先级排序</td></tr>
+<tr><td><code>;;mail</code></td><td>帮我整理今天邮件里的要点和待回复项</td></tr>
+<tr><td><code>;;sum</code></td><td>总结当前项目的进展、风险和下一步</td></tr>
+<tr><td><code>;;plan</code></td><td>帮我规划今天的工作安排，留出深度工作时间</td></tr>
+</table>
+<div class="note">用 <code>;;</code> 开头是为了避免和正常打字冲突。缩写码只能用英文和符号。</div>
+</div>
+
+<div class="card">
+<h2><span class="num">4</span>按键对照</h2>
+<table>
+<tr><th style="width:32%">CoreS3 上</th><th style="width:26%">发给 Mac</th><th>作用</th></tr>
+<tr><td>大按钮 / 键盘<strong>空格</strong></td><td>Control+Option+D</td><td>唤起听写，再按一次结束</td></tr>
+<tr><td>「发送」/ 键盘<strong>回车</strong></td><td>Return</td><td>把输入框里的内容发出去</td></tr>
+<tr><td>「取消」/ 键盘<strong>Esc</strong></td><td>Escape</td><td>取消当前输入</td></tr>
+<tr><td>「预设」</td><td>—</td><td>进入预设页，四个中文按钮</td></tr>
+<tr><td>键盘<strong>数字 1–4</strong></td><td>缩写码 + Return</td><td>直接发对应预设</td></tr>
+<tr><td>「新会话」</td><td>Cmd + N</td><td>开新对话（若快捷键不符可改）</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2><span class="num">5</span>日常用法</h2>
+<ol>
+<li>点大按钮（或按空格）→ 屏幕变「正在听写…」。</li>
+<li>对着 Mac 说话 —— 文字会落在<strong>当前光标所在的输入框</strong>里。</li>
+<li>点「发送」→ 发出去。</li>
+</ol>
+<div class="warn">听写输入的是「当前有光标的输入框」，所以先点一下 WorkBuddy 的输入框再说话。这是 VibeKey 同样的工作方式。</div>
+</div>
+
+<div class="card">
+<h2><span class="num">6</span>出问题怎么办</h2>
+<table>
+<tr><th style="width:38%">现象</th><th>处理</th></tr>
+<tr><td>一直显示「等待配对」</td><td>CoreS3 断电再上电；Mac 蓝牙关掉再开；串口发 <code>unpair</code> 重启广播</td></tr>
+<tr><td>蓝牙列表里搜不到</td><td>确认 Bottom3 底部开关拨到 <strong>1</strong>；设备靠近 Mac</td></tr>
+<tr><td>按键后屏幕闪红</td><td>说明没连上，先完成配对</td></tr>
+<tr><td>按语音键没反应</td><td>检查系统设置的听写快捷键是不是 <code>Control+Option+D</code></td></tr>
+<tr><td>预设打出的是英文缩写</td><td>文本替换没配上，检查「输入」列是否完全一致</td></tr>
+<tr><td>设备不定时重启</td><td>不要打开 <code>ENABLE_BOTTOM3_LED</code>（灯带在 ESP32-S3 上有已知崩溃 bug）</td></tr>
+</table>
+<div class="note">串口命令（USB 连着时可用）：<code>status</code> 看连接状态 / <code>unpair</code> 重启蓝牙广播。</div>
+</div>
+
+<p class="foot">CoreS3 控制器 · 纯 BLE HID 形态 · 不需要 Wi-Fi，Mac 上无需安装或运行任何程序</p>
+
+</div>
+</body>
+</html>

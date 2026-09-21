@@ -1,0 +1,23 @@
+# ── 编译产物 ────────────────────────────────────────────────
+build/
+*.bin
+*.elf
+*.map
+*.hex
+
+# ── Mac 端编译出来的二进制与 app 包（跑 ./build.sh 自己编）────
+mac-bridge/MusicBridge
+mac-bridge/*.app/
+
+# ── 本地生成的 LaunchAgent 配置（含个人绝对路径，不要提交）────
+#    只忽略 com.*.plist（那是 bridge.sh 从模板生成的本地文件）；
+#    Info.plist 是构建 app 包必需的，必须跟着仓库走。
+mac-bridge/com.*.plist
+!mac-bridge/com.cores3os.bridge.plist.example
+
+# ── macOS / 编辑器 / AI 工具目录 ─────────────────────────────
+.DS_Store
+.vscode/
+.idea/
+*.swp
+.workbuddy/

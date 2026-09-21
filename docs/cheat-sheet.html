@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CoreS3 OS 速查卡 v0.7.1 — 六应用 · 中英双语</title>
+<style>
+:root {
+  --bg:#05070a; --panel:#0b1017; --line:#1b2430; --grid:#16202c;
+  --text:#b8c7d6; --dim:#5a6b7c;
+  --cyan:#22d3ee; --green:#39ff88; --amber:#ffb000;
+  --magenta:#ff2e88; --violet:#a855f7; --red:#ff4d4d;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); line-height:1.65;
+  font-family:"SF Mono",Menlo,Consolas,"PingFang SC","Hiragino Sans GB",monospace;
+  -webkit-font-smoothing:antialiased; }
+/* CRT 扫描线 */
+body::after { content:""; position:fixed; inset:0; pointer-events:none; z-index:99;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.022) 0 1px, transparent 1px 3px); }
+header { border-bottom:1px solid var(--line); padding:30px 28px; background:#070b10; }
+header h1 { margin:0; font-size:24px; font-weight:700; letter-spacing:.02em; color:var(--green); }
+header h1 .cur { color:var(--amber); }
+header .sub { margin-top:8px; font-size:12.5px; color:var(--dim); }
+.wrap { max-width:1100px; margin:0 auto; padding:28px 24px 80px; }
+.banner { background:#0a1017; border:1px solid var(--line); border-left:3px solid var(--green);
+  padding:12px 16px; font-size:13px; margin-bottom:24px; color:var(--text); }
+.banner b { color:var(--green); }
+.stats { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:26px; }
+.stat { background:var(--panel); border:1px solid var(--line); padding:16px 14px; position:relative; }
+.stat::before, .stat::after { content:""; position:absolute; width:4px; height:4px; background:var(--dim); }
+.stat::before { left:-1px; top:-1px; } .stat::after { right:-1px; bottom:-1px; }
+.stat .n { font-size:25px; font-weight:700; }
+.stat .l { font-size:11.5px; color:var(--dim); margin-top:4px; }
+.s-cyan .n{color:var(--cyan);} .s-green .n{color:var(--green);} .s-amber .n{color:var(--amber);}
+.s-magenta .n{color:var(--magenta);} .s-violet .n{color:var(--violet);} .s-red .n{color:var(--red);}
+.panel { background:var(--panel); border:1px solid var(--line); padding:20px 22px; margin-bottom:20px; position:relative; }
+.panel::before, .panel::after { content:""; position:absolute; width:5px; height:5px; background:var(--green); }
+.panel::before { left:-1px; top:-1px; } .panel::after { right:-1px; bottom:-1px; }
+.panel h2 { margin:0 0 14px; font-size:16px; display:flex; align-items:center; gap:8px; color:var(--green); }
+.panel h2::before { content:">"; color:var(--amber); font-weight:700; }
+.panel h2 .tag { font-size:11px; color:var(--cyan); border:1px solid var(--cyan); padding:1px 8px; }
+table { width:100%; border-collapse:collapse; font-size:12.8px; }
+th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--grid); vertical-align:top; }
+th { font-size:11.5px; color:var(--dim); font-weight:600; background:#080d13; }
+tr:last-child td { border-bottom:none; }
+code { background:#080d13; border:1px solid var(--grid); padding:1px 6px; font-size:11.5px; color:var(--cyan); }
+pre { background:#080d13; border:1px solid var(--line); border-left:3px solid var(--violet);
+  padding:14px 16px; overflow:auto; font-size:11.5px; line-height:1.7; color:var(--text); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+ul.tight { margin:0; padding-left:18px; font-size:12.8px; color:var(--text); }
+ul.tight li { margin-bottom:5px; }
+.warn { background:#0d0f08; border:1px solid #4a3a12; border-left:3px solid var(--amber);
+  color:#d8c48a; padding:12px 16px; font-size:12.8px; }
+.warn b { color:var(--amber); }
+.swatch { display:inline-block; width:12px; height:12px; vertical-align:-2px; margin-right:6px; border:1px solid #000; }
+@media (max-width:1000px){ .stats{grid-template-columns:repeat(3,1fr);} .grid2{grid-template-columns:1fr;} }
+@media (max-width:600px){ .stats{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body>
+<header>
+  <h1>&gt; CoreS3 OS 速查卡<span class="cur">_</span></h1>
+  <div class="sub">v0.7.1 · RETRO PIXEL / CYBERPUNK / TERMINAL 主题 · 简中 / 英文双语 · 六应用：控制器 / <b>记事本（v0.6.0 取代时钟）</b> / 番茄钟 / <b>游戏（v0.7.0 取代系统信息）</b> / <b>音乐遥控（v0.5.0 起取代传感器）</b> / 设置 · 音乐：HID 媒体键控制 + BLE 自定义 GATT 回传歌名封面（配 Mac 端 <b>Music Bridge</b>） · 记事本：Keyboard3 打字 → BLE notify → Bridge 追加进 Obsidian <code>face3notes.md</code> · <b>QQ 音乐 11.9.1 已验证可用</b> · <b>v0.5.1：封面能显示了 + 只重画进度条 + 串口对时</b> · <b>v0.6.1：静态界面不再每秒重绘（不闪）</b> · <b>v0.6.2：离线笔记带书写时间 + 连上自动对时</b> · <b>v0.7.0：俄罗斯方块 + 2048</b> · <b>v0.7.1：两个游戏都能静音（M 键 / 点开关，存 NVS）</b> · 源码 cores3-firmware/cores3_shell/ · 烧录 cores3-firmware/fw.sh</div>
+</header>
+
+<div class="wrap">
+  <div class="banner">
+    设备上电后直接进<b>3×2 宫格桌面（6 个应用）</b>。蓝牙开机自动广播（名字 <code>CoreS3 Controller</code>），Mac 配对一次后会<b>自动重连</b>。
+    本次烧录实测：<b>BLE 已连接</b>、<b>Keyboard3 已识别</b>、电量 97%、七个应用逐个切换 <b>0 崩溃</b>。
+  </div>
+
+  <div class="stats">
+    <div class="stat s-cyan"><div class="n">6</div><div class="l">内置应用</div></div>
+    <div class="stat s-green"><div class="n">43%</div><div class="l">Flash 1.34MB / 3MB</div></div>
+    <div class="stat s-violet"><div class="n">13%</div><div class="l">内存占用</div></div>
+    <div class="stat s-amber"><div class="n">0</div><div class="l">运行崩溃次数</div></div>
+    <div class="stat s-magenta"><div class="n">4.0s</div><div class="l">一次烧录耗时</div></div>
+    <div class="stat s-red"><div class="n">60s</div><div class="l">默认息屏时间</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>视觉主题 <span class="tag">v0.2.0</span></h2>
+    <p style="margin:0 0 14px;font-size:13px">
+      从浅色卡片风整体换成 <b>深底 + 霓虹 + 点阵字</b>。核心是两套原生点阵字体：
+      ASCII 用 M5GFX 内置的 <code>Font8x8C64</code>（C64 8×8 点阵，行优先，覆盖全 ASCII 含小写），
+      中文用 <code>efontCN_16</code>（16×16 点阵）。两者都是位图，放大只会变成更大的方块、不会糊，
+      这正是像素风想要的。
+    </p>
+    <table>
+      <tr><th style="width:22%">元素</th><th style="width:26%">取值</th><th>说明</th></tr>
+      <tr><td>屏幕底</td><td><span class="swatch" style="background:#05070a"></span><code>0x05070A</code></td><td>近黑，上面铺 16px 间距的暗网格点（CRT 底纹）</td></tr>
+      <tr><td>面板底</td><td><span class="swatch" style="background:#0b1017"></span><code>0x0B1017</code></td><td>卡片 / 大按钮底</td></tr>
+      <tr><td>主文字</td><td><span class="swatch" style="background:#b8c7d6"></span><code>0xB8C7D6</code></td><td>冷白，次级用 <code>C_DIM</code></td></tr>
+      <tr><td>霓虹六色</td><td>
+        <span class="swatch" style="background:#22d3ee"></span>
+        <span class="swatch" style="background:#39ff88"></span>
+        <span class="swatch" style="background:#ffb000"></span>
+        <span class="swatch" style="background:#ff2e88"></span>
+        <span class="swatch" style="background:#a855f7"></span>
+        <span class="swatch" style="background:#ff4d4d"></span>
+      </td><td>青 / 绿 / 琥珀 / 品红 / 紫 / 红 —— 一应用一主色</td></tr>
+    </table>
+    <table style="margin-top:14px">
+      <tr><th style="width:22%">组件</th><th>做法</th></tr>
+      <tr><td><code>drawFrame()</code></td><td>HUD 边框：1px 细框 + 四角 3px 实心角标（不用圆角，圆角不像素）</td></tr>
+      <tr><td><code>drawPxIcon()</code></td><td>8×8 位图图标（8 字节，每字节一行，bit7=最左），scale=3 画成 24×24</td></tr>
+      <tr><td><code>drawProgressBar()</code></td><td>分段块进度条，每 6px 一块 + 2px 间隔</td></tr>
+      <tr><td><code>drawRow() / drawTitle()</code></td><td>终端列表行（暗色标签 + 霓虹 ASCII 值）、<code>&gt; 标题</code>；标签中英文都行，字体会自动选</td></tr>
+      <tr><td><code>drawKeyBox()</code></td><td>方角按键块；<code>filled=true</code> 时是霓虹底 + 黑字（反白高亮）</td></tr>
+      <tr><td><code>clearArea()</code></td><td>局部擦除并<b>补回网格点</b>，避免清区域留下底纹缺口</td></tr>
+      <tr><td><code>drawCenterText()</code></td><td>水平+垂直居中，并按内容自动选中文/ASCII 点阵（双语排版都用它）</td></tr>
+      <tr><td><code>setAutoFont() / hasCJK() / textHeight()</code></td><td>按「有没有非 ASCII 字节」选字体；字高 16（含中文）或 8（纯 ASCII）</td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>双语（简中 / 英文）<span class="tag">v0.3.0</span></h2>
+    <p style="margin:0 0 12px;font-size:13px">
+      界面文字全部走 <code>S(StrID)</code> 取串，<b>不要写死字符串</b>。切换后写进 NVS，<b>掉电不丢</b>。
+    </p>
+    <table>
+      <tr><th style="width:30%">怎么切</th><th>说明</th></tr>
+      <tr><td>设置 → <b>语言</b> 行</td><td>点右侧方块在 <code>简中</code> / <code>ENGLISH</code> 之间切，立即重绘全界面（含导航条应用名）</td></tr>
+      <tr><td>串口 <code>lang cn</code> / <code>lang en</code></td><td>不带参数直接 <code>lang</code> = 反向切换</td></tr>
+      <tr><td>英文模式长什么样</td><td>纯 ASCII + 8×8 点阵，更像真正的终端：日期 <code>2026-09-20</code>、星期 <code>SUN</code>、按钮 <code>REC / SEND / CANCEL</code></td></tr>
+    </table>
+    <div class="warn" style="margin-top:14px">
+      <b>英文串必须纯 ASCII。</b>8×8 点阵里没有汉字，混进 <code>·</code>、<code>→</code> 这类非 ASCII 符号（UTF-8 里 <code>&gt;= 0x80</code>）
+      会被 <code>hasCJK()</code> 判成中文、改用 16×16 点阵，排版行高就变了。所以英文串里统一用 <code>/</code> 代替 <code>·</code>。<br>
+      <b>两张表靠 <code>static_assert</code> 对账</b>：数组故意不写长度，跟 <code>StrID</code> 枚举数量不一致时直接编译不过，
+      不会出现「中文对英文串味」这种难查的 bug。
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>桌面怎么用 <span class="tag">操作</span></h2>
+    <table>
+      <tr><th style="width:34%">操作</th><th>说明</th></tr>
+      <tr><td>点图标</td><td>启动对应应用。图标是 8×8 位图放大 3 倍画的像素图，左上角有 <code>[1]</code> 编号。</td></tr>
+      <tr><td>Keyboard3 按 <code>1</code>–<code>6</code></td><td>直接启动第 N 个应用，不用摸屏。</td></tr>
+      <tr><td><b>应用内从屏幕左缘向右滑</b></td><td><b>返回上一级</b>（v0.1.3 起）。桌面底部有提示文案。</td></tr>
+      <tr><td>应用内 <code>Esc</code></td><td>Keyboard3 上按 Esc，等价于左滑。</td></tr>
+      <tr><td>应用内点左上角 <code>&lt; 桌面</code></td><td>导航条左侧绿色方框（6–84px 画出来，热区放宽到 <code>x&lt;110</code>）。</td></tr>
+      <tr><td>导航条</td><td>高 36px，底边是<b>当前应用主色的霓虹线</b>。桌面显示 <code>BT:LINK</code>；应用内显示应用名；右侧恒定 <code>时间 + 电量</code>。</td></tr>
+      <tr><td>息屏</td><td>空闲 60 秒亮度降到 8，点屏或按键立刻恢复（设置里可改）。</td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>手势：左缘右滑返回 <span class="tag">v0.1.3</span></h2>
+    <p style="margin:0 0 12px;font-size:13px">
+      CoreS3 是电容触摸屏，M5Unified 的 <code>Touch_Class</code> 底层自带
+      <b>flick / drag / hold 状态机</b>（判定「手指动了多少」），但<b>没有「这个动作是什么意思」这一层</b>——
+      手势语义由外壳自己写。
+    </p>
+    <table>
+      <tr><th style="width:34%">判定条件（三条同时满足）</th><th>取值</th></tr>
+      <tr><td>起手点在屏幕左缘</td><td><code>base_x &lt;= GEST_EDGE(40)</code></td></tr>
+      <tr><td>向右位移够远</td><td><code>distanceX() &gt;= GEST_MIN_DX(44)</code></td></tr>
+      <tr><td>上下没跑偏</td><td><code>|distanceY()| &lt;= GEST_MAX_DY(44)</code>（避免竖向拖被误判）</td></tr>
+      <tr><td>移动阈值（交给 M5Unified）</td><td><code>setFlickThresh(16)</code>：小于它的抖动仍算点击</td></tr>
+    </table>
+    <div class="warn" style="margin-top:14px">
+      <b>点击是「抬手才派发」，不是「按下即派发」。</b>
+      否则按下那一帧就被应用消费掉了，手势根本没有介入的机会。改成抬手派发后，
+      按下之后可以靠滑动取消这次点击——和手机上的行为一致。<br>
+      <b>「返回上一级」统一走 <code>goBack()</code></b>：先问应用 <code>onBack()</code>，
+      应用返回 false 或没实现（<code>nullptr</code>）才回桌面。v0.4.0 起控制器只剩一页
+      （预设二级页已删），<code>onBack()</code> 空着，留给将来带二级页的应用。
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>六个应用 <span class="tag">功能</span></h2>
+    <table>
+      <tr><th style="width:14%">应用</th><th style="width:8%">主色</th><th style="width:30%">做什么</th><th>怎么操作</th></tr>
+      <tr><td><b>控制器</b></td><td><span class="swatch" style="background:#22d3ee"></span>青</td><td>BLE HID 遥控器（对齐 VibeKey）：切换对话、新任务、录音 / 确认 / 取消；中间只显示状态</td><td><b>左键</b>=上一个对话 <code>Cmd+[</code>、<b>右键</b>=下一个对话 <code>Cmd+]</code>（左右并排，各 148×44，带方向三角）；右侧 <code>+</code>=新任务 <code>Cmd+N</code>，等 1.8s 后按「新建后聚焦」档位补按焦点（<b>v0.4.8 起默认 OFF</b>，WAKE 档已证伪）；底部三键=录音(<code>Cmd+D</code> WorkBuddy 内置语音) / 确认(回车) / <b>取消(<code>ESC</code> + <code>Cmd+A</code> + <code>Backspace</code>，先中断再清草稿；<b>v0.4.8 起清之前不再唤醒焦点</b>)</b>；<b>Keyboard3：<code>空格</code>=录音、<code>回车</code>=确认、<code>del</code>=取消（★ v0.4.9 修：del 是 0x7F 不是 0x08）</b>、<code>⌫/BS</code>=同样取消、<code>1/2/3</code>=上/下/新。屏幕底部提示行已改成 <code>空格录音 回车确认 Del取消</code>。状态区底行显示 <code>WB-VOICE</code>/<code>SYS-DICT</code> + <code>ESC</code>/<code>WIPE</code>/<code>ESC+WIPE</code> + <code>BLE</code> + 电量。<b>确认与「清空草稿」都要求焦点在输入框内</b>，见下方「已知约束」</td></tr>
+      <tr><td><b>记事本</b> <span class="tag">v0.6.1</span></td><td><span class="swatch" style="background:#9eff00"></span>青柠</td><td>Keyboard3 打一段 ASCII 速记，经 BLE notify 推给 Mac，Bridge 追加进 Obsidian <code>face3notes.md</code>（<b>v0.6.0 取代时钟</b>）</td><td><code>Alt+S</code>(155)=发送、<code>Alt+D</code>(156)=清空、<code>Fn+←/→</code>(191/193)=移光标、Enter 换行、<code>⌫</code>(0x08)/<code>del</code>(0x7F) 退格；也可点屏幕上 <code>SEND</code>/<code>CLEAR</code>。停手 2 秒存草稿进 LittleFS，发不出去的进队列自动补发。<b>v0.6.1：界面静态化，不再每秒重绘</b></td></tr>
+      <tr><td><b>番茄钟</b></td><td><span class="swatch" style="background:#ffb000"></span>琥珀</td><td>25 分钟专注（琥珀）/ 5 分钟休息（绿），结束响三声，记录完成个数</td><td>点大区域或「开始/暂停」；<code>重置</code> 归零当前阶段；键盘 <code>空格</code> 也能切；暂停时不再重绘</td></tr>
+      <tr><td><b>游戏</b> <span class="tag">v0.7.1</span></td><td><span class="swatch" style="background:#ff2e88"></span>品红</td><td>两个小游戏：<b>俄罗斯方块</b>（10×18 盘面，7 种方块，消行加分、等级越高落得越快）与 <b>2048</b>（4×4，最高分存 NVS 掉电不丢）。<b>v0.7.0 取代系统信息</b>；<b>v0.7.1 加静音开关</b></td><td>菜单点卡片或键盘 <code>1/2</code> 进游戏。<b>方块</b>：<code>WASD</code>（<code>A/D</code> 左右、<code>W</code> 旋转、<code>S</code> 软降）或 <code>Fn+方向键</code>，<code>空格</code>=硬降，<code>P</code>=暂停，<code>N</code>=新局；屏上四个按钮 左/右/旋转/落下，点棋盘左右半边也能挪。<b>2048</b>：<code>WASD</code> 或方向键合并，<code>N</code>=新局。<b>静音（v0.7.1）</b>：菜单底部 / 方块面板最下面 / 2048 面板下方各有一颗开关，<b>点它或按 <code>M</code> 键</b> 切换；有声=绿色实心，静音=红色描边；存 NVS <code>gmute</code>，掉电不丢；串口 <code>game mute</code> 也能切。<b>左滑先回菜单，再滑一次才回桌面</b></td></tr>
+      <tr><td><b>音乐</b> <span class="tag">v0.5.0</span></td><td><span class="swatch" style="background:#a855f7"></span>紫</td><td>音乐遥控（<b>v0.5.0 起取代传感器模块</b>）：HID 媒体键控制 Mac 播放，BLE 回传歌名/歌手/专辑/进度/封面并显示在屏上</td><td>上一曲 / 播放暂停 / 下一曲 / 音量 / 静音；键盘 <code>空格</code>=播放暂停、<code>←/→</code>=上下曲。封面与进度由 Mac 端 Bridge 每 2 秒推送</td></tr>
+      <tr><td><b>设置</b></td><td><span class="swatch" style="background:#ff4d4d"></span>红</td><td>屏幕亮度 −/+、<b>语言（简中/English）</b>、自动休眠（30s/60s/2min/常亮）、<b>录音方式（内置语音 / 系统听写）</b>、<b>新建后聚焦（OFF / S-TAB1-3 / TAB1-3 / <span style="color:#39ff88">WAKE</span>）</b>、蓝牙重新广播、版本</td><td>点各行右侧方块；亮度中间那块显示当前值；语言一切换整屏立即重绘并存进 NVS；「录音方式」存 NVS（key <code>recmode</code>，串口 <code>rec 0/1</code>）、「新建后聚焦」存 NVS（key <code>fmode</code>，串口 <code>focus 0-7</code>）。<code>WAKE</code>=Cmd+D 双击借应用自己的 focusInput（<b>★ 默认，7</b>）；<code>S-TAB</code>=Shift+Tab 反向，<code>TAB</code>=正向兜底；<code>OFF</code>=不补按；聚焦前等待另存 key <code>fdelay</code>（串口 <code>fdelay &lt;ms&gt;</code>，默认 1800，范围 200-5000）。<b>取消键档位没有进设置页（7 行已满），用串口 <code>clear 0/1/2</code> 切</b>：<code>0</code>=ESC（只中断，对齐 VibeKey 原生）、<code>1</code>=WIPE（只 Cmd+A+Backspace 清草稿）、<code>2</code>=<b>ESC+WIPE（★默认，两者都做）</b>，存 NVS key <code>clrmode</code></td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Keyboard3 键盘映射 <span class="tag">v0.4.9</span></h2>
+    <table>
+      <tr><th style="width:16%">物理键</th><th style="width:12%">原始键码</th><th style="width:18%">控制器动作</th><th>发给 Mac 的键</th></tr>
+      <tr><td><b>空格</b></td><td><code>0x20</code></td><td><b>录音</b>（开 / 停 toggle）</td><td><code>Cmd+D</code>（WorkBuddy 内置语音）或 <code>Ctrl+Opt+D</code>（系统听写档）</td></tr>
+      <tr><td><b>回车 Enter</b></td><td><code>0x0D</code></td><td><b>确认</b>（发送）</td><td><code>Return</code></td></tr>
+      <tr><td><b>del</b></td><td><code>0x7F</code> ★</td><td><b>取消</b>（停止 + 清草稿）</td><td><code>Esc</code> → <code>Cmd+A</code> → <code>Backspace</code></td></tr>
+      <tr><td><b>⌫ / BS</b></td><td><code>0x08</code></td><td><b>取消</b>（同上，两颗都能按）</td><td>同上</td></tr>
+      <tr><td><code>1</code> / <code>2</code> / <code>3</code></td><td><code>0x31/32/33</code></td><td>上一个 / 下一个 / 新任务</td><td><code>Cmd+[</code> / <code>Cmd+]</code> / <code>Cmd+N</code></td></tr>
+      <tr><td><b>Esc</b></td><td><code>0x1B</code></td><td>返回上一级（外壳拦截，应用收不到）</td><td>不发键</td></tr>
+      <tr><td>Tab</td><td><code>0x09</code></td><td>未映射</td><td>—</td></tr>
+    </table>
+    <div class="warn" style="margin-top:14px">
+      <b>★ 最大的坑：<code>del</code> 键发的是 <code>0x7F</code>，不是 <code>0x08</code>。</b>
+      Keyboard3 上有两颗删除键：标 <code>del</code> 的那颗 = <code>0x7F</code>，标 <code>⌫/BS</code> 的那颗 = <code>0x08</code>
+      （键码定义在 <code>M5Faces_Keyboard3.hpp</code> 的 <code>keyboard3_key_t</code> 枚举里，旁边还有
+      <code>FN+方向键</code>=180-193、<code>ALT+字母</code>=144-176 等扩展码）。
+      <b>v0.4.8 及以前只映射了 <code>0x08</code>，所以按 <code>del</code> 键一点反应都没有</b> —— v0.4.9 已把两颗都接上取消。
+      <br>改键前先确认键码：串口发 <code>key &lt;0-255&gt;</code> 会走同一条 <code>onKey</code> 派发路径
+      （例：<code>key 127</code> == 按了 del 键），不用真的去按。
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>串口命令 <span class="tag">调试</span></h2>
+      <ul class="tight">
+        <li><code>status</code> — 当前应用/蓝牙/键盘/电量/亮度/休眠</li>
+        <li><code>apps</code> — 列出所有应用编号与名字（跟随当前语言）</li>
+        <li><code>lang cn</code> / <code>lang en</code> — 切语言，写入 NVS；单输 <code>lang</code> = 反向切</li>
+        <li><code>launch N</code> — 直接启动第 N 个应用</li>
+        <li><code>home</code> — 回桌面</li>
+        <li><code>back</code> — 返回上一级（等价于左滑手势）</li>
+        <li><code>unpair</code> — 重启蓝牙广播（重新配对用）</li>
+        <li><code>bright 0-255</code> — 改亮度</li>
+        <li><code>sleep 秒</code> — 改息屏时间，0 = 常亮</li>
+        <li><code>focus 0-7</code> — 新建对话后的聚焦方式（<b>0=OFF 默认</b>，1-3=S-TAB1-3，4-6=TAB1-3，7=WAKE <b>实测会带走焦点，别用</b>）</li>
+        <li><code>fdelay &lt;ms&gt;</code> — 聚焦前先等多久（200-5000，默认 1800）</li>
+        <li><code>rec 0|1</code> — 录音方式（0=WorkBuddy 内置语音 Cmd+D，1=macOS 听写）</li>
+        <li><code>clear 0|1|2</code> — 取消键档位（0=ESC，1=WIPE，<b>2=ESC+WIPE 默认</b>）</li>
+        <li><code>act rec|send|cancel|new|prev|next</code> — <b>直接跑固件真实按键路径</b>（自测用，别手动拼键）</li>
+        <li><code>key &lt;0-255&gt;</code> — <b>模拟 Keyboard3 物理按键</b>，走同一条 <code>onKey</code> 派发路径（<code>key 127</code> = 按 del，<code>key 32</code> = 空格，<code>key 13</code> = 回车）。验键位映射用</li>
+        <li><code>music</code> — 打印歌曲元数据与封面收发进度（<code>art=已收/总长 (ready)</code>）</li>
+        <li><code>time [YYYY-MM-DD HH:MM:SS]</code> — <b>RTC 对时</b>（v0.5.1）。不带参数 = 打印当前 RTC；带参数 = 写入，星期自己算</li>
+        <li><code>note</code> — 打印记事本状态（<code>fs/sub/sending/queued/sent/len/draws</code>）。
+          <code>draws</code> 是重绘次数：<b>静置时它不该涨</b>，涨了说明又退回按节拍重绘了</li>
+        <li><code>note push &lt;文本&gt;</code> — <b>走真实发送路径</b>推一条速记（不碰屏幕就能验链路，v0.6.0）</li>
+        <li><code>note type &lt;文本&gt;</code> — <b>逐字符喂给 <code>appNoteKey()</code> 再补 ALT+S</b>，等于「模拟真人在 Keyboard3 上打完这行并按发送」。验按键映射（含 <code>0x08/0x7F</code> 退格、<code>0x0D</code> 换行）用这条</li>
+        <li><code>fs</code> — flash 文件系统体检：分区信息（label=<code>lfs</code>）/ 挂载 / 写测试 / 列根目录；找不到分区时会把整张 data 分区表打出来（v0.6.0）</li>
+        <li><code>fs2</code> — 更底层：裸分区 erase+write+read 读回校验，并对比 <code>open("/x")</code> 与 <code>open("/littlefs/x")</code></li>
+        <li><code>reboot</code> — 硬重启（烧录后必发一次，fw.sh 已自动带上）</li>
+      </ul>
+      <pre># 读串口（端口每次插拔都可能变，一律自动探测）
+cores3-firmware/ser.py status            # 发命令并读回
+cores3-firmware/rtc.sh                   # 把 Mac 时间同步进板载 RTC
+cores3-firmware/rtc.sh --show            # 只看设备当前 RTC</pre>
+    </div>
+
+    <div class="panel">
+      <h2>怎么加一个新应用 <span class="tag">扩展</span></h2>
+      <ul class="tight">
+        <li><b>1.</b> 新建 <code>app_xxx.ino</code>，实现 5 个入口函数（<code>onBack</code> 可选）</li>
+        <li><b>2.</b> 在 <code>shell.h</code> 里声明这些函数</li>
+        <li><b>3.</b> 在 <code>i18n.h</code> 的 <code>StrID</code> 加应用名，并在 <code>i18n.ino</code> 两张表里各补一条</li>
+        <li><b>4.</b> 在 <code>cores3_shell.ino</code> 的 <code>g_apps[]</code> 加一行：<code>nameId</code> + 霓虹主色 + 8×8 图标</li>
+        <li><b>5.</b> 图标是 8 字节位图，<code>0x80</code> 是最左像素（跟 C64 字体数据同格式）</li>
+      </ul>
+      <pre>// app_xxx.ino
+#include "shell.h"
+static const uint8_t ICON[8] = {0x18,0x3C,0x7E,0x5A,0x5A,0x7E,0x3C,0x18};
+void appXxxStart() { clearCanvas(); drawTitle(40, S(S_XXX_TITLE), C_CYAN); }
+void appXxxLoop()  {
+  static uint32_t last = 0;
+  if (!uiTick(last)) return;    // 统一 1Hz 节拍
+  // 再做内容脏检查：值没变就直接 return，屏幕不闪
+}
+void appXxxTouch(int16_t x, int16_t y) { /* y&gt;=CANVAS_Y(36) */ }
+void appXxxKey(uint8_t raw) { /* 0x0D 0x1B 0x20 ... */ }
+void appXxxStop()  { }
+// 可选：返回 true = 左滑/Esc 先在应用内部返回（二级页）
+bool appXxxBack()  { return false; }</pre>
+      <div class="warn" style="margin-top:12px">
+        <b>坑 1：</b>所有 <code>.ino</code> 会被合并成一个编译单元，
+        <code>static const</code> 常量和 <code>static</code> 函数<b>不能跨文件重名</b>。
+        常量加应用前缀（<code>PMO_X</code>、<code>SEN_X</code>），同名辅助函数改名（<code>infoRow</code> / <code>senLine</code>）。
+        <br><b>坑 2：</b>导航条占 <code>y &lt; CANVAS_Y(36)</code>，应用内容从 <code>y &gt;= 40</code> 开始排，
+        底部别超过 226（240 高屏，中文一行 16）。
+        <br><b>坑 3：</b>ASCII 数值区<b>只能放 ASCII</b>——用 8×8 点阵字体画中文会出空白，
+        中文一律走 <code>setCnFont()</code>（如电量行写 <code>93% BAT</code> 而不是 <code>93% 放电中</code>）。
+        <br><b>坑 4（双语）：</b>界面文字一律 <code>S(StrID)</code>，别写死；成组的串（星期、休眠档）
+        在枚举里必须连续，代码靠「基址 + 下标」取。垂直居中用 <code>textHeight(s)</code> 算，
+        别写死 16——英文模式下是 8，写死会整体偏上。
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>已知约束 <span class="tag">重要</span></h2>
+    <ul class="tight">
+      <li><b>灯带必须保持关闭</b>（<code>ENABLE_BOTTOM3_LED 0</code>）：Adafruit NeoPixel 在 ESP32-S3 上有已知 bug（官方 issue #429），<code>show()</code> 走 RMT，无线电繁忙时触发断言并无限重启。开 BLE 后必现。</li>
+      <li><b>默认分区只有 3MB APP 且无 OTA 槽</b>：现在是「一个固件装所有应用」，加应用要重新编译烧录。想做成运行时安装/卸载，得先写自定义分区表（启动器 1.5MB + 4×2MB 应用槽）。</li>
+      <li><b>改代码后必须 <code>compile --clean</code></b>：arduino-cli 的缓存不会因为 <code>config.h</code> 变化而失效，容易烧进旧固件。</li>
+      <li><b>烧录前设备要接 USB 并开机</b>：串口是 <code>/dev/cu.usbmodem*</code>，<b>但编号每次插拔/换 USB 口都会变</b>
+        （实测见过 <code>101</code> 和 <code>2101</code>）——<b>一律自动探测，别硬编码</b>（<code>fw.sh</code> / <code>ser.py</code> 已这么做）。找不到就单击电源键开机再试。</li>
+      <li><b>RTC 没有后备电池</b>：掉电或重烧后时间归零，而设备本身没有任何对时来源（没 Wi-Fi、BLE 也不给时间）。
+        用串口 <code>time YYYY-MM-DD HH:MM:SS</code> 对时，或直接跑 <code>cores3-firmware/rtc.sh</code>
+        （<code>fw.sh</code> 每次烧完会顺手同步一次）。星期由日期自己算（Sakamoto 算法），不用传。</li>
+      <li><b>Cmd+[ / Cmd+] / Cmd+N / Cmd+D 都是 WorkBuddy 原生快捷键</b>（应用包内快捷键定义表：
+        <code>prev-task=Meta+[</code>、<code>next-task=Meta+]</code>、<code>new-conversation=Meta+N</code>、<code>toggle-voice-recording=Meta+D</code>），
+        不需要在 Mac 侧做任何映射。</li>
+      <li><b>「焦点在不在输入框」是整套控制器的命门（v0.4.3 才查清，之前的结论是错的）。</b>
+        <b>Cmd+D 只绕开了「录音」这一步，绕不开「发送」和「取消」。</b>源码依据：
+        ① 录音 <code>toggle-voice-recording</code> 的处理是 <code>window.addEventListener("keydown", …)</code>，
+        <b>挂在 window 上，与焦点无关</b> —— 所以新建对话后照样能录音、文字也照样进输入框；
+        ② 但应用包的 <code>APP_SHORTCUT_IDS</code>（window 级快捷键白名单）里<b>没有 <code>send-message</code></b>，
+        它的处理在输入框内部的 React <code>onKeyDown</code>（<code>handleInsertNewline</code> 匹配到 Enter 才 <code>return true</code> 触发发送）。
+        <b>所以 Enter 只有在焦点位于输入框内时才有效</b>；<code>Cmd+A</code> 同理 —— 焦点在输入框是全选输入内容，
+        焦点在 body 就是 Chromium 的 select-all，表现为「<b>全选了整个页面的文字且不删除</b>」。
+        这解释了为什么「已有的对话一切正常、新建的却不行」：<b>跟新建无关，只跟焦点有关</b> ——
+        已有对话之所以正常，是因为你之前用鼠标点过输入框，焦点一直在那儿；<code>new-conversation</code> 只跳转、不聚焦。</li>
+      <li><b>v0.4.3~v0.4.5 的 Tab 遍历、v0.4.6 的 WAKE 档，OCR 实测全部失败 —— v0.4.8 默认改回「不补按」。</b>
+        <br>Tab 遍历失败的原因：① Electron 里 Tab 落点跟 DOM 顺序强相关，正向先撞侧边栏一堆按钮、反向也未必落在输入框；
+        ② <b>新对话的输入框什么时候挂载不确定</b>（等待已从 800ms 放宽到 1800ms 也没救回来）。
+        <br><b>WAKE 档（Cmd+D 双击）实测证伪，这个结论很重要：</b>原以为语音结果回调
+        <code>text =&gt; { appendInputText(text); focusInput(); }</code> 会在录音结束时把焦点送回输入框，
+        但<b>无声时 WorkBuddy 走的是「未检测到语音内容，请重试」这条分支，焦点不但没回来，反而被语音面板带走</b>。
+        OCR 对照铁证：输入框里打 <code>QZDD</code> → <code>wake</code> → <code>wipe</code>，结果只剩 <code>QZD</code>（全选失效、
+        Backspace 退化成删一个字符）；而 <code>esc</code> → <code>wipe</code> 则清空到 placeholder。
+        <br>→ 所以默认档改回 <code>FOCUS_OFF</code>：<b>宁可不补按，也别发会把焦点弄丢的键</b>。
+        档位在 <b>设置 → 新建后聚焦</b> 里循环切换（串口 <code>focus 0-7</code>，存 NVS key <code>fmode</code>），WAKE 保留但不再默认。
+        <b>新建对话这座山还没翻过去</b>，目前新建后需手动点一下输入框。</li>
+      <li><b>v0.4.4：取消键对齐 VibeKey，改发 <code>ESC</code>（原来是自己设计的 Cmd+A+Delete，错了）。</b>
+        WorkBuddy 快捷键定义表里的完整答案：<code>stop-generation = Escape</code>、
+        <code>send-message = Enter</code>、<code>newline = Shift+Enter</code>、<code>new-conversation = Meta+N</code>、
+        <code>prev/next-task = Meta+[ / Meta+]</code>、<code>toggle-voice-recording = Meta+D</code>。
+        → <b>Esc 在 WorkBuddy 里的语义是「停止生成」，不是「清空输入框」</b>：
+        任务正在跑时按它 = 中断；想清空草稿文字得用 <code>WIPE</code> 档（串口 <code>clear 1</code>，= Cmd+A + Delete，需焦点在输入框）。
+        <b>为什么放弃 Cmd+A+Delete 作默认</b>：焦点不在输入框时它会退化成 Chromium 的 select-all，
+        表现就是「全选整个页面的文字且不删除」——正是 v0.4.2/v0.4.3 实测到的症状。</li>
+      <li><b>v0.4.5：取消键 = <code>ESC</code> + 清空草稿，两连击（默认档）。</b>
+        顺序是 <code>Esc</code> → 等 220ms → <code>Cmd+A</code> → 等 80ms → <code>Backspace</code>。
+        Esc 负责「停止生成」（不依赖焦点，稳），Cmd+A+Backspace 负责「清空草稿」（<b>需要焦点在输入框</b>）。
+        <br><b>v0.4.8 修掉了「已有对话取消也失效」这个回归</b>：v0.4.6/v0.4.7 里 <code>actClear()</code>
+        会跟着 <code>focus</code> 设置跑一次唤醒（当时默认 WAKE = Cmd+D 双击），语音面板把焦点带走 →
+        Cmd+A 全选失效、Backspace 只删一个字符，表现就是「取消清不掉草稿」。
+        <b>修法是取消时一个多余按键都不发</b>（<code>CANCEL_WAKE_FOCUS = 0</code>）——
+        已有对话里焦点本来就在输入框（能打字就是证据），唤醒纯属把焦点弄丢。
+        想恢复唤醒就改 config.h 里的 <code>CANCEL_WAKE_FOCUS</code> 为 1。
+        <br><b>v0.4.6 修了一个隐藏 bug：删除键从 <code>KEY_DELETE</code>(0x4C) 改成 <code>KEY_BACKSPACE</code>(0x2A)。</b>
+        HID 的 Delete 在 Mac 上等于 Fn+Delete「向前删」，Electron/Chromium 里选区存在时经常不生效；
+        Backspace 才是 Mac 键盘上那颗 delete 键真正发的码 —— 这一条可能就是「全选了但删不掉」的元凶。
+        合成一档的理由：单独 Esc 说错了重录时旧草稿还在，文字会追加；单独 WIPE 又中断不了正在跑的任务。
+        最坏情况（焦点在 body）只是「清不掉草稿」而<b>不会误删任何东西</b>，可以接受。
+        串口 <code>clear 0</code> 退回纯 ESC、<code>clear 1</code> 只要清空。</li>
+      <li><b>已有对话全链路 OCR 实测记录（v0.4.8，验证对象 = chronicle skill 对话）。</b>
+        <table style="margin-top:8px">
+          <tr><th>动作</th><th>判据（OCR 读界面）</th><th>结果</th></tr>
+          <tr><td>录音 <code>act rec</code>（Cmd+D）</td><td>出现「未检测到语音内容」= 语音链路被唤起</td><td>✅</td></tr>
+          <tr><td>打字 → 进输入框</td><td>底部出现刚打的字</td><td>✅ 焦点本来就在</td></tr>
+          <tr><td>确认 <code>act send</code>（Enter）</td><td>输入框立刻回到 placeholder</td><td>✅ 发送成功</td></tr>
+          <tr><td>取消 <code>act cancel</code></td><td>Esc 无副作用；WIPE 后回到 placeholder</td><td>✅ 停止+清空</td></tr>
+        </table>
+        <b>这套「OCR 当眼睛」的自测方法是这次才有的</b>：BLE 键盘单向、看不到焦点，
+        以前只能猜。<code>/tmp/wbpix</code>（Swift + Vision 框架）截 WorkBuddy 窗口并 OCR 出带坐标的文字行，
+        配合新增的 <code>act ...</code> 串口命令跑固件真实路径，才算把「猜」变成「测」。</li>
+      <li><b>烧录后一定要重启一次（用户要求，已固化进脚本）。</b>
+        ESP32-S3 走的是 native USB(CDC)，<b>没有 EN/RTS 硬件复位线</b>，esptool 上传结束后的软复位
+        偶尔不彻底（BLE/NVS 会留旧状态），所以固件里加了 <code>reboot</code> 串口命令，烧完发一次硬重启。
+        一键脚本：<code>cores3-firmware/fw.sh</code> —— 自动探测端口 → clean 编译 → 上传 → 发 <code>reboot</code> →
+        抓启动日志并判断「启动正常 / 有崩溃」。参数 <code>--fast</code>（跳过 clean，<b>改过 .h 别用</b>）、<code>--no-up</code>（只编译）。
+        <b>坑：NVS 里存的设置不会因为重烧固件而重置</b>（语言、录音方式、取消档、聚焦档都持久化），
+        改了默认值想生效要手动发一次串口命令（例如 <code>clear 2</code>）。</li>
+      <li><b>屏幕不显示任务名</b>：BLE 键盘是单向的（只能往外发按键），收不回 WorkBuddy 的会话信息，
+        所以只显示状态（待命 / 录音中 / 已发送 / 已清空）。</li>
+      <li><b>Keyboard3 只能输 ASCII</b>：中文走语音（内置语音或 macOS 听写）或文本替换，不经过键盘。</li>
+      <li><b>语言存在 NVS</b>（namespace <code>cores3</code>，key <code>lang</code>）：重新烧固件不会清掉它。想彻底回到出厂默认，串口发 <code>lang cn</code>。</li>
+      <li><b>左滑手势只在应用内生效</b>：桌面已经是根级，滑了没反应。滑到一半反悔（退回左缘再抬手）不会触发。</li>
+      <li><b>8×8 点阵有效字形只有 6 行高</b>（顶部 2 行留白），排版时按 8px 行高算、但视觉重心偏下，跟 16px 中文混排时中文行要给 <code>+4</code> 的偏移对齐。</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>音乐遥控 <span class="tag">v0.5.0 起取代传感器模块</span></h2>
+    <p><b>设备不解码音频，只当遥控器</b>——声音永远由 Mac 出。控制走 HID 媒体键（零 Mac 端软件），
+       显示走同一个 BLE 连接上追加的自定义 GATT 服务（不用配 Wi-Fi、不依赖局域网）。</p>
+    <table class="tbl">
+      <tr><th>动作</th><th>屏上按钮</th><th>Keyboard3</th><th>实际发出</th></tr>
+      <tr><td>播放 / 暂停</td><td><code>PLAY</code>/<code>PAUSE</code></td><td>空格 或 <code>2</code></td><td><code>MEDIA_PLAY_PAUSE</code> 0x00CD</td></tr>
+      <tr><td>上一首 / 下一首</td><td><code>PREV</code>/<code>NEXT</code></td><td><code>1</code> / <code>3</code></td><td>0x00B6 / 0x00B5</td></tr>
+      <tr><td>音量 ±</td><td><code>VOL-</code>/<code>VOL+</code></td><td>—</td><td>0x00EA / 0x00E9</td></tr>
+      <tr><td>静音</td><td>—</td><td><code>del</code></td><td><code>MEDIA_MUTE</code> 0x00E2</td></tr>
+    </table>
+    <h3>Mac 端 Music Bridge</h3>
+    <p><code>cores3-music-bridge/MusicBridge.app</code>（源码 <code>Bridge.swift</code>）：每 2 秒跑
+       <code>media-control get</code>（MediaRemote），把歌名/歌手/专辑/进度写进 META 特征，
+       封面压成 160×160 JPEG 后分包写进 ART。<b>首次运行必须在「系统设置 → 隐私与安全性 → 蓝牙」里允许它</b>，
+       否则 CoreBluetooth 不回调（日志只停在 <code>[bridge] scanning…</code>）。</p>
+    <ul class="notes">
+      <li><b>打包必须显式签名</b>：<code>codesign -s - -f --deep MusicBridge.app</code>。
+        不签的话签名里是 <code>Info.plist=not bound</code>，TCC 读不到 <code>NSBluetoothAlwaysUsageDescription</code>
+        → 直接 SIGABRT（崩溃报告 namespace=TCC）。签完要看到 <code>Info.plist entries=7</code>。</li>
+      <li><b>NimBLE 一连上就停广播</b> → Mac 端扫不到。所以主 loop 每 15 秒拉一次
+        <code>NimBLEDevice::startAdvertising()</code>（已连接时幂等，不会踢掉现有连接）。</li>
+      <li><b>QQ 音乐 11.9.1 确认可用</b>：二进制里有
+        <code>-[QQMusicMainPlayerController setupMPRemoteCommand]</code>，已注册 MPRemoteCommandCenter，
+        媒体键和 MediaRemote 元数据两条通道都开。
+        <b>但无 sdef、无 <code>NSAppleScriptEnabled</code></b> → 原生 AppleScript 不可用，
+        「喜欢/播放模式」只能走 System Events 点「播放控制」菜单（<b>按名字定位，别用索引</b>）。</li>
+      <li><b>Apple Music 会劫持媒体键</b>（MediaRemote 给它最高优先级），用之前要 ⌘Q 彻底退出，只关窗口不算。</li>
+      <li>串口：<code>music</code> 打印当前收到的歌曲状态与封面进度。</li>
+    </ul>
+
+    <h3>v0.5.1 修的两个问题</h3>
+    <ul class="notes">
+      <li><b>封面一直不显示（NO ART）</b> —— 缓冲上限定小了。QQ 音乐的封面压成 160×160 JPEG 后是
+        <b>14777 字节</b>，而 <code>MUSIC_ART_MAX</code> 写的是 <b>12288</b>：首包里的 total 一进来就被判
+        「超限」丢弃，<b>续包却照收不误</b> → 缓冲塞满、<code>artTotal</code> 还是 0、
+        <code>artReady</code> 永远起不来。串口的判据很直观：<code>art=12288/0</code>。
+        <br>修法：上限提到 <b>32768</b>（PSRAM 有 8MB），并给续包加了门禁
+        ——<b>没收到合法首包就丢弃、已收齐还来的重复包也丢弃</b>，不会再出现「半张图被当成整张」。
+        修完串口是 <code>art=14777/14777 (ready)</code>，日志 <code>[music] 封面解码成功并上屏</code>。</li>
+      <li><b>整屏每秒重画一次</b> —— 封面 JPEG 每秒重新解码，屏幕肉眼可见地闪，而真正要动的只有进度条。
+        <br>现在分三档：① 曲目/播放状态/蓝牙变了、或新封面收齐 → 整屏重画（<code>dirty</code> 由 GATT 回调置位）；
+        ② 播放时间往前走了一秒 → 只重画「时间 + 进度条」那一条（<code>clearArea</code> 会补回网格底纹，看不出接缝）；
+        ③ 暂停中或还没到下一秒 → <b>一个像素都不动</b>。
+        <br>关键细节：Mac 端每 2 秒推一次 meta（里面带进度），所以
+        <code>musParseMeta</code> 必须区分「曲目/状态变了」和「只是进度刷新」，
+        否则 dirty 每 2 秒置一次，等于又退回整屏闪。</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>记事本 <span class="tag">v0.6.2</span></h2>
+    <p>Keyboard3 打一段 ASCII 速记 → 发送 → 经 BLE <b>notify</b> 推给 Mac → Bridge 追加写进
+       <code>Obsidian_Vault/obsidianrepo/face3notes.md</code>。</p>
+    <table class="tbl">
+      <tr><th>操作</th><th>Keyboard3</th><th>说明</th></tr>
+      <tr><td>输入</td><td>字母 / 数字 / 符号</td><td>Keyboard3 只能出 ASCII（0x20–0x7E），<b>这版没有中文输入法</b></td></tr>
+      <tr><td>换行</td><td><code>Enter</code></td><td>Tab 当空格，不跳焦点</td></tr>
+      <tr><td>退格</td><td><code>⌫</code>(0x08) 或 <code>del</code>(0x7F)</td><td>两颗删除键都能用</td></tr>
+      <tr><td>移动光标</td><td><code>Fn+←</code>(191) / <code>Fn+→</code>(193)</td><td>—</td></tr>
+      <tr><td><b>发送</b></td><td><code>Alt+S</code>(155) 或点 <code>SEND</code></td><td>发完自动清空草稿</td></tr>
+      <tr><td>清空</td><td><code>Alt+D</code>(156) 或点 <code>CLEAR</code></td><td>—</td></tr>
+    </table>
+    <h3>链路与协议</h3>
+    <ul class="notes">
+      <li><b>方向跟音乐模块相反</b>：音乐是 Mac 写、设备读；记事本是设备 notify、Mac 订阅。
+        同一个 <code>NimBLEServer</code> 上再挂一个 <code>NOTE_SVC</code>（OUT 用 NOTIFY、ACK 用 WRITE）。</li>
+      <li><b>分包协议跟封面那条对称</b>：首包 <code>[0]=0xA5 + [1..2]=总长(u16 LE)</code>，续包 <code>[0]=0x5A</code>；
+        Mac 端收够总长就拼起来落盘，然后往 ACK 写 <code>0x01</code>。</li>
+      <li><b>Mac 端不订阅就什么都收不到</b> —— <code>setNotifyValue(true, for:)</code> 是必须的，
+        忘了的话 Bridge 日志里永远看不到 <code>[note] →</code>。</li>
+      <li><b>没订阅 / 发送失败 / 等回执超时（5 秒）</b> → 内容落 flash 队列（<code>/nq00000001.txt</code>，
+        编号存 NVS 单调自增），等下次连上自动补发，补发成功才删文件。草稿同样落盘，掉电不丢。
+        用的是分区表里那块 <b>9.9MB 的分区</b>，跟挂不上的 exFAT TF 卡没关系。</li>
+      <li><b>★ 存储用 LittleFS，不用 FFat</b>：FFat 在这块板上能挂载（<code>total=9996KB</code>）但
+        任何 <code>FILE_WRITE</code> 都失败。为此分区表换成了 <code>partitions.csv</code>（sketch 目录里那份），
+        把那块 data 分区的 subtype 从 <code>fat</code> 改成 <code>0x83</code>（littlefs）。</li>
+      <li><b>★ <code>open()</code> 的路径不能带挂载点前缀</b>：挂载点给 <code>begin()</code> 用（<code>/littlefs</code>），
+        而 <code>open()</code> 要传 fs 内部路径 <code>"/nq00000001.txt"</code>；写成
+        <code>"/littlefs/nq00000001.txt"</code> 必然打不开 —— <b>FFat 当初"写不了"其实也是这一个坑</b>，
+        不是文件系统坏了（裸分区擦写实测成功）。排查跑 <code>fs2</code>。</li>
+      <li><b>补发和草稿存盘都做了节流</b>（2 秒一次）：队列要扫一遍目录，每帧都扫会把 flash 读爆。
+        草稿是「停手 2 秒才写一次」，不是每敲一个键就写。</li>
+      <li><b>★ 离线笔记带的是书写时间，不是送达时间（v0.6.2）</b>：内容离开编辑区那一刻，
+        设备把当时的 RTC 烙进正文前面，格式固定 19 字节 <code>[YYYY-MM-DD HH:MM] </code>；
+        队列文件里也带着它，所以隔多久补发都不丢。Bridge 认这个前缀就拿它当条目时间和
+        <code>## 日期</code> 小标题 —— 昨天写的会归回昨天，并按日期顺序插进正确位置。
+        没有前缀（老固件 / RTC 归零）才退回 Mac 当前时间。</li>
+      <li><b>★ 连上 Bridge 会自动对时（v0.6.2）</b>：CoreS3 的 RTC（BM8563）<b>没有后备电池</b>，
+        掉电 / 重烧会归零，不对时就没法烙书写时间。所以 Bridge 每次发现 ACK 特征就往里写
+        7 字节 <code>0x02 + 年-2000 + 月 + 日 + 时 + 分 + 秒</code>（复用 ACK 通道，不新增特征）。
+        <b>传年月日而不是 epoch</b> —— 设备端没设 TZ，走 epoch 要多处理一次时区。</li>
+      <li><b>入队失败时不再清空编辑区（v0.6.2）</b>：原来队列满（32 条）或 fs 不可用时也返回
+        「成功」，上层就把编辑区清了 —— 那条内容真没了。现在返回失败，内容留在屏幕上。</li>
+      <li><b>★ 界面是静态的，不每秒重绘（v0.6.1）</b>：原来挂了 1Hz 节拍，等于每秒整屏重画一次，
+        肉眼看就是一闪一闪。现在只有「内容真变了」才重画 —— 打字 / 退格 / 清空 / 移光标、
+        发送结果、以及 BLE 连接与订阅状态、队列数变化时各重画一次，其余时间一个像素都不动。
+        串口 <code>note</code> 里的 <code>draws=</code> 就是重绘次数：<b>静置时它不涨</b>。</li>
+      <li>串口：<code>note</code> 看状态；<code>note push Hello</code> 直接推一条（走真实发送路径）；
+        <code>note type Hello</code> 模拟按键打完再按发送（连 <code>appNoteKey()</code> 一起验）。</li>
+      <li><b>重刷固件不会丢待发内容</b>：队列文件在独立 data 分区里，<code>fw.sh</code> 只写 app 分区。
+        实测重启后 Bridge 一订阅就自动补发，<code>queued</code> 归 0、<code>last=已送达</code>。</li>
+    </ul>
+    <h3>为什么是「取代时钟」而不是加第 7 个</h3>
+    <ul class="notes">
+      <li>先试过加第 7 个应用，但 <b>3 列排不下</b>：第 7 个会落到 <code>y=218</code>、底边 <code>296</code>，
+        超出 240 的屏幕；改成 4 列 × 2 行后 tile 只剩 71px 宽，英文应用名被迫缩短成
+        <code>CTRL / POMO / SYS / SET</code>。</li>
+      <li>所以改成<b>用记事本替换时钟</b>，维持 6 个：桌面回到 <b>3 列 × 2 行</b>（tile 94×78），
+        英文名恢复全称 <code>CONTROLLER / NOTES / POMODORO / SYSTEM / MUSIC / SETTINGS</code>。</li>
+      <li>时间并没有丢 —— <b>状态栏一直在显示 HH:MM</b>，RTC 对时命令 <code>time</code> 也照旧。
+        时钟源码保留为 <code>app_clock.ino.bak</code>（后缀不是 .ino 就不参与编译），想换回来改个名即可。</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Mac 端 Bridge <span class="tag">开机自启</span></h2>
+    <p>目录 <code>cores3-firmware/../cores3-music-bridge/</code>。它干两件事：把 Mac 正在播的歌推给设备屏幕，
+       以及订阅设备的速记写进 Obsidian。<b>必须常驻</b> —— 不在跑的时候，设备上的速记只会排队等它。</p>
+    <table class="tbl">
+      <tr><th>命令</th><th>作用</th></tr>
+      <tr><td><code>./bridge.sh install</code></td><td>装 LaunchAgent 并立刻启动（<b>只需跑一次</b>）</td></tr>
+      <tr><td><code>./bridge.sh status</code></td><td>在不在跑 + 是不是 launchd 托管 + 日志尾</td></tr>
+      <tr><td><code>./bridge.sh restart</code></td><td>重启（改完 <code>Bridge.swift</code> 跑 <code>./build.sh</code> 会自动带上）</td></tr>
+      <tr><td><code>./bridge.sh stop</code> / <code>uninstall</code></td><td>临时停 / 彻底卸掉自启</td></tr>
+      <tr><td><code>./bridge.sh log</code></td><td>实时跟 <code>/tmp/cores3-bridge.log</code></td></tr>
+    </table>
+    <h3>配置时的两个坑</h3>
+    <ul class="notes">
+      <li><b>★ <code>launchctl bootstrap</code> 在后台 shell 里一定失败</b>：AI 工具的 shell、ssh 会话
+        这类「没有 GUI 审计会话」的进程里，一律报
+        <code>Bootstrap failed: 5: Input/output error</code>（跟 plist 内容无关，换 Apple 自带的 plist 也一样）。
+        <b>绕法</b>：<code>osacompile</code> 一个只跑 shell 命令的小程序，用 <code>open</code> 把它送进 GUI 会话去执行 ——
+        <code>bridge.sh</code> 里已经内置了这个降级路径，所以<b>别手工敲 launchctl</b>，走脚本。</li>
+      <li><b>不能用 <code>open MusicBridge.app</code> 当自启入口</b>：<code>open</code> 会立刻返回，
+        launchd 以为进程退了，会无限重启。plist 里直接写
+        <code>.app/Contents/MacOS/MusicBridge</code> 的绝对路径。</li>
+      <li><b>改二进制要重新授权蓝牙</b>：<code>./build.sh</code> 重新签名后 cdhash 变了，TCC 可能要再勾一次。
+        症状是日志停在 <code>[bridge] scanning…</code> 后接 <code>✗ 蓝牙未授权</code>；
+        去系统设置 → 隐私与安全性 → 蓝牙勾上，然后 <code>./bridge.sh restart</code>。</li>
+      <li><code>KeepAlive=true</code> + <code>ThrottleInterval=10</code>：崩了 10 秒后自动拉起。
+        实测 <code>kill -9</code> 之后会立刻换个 pid 重新跑起来。</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

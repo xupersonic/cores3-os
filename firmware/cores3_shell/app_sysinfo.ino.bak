@@ -1,0 +1,62 @@
+// 应用 4：系统信息（电量 / 内存 / 存储 / 蓝牙 / 固件）
+// 终端列表风格：左边暗色中文标签，右边霓虹 ASCII 数值
+
+#include "shell.h"
+
+static const int SYS_Y0 = 40, SYS_LH = 17;
+
+static void drawInfo() {
+  clearCanvas();
+  char buf[48];
+
+  clearArea(0, SYS_Y0 - 2, 320, SYS_LH * 10 + 4);
+  char t[24];
+  snprintf(t, sizeof(t), "%s v" FW_VERSION, S(S_SYSTEM));
+  drawTitle(SYS_Y0 - 2, t, C_MAGENTA);
+
+  int r = 1;
+  int chg = (int)M5.Power.isCharging();
+  snprintf(buf, sizeof(buf), "%d%% %s", batPercent(), chg ? "CHG" : "BAT");
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_BATTERY), buf, C_MAGENTA);
+
+  snprintf(buf, sizeof(buf), "%d mV", (int)M5.Power.getBatteryVoltage());
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_VOLTAGE), buf, C_MAGENTA);
+
+  snprintf(buf, sizeof(buf), "%d mA", (int)M5.Power.getBatteryCurrent());
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_CURRENT), buf, C_MAGENTA);
+
+  snprintf(buf, sizeof(buf), "%u / %u KB",
+           (unsigned)(ESP.getFreeHeap() / 1024), (unsigned)(ESP.getHeapSize() / 1024));
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_HEAP), buf, C_MAGENTA);
+
+  snprintf(buf, sizeof(buf), "%u / %u KB",
+           (unsigned)(ESP.getFreePsram() / 1024), (unsigned)(ESP.getPsramSize() / 1024));
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_PSRAM), buf, C_MAGENTA);
+
+  snprintf(buf, sizeof(buf), "%u MB %d MHz",
+           (unsigned)(ESP.getFlashChipSize() / 1024 / 1024), ESP.getCpuFreqMHz());
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_FLASH), buf, C_MAGENTA);
+
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_BLUETOOTH), g_bleConn ? "LINK" : "----", C_MAGENTA);
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_KEYBOARD), g_kbOk ? "OK" : "NONE", C_MAGENTA);
+
+  uint32_t s = millis() / 1000;
+  snprintf(buf, sizeof(buf), "%02u:%02u:%02u",
+           (unsigned)(s / 3600), (unsigned)((s / 60) % 60), (unsigned)(s % 60));
+  drawRow(SYS_Y0 + SYS_LH * r++, S(S_UPTIME), buf, C_MAGENTA);
+
+  clearArea(0, 214, 320, 24);
+  setPxFont();
+  M5.Display.setTextColor(C_DARK);
+  M5.Display.drawString("BUILD " __DATE__, 12, 218);
+  M5.Display.drawString("1 HZ", 268, 218);
+}
+
+void appSysinfoStart() { drawInfo(); }
+void appSysinfoLoop() {
+  static uint32_t last = 0;
+  if (uiTick(last)) drawInfo();   // 运行时长每秒在变，按统一节拍重绘
+}
+void appSysinfoTouch(int16_t x, int16_t y) {}
+void appSysinfoKey(uint8_t raw) {}
+void appSysinfoStop() {}

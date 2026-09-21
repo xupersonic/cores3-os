@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleIdentifier</key><string>local.cores3.musicbridge</string>
+  <key>CFBundleName</key><string>CoreS3 Music Bridge</string>
+  <key>CFBundleExecutable</key><string>MusicBridge</string>
+  <key>CFBundleShortVersionString</key><string>1.0</string>
+  <key>LSUIElement</key><true/>
+  <key>NSBluetoothAlwaysUsageDescription</key><string>用于把正在播放的歌曲信息推给 CoreS3 屏幕显示</string>
+  <key>NSBluetoothPeripheralUsageDescription</key><string>用于把正在播放的歌曲信息推给 CoreS3 屏幕显示</string>
+</dict>
+</plist>

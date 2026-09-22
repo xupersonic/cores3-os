@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CoreS3 OS · 文档导航 / Docs Index</title>
+<style>
+:root {
+  --bg:#05070a; --panel:#0b1017; --line:#1b2430; --grid:#16202c;
+  --text:#b8c7d6; --dim:#5a6b7c;
+  --cyan:#22d3ee; --green:#39ff88; --amber:#ffb000;
+  --magenta:#ff2e88; --violet:#a855f7; --red:#ff4d4d;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); line-height:1.65;
+  font-family:"SF Mono",Menlo,Consolas,"PingFang SC","Hiragino Sans GB",monospace;
+  -webkit-font-smoothing:antialiased; }
+body::after { content:""; position:fixed; inset:0; pointer-events:none; z-index:99;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.022) 0 1px, transparent 1px 3px); }
+header { border-bottom:1px solid var(--line); padding:30px 28px; background:#070b10; }
+header h1 { margin:0; font-size:24px; font-weight:700; letter-spacing:.02em; color:var(--green); }
+header h1 .cur { color:var(--amber); }
+header .sub { margin-top:8px; font-size:12.5px; color:var(--dim); }
+.wrap { max-width:1100px; margin:0 auto; padding:28px 24px 80px; }
+.langbar { display:flex; gap:6px; justify-content:flex-end; align-items:center; margin:0 0 18px; }
+.langbar button { font:inherit; font-size:12px; line-height:1; padding:6px 14px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--line); background:var(--panel); color:var(--text); opacity:.5; }
+.langbar button.on { opacity:1; border-color:var(--green); color:var(--green); font-weight:700; }
+@media print{ .langbar{display:none} }
+body[data-lang="cn"] [data-lang="en"], body[data-lang="en"] [data-lang="cn"] { display:none !important; }
+
+.banner { background:#0a1017; border:1px solid var(--line); border-left:3px solid var(--green);
+  padding:12px 16px; font-size:13px; margin-bottom:24px; color:var(--text); }
+.banner b { color:var(--green); }
+
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+.card { display:block; text-decoration:none; background:var(--panel); border:1px solid var(--line);
+  padding:20px 22px; position:relative; transition:border-color .15s, background .15s; }
+.card:hover { border-color:var(--green); background:#0d141d; }
+.card::before, .card::after { content:""; position:absolute; width:5px; height:5px; background:var(--dim); }
+.card::before { left:-1px; top:-1px; } .card::after { right:-1px; bottom:-1px; }
+.card:hover::before, .card:hover::after { background:var(--green); }
+.card .k { font-size:11px; color:var(--dim); letter-spacing:.08em; }
+.card h3 { margin:6px 0 8px; font-size:16px; color:var(--green); font-weight:700; }
+.card .d { font-size:12.5px; color:var(--text); }
+.card .go { margin-top:10px; font-size:11.5px; color:var(--cyan); }
+
+.panel { background:var(--panel); border:1px solid var(--line); padding:20px 22px; margin-bottom:20px; position:relative; }
+.panel::before, .panel::after { content:""; position:absolute; width:5px; height:5px; background:var(--green); }
+.panel::before { left:-1px; top:-1px; } .panel::after { right:-1px; bottom:-1px; }
+.panel h2 { margin:0 0 14px; font-size:16px; display:flex; align-items:center; gap:8px; color:var(--green); }
+.panel h2::before { content:">"; color:var(--amber); font-weight:700; }
+ol.steps { margin:0; padding-left:20px; font-size:12.8px; }
+ol.steps li { margin-bottom:8px; }
+code { background:#080d13; border:1px solid var(--grid); padding:1px 6px; font-size:11.5px; color:var(--cyan); }
+a.lnk { color:var(--cyan); text-decoration:none; border-bottom:1px dotted var(--cyan); }
+.warn { background:#0d0f08; border:1px solid #4a3a12; border-left:3px solid var(--amber);
+  color:#d8c48a; padding:12px 16px; font-size:12.8px; }
+.warn b { color:var(--amber); }
+footer { border-top:1px solid var(--line); margin-top:36px; padding-top:18px; font-size:11.5px; color:var(--dim); }
+@media (max-width:800px){ .cards{grid-template-columns:1fr;} }
+</style>
+</head>
+<body data-lang="cn">
+<header>
+  <h1>&gt; CoreS3 OS · 文档导航<span class="cur">_</span></h1>
+  <div class="sub" data-lang="cn">M5Stack CoreS3 + Faces Bottom3 + Keyboard3 · 六宫格掌上终端 · 固件 v0.7.1 · MIT 许可</div>
+  <div class="sub" data-lang="en">M5Stack CoreS3 + Faces Bottom3 + Keyboard3 · a six-tile handheld shell · firmware v0.7.1 · MIT licensed</div>
+</header>
+
+<div class="wrap">
+  <div class="langbar">
+    <button data-set="cn">中文</button>
+    <button data-set="en">EN</button>
+  </div>
+
+  <!-- ══════════ 中文 ══════════ -->
+  <div class="lang" data-lang="cn">
+    <div class="banner">
+      一台 <b>CoreS3</b> 装上 <b>Faces 套件</b>，变成能装进口袋的六宫格终端：BLE HID 控制器、速记本、番茄钟、俄罗斯方块 + 2048、Mac 音乐遥控、设置。
+      <b>页面右上角可切英文。</b>
+    </div>
+
+    <div class="cards">
+      <a class="card" href="cheat-sheet.html">
+        <div class="k">01 · 最全面</div>
+        <h3>功能速查卡</h3>
+        <div class="d">六应用逐个拆解：三种主题配色、中英双语怎么切、桌面操作与手势、Keyboard3 键位表、串口命令、新增应用步骤、已知限制、音乐遥控与笔记的 BLE 协议、Mac 端 Bridge。</div>
+        <div class="go">cheat-sheet.html →</div>
+      </a>
+      <a class="card" href="hardware-setup.html">
+        <div class="k">02 · 开箱组装</div>
+        <h3>硬件装配手册</h3>
+        <div class="d">三件套分别是什么、22P 排线怎么插、电池开关在哪、Keyboard3 正反面、Charging3 底座用法、官方链接。九节，每节配产品图。</div>
+        <div class="go">hardware-setup.html →</div>
+      </a>
+      <a class="card" href="controller-guide.html">
+        <div class="k">03 · 让它能用</div>
+        <h3>控制器配对与设置</h3>
+        <div class="d">蓝牙怎么配对、听写快捷键怎么设、中文常用语如何靠「文本替换」一键输入、键位映射、日常用法、连不上怎么排查。</div>
+        <div class="go">controller-guide.html →</div>
+      </a>
+      <a class="card" href="pairing.html">
+        <div class="k">04 · 历史归档</div>
+        <h3>v0.3 Wi-Fi 版速查卡</h3>
+        <div class="d">v0.3 时代走「连 Wi-Fi → HTTP 轮询桥接服务」，需要配 SSID/密码、看 IP、装 launchd。<b>现行 v0.7.x 已全面改成 BLE</b>，此页仅供回溯，不作为当前指引。</div>
+        <div class="go">pairing.html →</div>
+      </a>
+    </div>
+
+    <div class="panel">
+      <h2>三步跑起来</h2>
+      <ol class="steps">
+        <li><b>接线</b>：CoreS3 底边 22P 座对准 Faces Bottom3，再把 Keyboard3 压到 Bottom3 上（方向见装配手册）。</li>
+        <li><b>烧录</b>：<code>cd tools &amp;&amp; ./fw.sh</code>（自动探测串口、编译、上传、同步 RTC）。Arduino IDE 用户可直接打开 <code>firmware/cores3_shell/cores3_shell.ino</code>。</li>
+        <li><b>配对</b>：Mac 蓝牙里连 <code>CoreS3 Controller</code>；想用音乐遥控和笔记同步，再跑 <code>mac-bridge/build.sh</code> 启动 Bridge。</li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>仓库里的其他文件</h2>
+      <ul class="tight" style="margin:0;padding-left:18px;font-size:12.8px;">
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os/blob/main/README.md">README.md</a> —— 中英双语完整说明（硬件清单 / 六应用 / 编译烧录 / Bridge / 串口命令 / 9 条踩坑）</li>
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os/blob/main/CHANGELOG.md">CHANGELOG.md</a> —— 版本演进记录</li>
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os/blob/main/NOTICE">NOTICE</a> —— 第三方库许可、商标说明、致谢</li>
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os">GitHub 仓库</a> —— 源码、Issues、Discussions</li>
+      </ul>
+    </div>
+
+    <div class="warn">
+      <b>关于本项目：</b>非 M5Stack 官方作品，与 M5Stack 无隶属关系。按「现状」提供，不保证适合任何特定用途；刷机有风险，请自行评估。
+    </div>
+  </div>
+
+  <!-- ══════════ English ══════════ -->
+  <div class="lang" data-lang="en">
+    <div class="banner">
+      A <b>CoreS3</b> with the <b>Faces kit</b> becomes a pocket-sized six-tile terminal: BLE HID controller,
+      quick notes, pomodoro timer, Tetris + 2048, a Mac music remote, and settings.
+      <b>Switch to Chinese with the buttons at the top right.</b>
+    </div>
+
+    <div class="cards">
+      <a class="card" href="cheat-sheet.html">
+        <div class="k">01 · MOST COMPLETE</div>
+        <h3>Cheat Sheet</h3>
+        <div class="d">All six apps in detail: the three themes and their palettes, how the CN/EN switch works, desktop navigation and gestures, the Keyboard3 key map, serial commands, how to add an app, known constraints, the BLE protocols behind the music remote and notes, and the Mac-side Bridge.</div>
+        <div class="go">cheat-sheet.html →</div>
+      </a>
+      <a class="card" href="hardware-setup.html">
+        <div class="k">02 · UNPACK &amp; ASSEMBLE</div>
+        <h3>Hardware Setup</h3>
+        <div class="d">What each of the three parts is, how the 22-pin ribbon goes in, where the battery switch lives, Keyboard3 front and back, using the Charging3 dock, official links. Nine sections, illustrated.</div>
+        <div class="go">hardware-setup.html →</div>
+      </a>
+      <a class="card" href="controller-guide.html">
+        <div class="k">03 · MAKE IT WORK</div>
+        <h3>Controller Pairing &amp; Setup</h3>
+        <div class="d">How to pair over Bluetooth, setting up the dictation shortcut, typing common Chinese phrases via Text Replacement, the key map, everyday use, and what to do when it will not connect.</div>
+        <div class="go">controller-guide.html →</div>
+      </a>
+      <a class="card" href="pairing.html">
+        <div class="k">04 · ARCHIVE</div>
+        <h3>v0.3 Wi-Fi Quick Reference</h3>
+        <div class="d">In the v0.3 days the CoreS3 joined Wi-Fi and polled an HTTP bridge service, so you configured an SSID/password, watched the IP address and installed a launchd job.
+          <b>Current v0.7.x is pure BLE.</b> This page is kept for history only — not current guidance.</div>
+        <div class="go">pairing.html →</div>
+      </a>
+    </div>
+
+    <div class="panel">
+      <h2>Up and running in three steps</h2>
+      <ol class="steps">
+        <li><b>Wire it up</b>: seat the CoreS3's bottom 22-pin connector onto the Faces Bottom3, then press the Keyboard3 onto the Bottom3 (orientation in the assembly guide).</li>
+        <li><b>Flash it</b>: <code>cd tools &amp;&amp; ./fw.sh</code> (auto-detects the serial port, compiles, uploads, syncs the RTC). Arduino IDE users can just open <code>firmware/cores3_shell/cores3_shell.ino</code>.</li>
+        <li><b>Pair it</b>: connect to <code>CoreS3 Controller</code> in macOS Bluetooth. For the music remote and note sync, also run <code>mac-bridge/build.sh</code> to start the Bridge.</li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>Other files in the repo</h2>
+      <ul class="tight" style="margin:0;padding-left:18px;font-size:12.8px;">
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os/blob/main/README.md">README.md</a> — full bilingual documentation (hardware list / six apps / build &amp; flash / Bridge / serial commands / 9 gotchas)</li>
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os/blob/main/CHANGELOG.md">CHANGELOG.md</a> — version history</li>
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os/blob/main/NOTICE">NOTICE</a> — third-party licences, trademarks, acknowledgements</li>
+        <li><a class="lnk" href="https://github.com/xupersonic/cores3-os">GitHub repository</a> — source, Issues, Discussions</li>
+      </ul>
+    </div>
+
+    <div class="warn">
+      <b>About this project:</b> unofficial and unaffiliated with M5Stack. Provided "as is", with no guarantee of
+      fitness for any particular purpose. Flashing firmware carries risk — evaluate it yourself.
+    </div>
+  </div>
+
+  <footer>
+    CoreS3 OS v0.7.1 · MIT ·
+    音乐遥控整体思路致谢 <a class="lnk" href="https://github.com/isalicema/m5-faces-core-s3">isalicema/m5-faces-core-s3</a> ·
+    music remote concept credit: <a class="lnk" href="https://github.com/isalicema/m5-faces-core-s3">isalicema/m5-faces-core-s3</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var KEY='cores3os-lang';
+  var btns=document.querySelectorAll('.langbar [data-set]');
+  function set(l){
+    document.body.setAttribute('data-lang',l);
+    try{localStorage.setItem(KEY,l);}catch(e){}
+    document.documentElement.lang = (l==='cn') ? 'zh-CN' : 'en';
+    Array.prototype.forEach.call(btns,function(b){b.classList.toggle('on', b.getAttribute('data-set')===l);});
+  }
+  Array.prototype.forEach.call(btns,function(b){b.addEventListener('click',function(){set(b.getAttribute('data-set'));});});
+  var init='cn'; try{init=localStorage.getItem(KEY)||'cn';}catch(e){}
+  set(init);
+})();
+</script>
+</body>
+</html>

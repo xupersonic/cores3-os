@@ -54,17 +54,41 @@ ul.tight li { margin-bottom:5px; }
   color:#d8c48a; padding:12px 16px; font-size:12.8px; }
 .warn b { color:var(--amber); }
 .swatch { display:inline-block; width:12px; height:12px; vertical-align:-2px; margin-right:6px; border:1px solid #000; }
+/* ── 双语切换 / language switch ── */
+.langbar { display:flex; gap:6px; justify-content:flex-end; align-items:center; margin:0 0 18px; }
+.langbar button { font:inherit; font-size:12px; line-height:1; padding:6px 14px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--line); background:var(--panel); color:var(--text); opacity:.5; }
+.langbar button.on { opacity:1; border-color:var(--green); color:var(--green); font-weight:700; }
+@media print{ .langbar{display:none} }
+body[data-lang="cn"] [data-lang="en"], body[data-lang="en"] [data-lang="cn"] { display:none !important; }
+.credit { font-size:12px; color:var(--dim); margin:0 0 12px; }
+.credit a { color:var(--cyan); text-decoration:none; border-bottom:1px dotted var(--cyan); }
 @media (max-width:1000px){ .stats{grid-template-columns:repeat(3,1fr);} .grid2{grid-template-columns:1fr;} }
 @media (max-width:600px){ .stats{grid-template-columns:repeat(2,1fr);} }
 </style>
 </head>
-<body>
+<body data-lang="cn">
 <header>
-  <h1>&gt; CoreS3 OS 速查卡<span class="cur">_</span></h1>
-  <div class="sub">v0.7.1 · RETRO PIXEL / CYBERPUNK / TERMINAL 主题 · 简中 / 英文双语 · 六应用：控制器 / <b>记事本（v0.6.0 取代时钟）</b> / 番茄钟 / <b>游戏（v0.7.0 取代系统信息）</b> / <b>音乐遥控（v0.5.0 起取代传感器）</b> / 设置 · 音乐：HID 媒体键控制 + BLE 自定义 GATT 回传歌名封面（配 Mac 端 <b>Music Bridge</b>） · 记事本：Keyboard3 打字 → BLE notify → Bridge 追加进 Obsidian <code>face3notes.md</code> · <b>QQ 音乐 11.9.1 已验证可用</b> · <b>v0.5.1：封面能显示了 + 只重画进度条 + 串口对时</b> · <b>v0.6.1：静态界面不再每秒重绘（不闪）</b> · <b>v0.6.2：离线笔记带书写时间 + 连上自动对时</b> · <b>v0.7.0：俄罗斯方块 + 2048</b> · <b>v0.7.1：两个游戏都能静音（M 键 / 点开关，存 NVS）</b> · 源码 cores3-firmware/cores3_shell/ · 烧录 cores3-firmware/fw.sh</div>
+  <h1>&gt; CoreS3 OS 速查卡 / CHEAT SHEET<span class="cur">_</span></h1>
+  <div class="sub" data-lang="cn">v0.7.1 · RETRO PIXEL / CYBERPUNK / TERMINAL 主题 · 简中 / 英文双语 · 六应用：控制器 / <b>记事本（v0.6.0 取代时钟）</b> / 番茄钟 / <b>游戏（v0.7.0 取代系统信息）</b> / <b>音乐遥控（v0.5.0 起取代传感器）</b> / 设置 · 音乐：HID 媒体键控制 + BLE 自定义 GATT 回传歌名封面（配 Mac 端 <b>Music Bridge</b>） · 记事本：Keyboard3 打字 → BLE notify → Bridge 追加进 Obsidian <code>face3notes.md</code> · <b>QQ 音乐 11.9.1 已验证可用</b> · <b>v0.5.1：封面能显示了 + 只重画进度条 + 串口对时</b> · <b>v0.6.1：静态界面不再每秒重绘（不闪）</b> · <b>v0.6.2：离线笔记带书写时间 + 连上自动对时</b> · <b>v0.7.0：俄罗斯方块 + 2048</b> · <b>v0.7.1：两个游戏都能静音（M 键 / 点开关，存 NVS）</b> · 源码 cores3-firmware/cores3_shell/ · 烧录 cores3-firmware/fw.sh</div>
+  <div class="sub" data-lang="en">v0.7.1 · RETRO PIXEL / CYBERPUNK / TERMINAL themes · CN/EN bilingual · six apps: Controller /
+    <b>Notes (replaced Clock in v0.6.0)</b> / Pomodoro / <b>Games (replaced System Info in v0.7.0)</b> /
+    <b>Music (replaced Sensors in v0.5.0)</b> / Settings · Music: HID media keys out + BLE custom GATT
+    pushing title &amp; artwork back (with the Mac-side <b>Music Bridge</b>) · Notes: type on the Keyboard3 →
+    BLE notify → Bridge appends to <code>face3notes.md</code> · <b>QQ Music 11.9.1 verified working</b> ·
+    <b>v0.5.1: artwork renders + only the progress bar repaints + serial time sync</b> ·
+    <b>v0.6.1: static screens stop repainting every second (no flicker)</b> ·
+    <b>v0.6.2: offline notes keep their writing time + auto time sync on connect</b> ·
+    <b>v0.7.0: Tetris + 2048</b> · <b>v0.7.1: both games can be muted (M key / tap the switch, stored in NVS)</b></div>
 </header>
 
 <div class="wrap">
+
+<div class="langbar">
+  <button type="button" data-set="cn">中文</button><button type="button" data-set="en">English</button>
+</div>
+
+<div class="lang" data-lang="cn">
   <div class="banner">
     设备上电后直接进<b>3×2 宫格桌面（6 个应用）</b>。蓝牙开机自动广播（名字 <code>CoreS3 Controller</code>），Mac 配对一次后会<b>自动重连</b>。
     本次烧录实测：<b>BLE 已连接</b>、<b>Keyboard3 已识别</b>、电量 97%、七个应用逐个切换 <b>0 崩溃</b>。
@@ -369,6 +393,10 @@ bool appXxxBack()  { return false; }</pre>
     <h2>音乐遥控 <span class="tag">v0.5.0 起取代传感器模块</span></h2>
     <p><b>设备不解码音频，只当遥控器</b>——声音永远由 Mac 出。控制走 HID 媒体键（零 Mac 端软件），
        显示走同一个 BLE 连接上追加的自定义 GATT 服务（不用配 Wi-Fi、不依赖局域网）。</p>
+    <p class="credit">致谢：整体思路参考
+       <a href="https://github.com/isalicema/m5-faces-core-s3" target="_blank">isalicema/m5-faces-core-s3</a>（MIT）——
+       「设备只做控制与显示、声音永远由电脑出」。本仓库的实现为独立编写（NimBLE 自定义 GATT 回传元数据、
+       封面走 160×160 JPEG 分包协议），未复制其代码。</p>
     <table class="tbl">
       <tr><th>动作</th><th>屏上按钮</th><th>Keyboard3</th><th>实际发出</th></tr>
       <tr><td>播放 / 暂停</td><td><code>PLAY</code>/<code>PAUSE</code></td><td>空格 或 <code>2</code></td><td><code>MEDIA_PLAY_PAUSE</code> 0x00CD</td></tr>
@@ -510,5 +538,498 @@ bool appXxxBack()  { return false; }</pre>
     </ul>
   </div>
 </div>
+
+<div class="lang" data-lang="en">
+  <div class="banner">
+    On power-up you land straight on the <b>3×2 desktop (6 apps)</b>. Bluetooth advertises
+    automatically at boot (name <code>CoreS3 Controller</code>) and the Mac <b>reconnects
+    automatically</b> once it has been paired. Measured on this build: <b>BLE connected</b>,
+    <b>Keyboard3 detected</b>, battery 97%, cycling through all apps <b>0 crashes</b>.
+  </div>
+
+  <div class="stats">
+    <div class="stat s-cyan"><div class="n">6</div><div class="l">Built-in apps</div></div>
+    <div class="stat s-green"><div class="n">43%</div><div class="l">Flash 1.34MB / 3MB</div></div>
+    <div class="stat s-violet"><div class="n">13%</div><div class="l">RAM used</div></div>
+    <div class="stat s-amber"><div class="n">0</div><div class="l">Runtime crashes</div></div>
+    <div class="stat s-magenta"><div class="n">4.0s</div><div class="l">One flash cycle</div></div>
+    <div class="stat s-red"><div class="n">60s</div><div class="l">Default screen timeout</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Look &amp; feel <span class="tag">v0.2.0</span></h2>
+    <p style="margin:0 0 14px;font-size:13px">
+      Everything moved from light cards to a <b>dark base + neon + bitmap fonts</b>. Two native bitmap
+      fonts do the work: ASCII uses M5GFX's built-in <code>Font8x8C64</code> (C64 8×8, row-major, full
+      ASCII including lowercase), Chinese uses <code>efontCN_16</code> (16×16). Both are bitmaps, so
+      scaling just makes bigger blocks instead of blurring — exactly what a pixel look wants.
+    </p>
+    <table>
+      <tr><th style="width:22%">Element</th><th style="width:26%">Value</th><th>Notes</th></tr>
+      <tr><td>Screen base</td><td><span class="swatch" style="background:#05070a"></span><code>0x05070A</code></td><td>Near-black, with dark grid dots every 16px (CRT texture)</td></tr>
+      <tr><td>Panel base</td><td><span class="swatch" style="background:#0b1017"></span><code>0x0B1017</code></td><td>Cards and large buttons</td></tr>
+      <tr><td>Main text</td><td><span class="swatch" style="background:#b8c7d6"></span><code>0xB8C7D6</code></td><td>Cool white; <code>C_DIM</code> for secondary text</td></tr>
+      <tr><td>Six neon colours</td><td>
+        <span class="swatch" style="background:#22d3ee"></span>
+        <span class="swatch" style="background:#39ff88"></span>
+        <span class="swatch" style="background:#ffb000"></span>
+        <span class="swatch" style="background:#ff2e88"></span>
+        <span class="swatch" style="background:#a855f7"></span>
+        <span class="swatch" style="background:#ff4d4d"></span>
+      </td><td>cyan / green / amber / magenta / violet / red — one accent per app</td></tr>
+    </table>
+    <table style="margin-top:14px">
+      <tr><th style="width:22%">Helper</th><th>What it does</th></tr>
+      <tr><td><code>drawFrame()</code></td><td>HUD frame: 1px outline + 3px solid corner marks (no rounded corners — they don't read as pixels)</td></tr>
+      <tr><td><code>drawPxIcon()</code></td><td>8×8 bitmap icon (8 bytes, one row each, bit7 = leftmost), drawn at scale 3 → 24×24</td></tr>
+      <tr><td><code>drawProgressBar()</code></td><td>Segmented bar: 6px block + 2px gap</td></tr>
+      <tr><td><code>drawRow() / drawTitle()</code></td><td>Terminal list row (dim label + neon ASCII value) and <code>&gt; title</code>; the font is picked automatically, so labels may be CN or EN</td></tr>
+      <tr><td><code>drawKeyBox()</code></td><td>Square key block; <code>filled=true</code> gives a neon fill with black text (inverted highlight)</td></tr>
+      <tr><td><code>clearArea()</code></td><td>Partial erase that <b>redraws the grid dots</b>, so clearing a region doesn't punch a hole in the texture</td></tr>
+      <tr><td><code>drawCenterText()</code></td><td>Horizontal + vertical centring, auto-selecting the CN or ASCII bitmap (used for all bilingual layout)</td></tr>
+      <tr><td><code>setAutoFont() / hasCJK() / textHeight()</code></td><td>Pick the font by “are there any non-ASCII bytes?”; height is 16 (with CJK) or 8 (pure ASCII)</td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Bilingual (Simplified Chinese / English) <span class="tag">v0.3.0</span></h2>
+    <p style="margin:0 0 12px;font-size:13px">
+      Every string goes through <code>S(StrID)</code> — <b>never hard-code a literal</b>. Switching
+      writes the choice to NVS, so it <b>survives power loss</b>.
+    </p>
+    <table>
+      <tr><th style="width:30%">How to switch</th><th>Notes</th></tr>
+      <tr><td>Settings → <b>Language</b> row</td><td>Tap the box on the right to flip between <code>简中</code> and <code>ENGLISH</code>; the whole UI redraws immediately (including the app name in the nav bar)</td></tr>
+      <tr><td>Serial <code>lang cn</code> / <code>lang en</code></td><td>Bare <code>lang</code> toggles</td></tr>
+      <tr><td>What English mode looks like</td><td>Pure ASCII in the 8×8 bitmap — closer to a real terminal: date <code>2026-09-20</code>, weekday <code>SUN</code>, buttons <code>REC / SEND / CANCEL</code></td></tr>
+    </table>
+    <div class="warn" style="margin-top:14px">
+      <b>English strings must be pure ASCII.</b> The 8×8 bitmap has no CJK glyphs, and mixing in
+      non-ASCII symbols such as <code>·</code> or <code>→</code> (bytes <code>&gt;= 0x80</code> in UTF-8)
+      makes <code>hasCJK()</code> switch to the 16×16 font and change the line height. Use <code>/</code>
+      instead of <code>·</code> in English strings.<br>
+      <b>The two tables are reconciled by a <code>static_assert</code></b>: the arrays are declared without
+      a length, so a mismatch against the <code>StrID</code> enum fails the build outright — no more
+      “this CN string paired with the wrong EN string” bugs.
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Using the desktop <span class="tag">operation</span></h2>
+    <table>
+      <tr><th style="width:34%">Action</th><th>Notes</th></tr>
+      <tr><td>Tap an icon</td><td>Launches that app. Icons are 8×8 bitmaps drawn at 3× scale, with a <code>[1]</code> index in the top-left corner.</td></tr>
+      <tr><td>Press <code>1</code>–<code>6</code> on the Keyboard3</td><td>Launch app N without touching the screen.</td></tr>
+      <tr><td><b>Swipe right from the left edge</b> (inside an app)</td><td><b>Go back one level</b> (since v0.1.3). The desktop shows a hint at the bottom.</td></tr>
+      <tr><td><code>Esc</code> inside an app</td><td>Pressing Esc on the Keyboard3 equals the swipe.</td></tr>
+      <tr><td>Tap <code>&lt; 桌面</code> at the top-left</td><td>Green box in the nav bar (drawn at 6–84px, hot-zone widened to <code>x&lt;110</code>).</td></tr>
+      <tr><td>Nav bar</td><td>36px high, with a neon line in the current app's accent colour along the bottom. Desktop shows <code>BT:LINK</code>; inside an app it shows the app name; <code>time + battery</code> always on the right.</td></tr>
+      <tr><td>Screen sleep</td><td>After 60s idle, brightness drops to 8; any tap or keypress restores it instantly (configurable in Settings).</td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Gesture: swipe right from the left edge <span class="tag">v0.1.3</span></h2>
+    <p style="margin:0 0 12px;font-size:13px">
+      The CoreS3 has a capacitive touch screen, and M5Unified's <code>Touch_Class</code> already ships a
+      <b>flick / drag / hold state machine</b> (it decides “how far the finger moved”), but <b>not the layer
+      that says what the gesture means</b> — the shell defines that itself.
+    </p>
+    <table>
+      <tr><th style="width:34%">Condition (all three must hold)</th><th>Value</th></tr>
+      <tr><td>Gesture starts at the left edge</td><td><code>base_x &lt;= GEST_EDGE(40)</code></td></tr>
+      <tr><td>Moved far enough to the right</td><td><code>distanceX() &gt;= GEST_MIN_DX(44)</code></td></tr>
+      <tr><td>Didn't drift vertically</td><td><code>|distanceY()| &lt;= GEST_MAX_DY(44)</code> (so vertical drags aren't misread)</td></tr>
+      <tr><td>Move threshold (handed to M5Unified)</td><td><code>setFlickThresh(16)</code>: jitter below this still counts as a tap</td></tr>
+    </table>
+    <div class="warn" style="margin-top:14px">
+      <b>A tap is dispatched on finger-up, not on finger-down.</b> Otherwise the app consumes the press on
+      the very first frame and the gesture never gets a chance. Dispatching on release also lets you cancel
+      a tap by sliding off it — same behaviour as a phone.<br>
+      <b>“Back one level” always goes through <code>goBack()</code></b>: it first asks the app via
+      <code>onBack()</code>, and only falls back to the desktop when the app returns false or doesn't
+      implement it (<code>nullptr</code>). Since v0.4.0 the controller has a single page (the preset
+      sub-page was removed), so <code>onBack()</code> is unused for now — kept for future apps with
+      a second level.
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>The six apps <span class="tag">features</span></h2>
+    <table>
+      <tr><th style="width:14%">App</th><th style="width:8%">Accent</th><th style="width:30%">What it does</th><th>How to drive it</th></tr>
+      <tr><td><b>Controller</b></td><td><span class="swatch" style="background:#22d3ee"></span>cyan</td><td>BLE HID remote (VibeKey-style): switch conversations, new task, record / confirm / cancel; the middle shows status only</td><td><b>Left</b> = previous conversation <code>Cmd+[</code>, <b>Right</b> = next <code>Cmd+]</code> (side by side, 148×44 each, with arrow glyphs); <code>+</code> on the right = new task <code>Cmd+N</code>, followed 1.8s later by a focus fix-up according to the “focus after new” setting (<b>default OFF since v0.4.8</b>; the WAKE option has been disproven); bottom row = record (<code>Cmd+D</code>, WorkBuddy's built-in voice) / confirm (Enter) / <b>cancel (<code>ESC</code> + <code>Cmd+A</code> + <code>Backspace</code> — stop first, then clear the draft; <b>since v0.4.8 it no longer wakes focus before clearing</b>)</b>; <b>on the Keyboard3: <code>Space</code> = record, <code>Enter</code> = confirm, <code>del</code> = cancel (★ fixed in v0.4.9: del is 0x7F, not 0x08)</b>, <code>⌫/BS</code> also cancels, <code>1/2/3</code> = prev/next/new. The bottom hint reads <code>空格录音 回车确认 Del取消</code>. The status area shows <code>WB-VOICE</code>/<code>SYS-DICT</code> + <code>ESC</code>/<code>WIPE</code>/<code>ESC+WIPE</code> + <code>BLE</code> + battery. <b>Both “confirm” and “clear draft” require focus to be inside the input box</b> — see Known constraints below</td></tr>
+      <tr><td><b>Notes</b> <span class="tag">v0.6.1</span></td><td><span class="swatch" style="background:#9eff00"></span>lime</td><td>Type an ASCII note on the Keyboard3, push it over BLE notify to the Mac, and the Bridge appends it to <code>face3notes.md</code> (<b>replaced Clock in v0.6.0</b>)</td><td><code>Alt+S</code>(155) = send, <code>Alt+D</code>(156) = clear, <code>Fn+←/→</code>(191/193) = move the cursor, Enter = newline, <code>⌫</code>(0x08)/<code>del</code>(0x7F) = backspace; you can also tap <code>SEND</code>/<code>CLEAR</code>. After 2s of inactivity the draft is saved to LittleFS; anything that can't be sent goes into a queue and is replayed automatically. <b>v0.6.1: the screen is now static, no per-second repaint</b></td></tr>
+      <tr><td><b>Pomodoro</b></td><td><span class="swatch" style="background:#ffb000"></span>amber</td><td>25 min focus (amber) / 5 min break (green), three beeps at the end, counts completed rounds</td><td>Tap the big area or “start/pause”; <code>reset</code> zeroes the current phase; <code>Space</code> also toggles; nothing repaints while paused</td></tr>
+      <tr><td><b>Games</b> <span class="tag">v0.7.1</span></td><td><span class="swatch" style="background:#ff2e88"></span>magenta</td><td>Two games: <b>Tetris</b> (10×18 board, 7 pieces, line clears score, faster as the level rises) and <b>2048</b> (4×4, best score kept in NVS across power loss). <b>Replaced System Info in v0.7.0</b>; <b>mute switch added in v0.7.1</b></td><td>Tap a card or press <code>1/2</code>. <b>Tetris</b>: <code>WASD</code> (<code>A/D</code> move, <code>W</code> rotate, <code>S</code> soft drop) or <code>Fn+arrows</code>, <code>Space</code> = hard drop, <code>P</code> = pause, <code>N</code> = new game; four on-screen buttons (left/right/rotate/drop), and tapping the left or right half of the board shifts the piece. <b>2048</b>: <code>WASD</code> or arrows to merge, <code>N</code> = new game. <b>Mute (v0.7.1)</b>: a switch at the bottom of the menu / bottom of the Tetris panel / under the 2048 panel — <b>tap it or press <code>M</code></b>; sound on = solid green, muted = red outline; stored in NVS as <code>gmute</code>, survives power loss; serial <code>game mute</code> toggles it too. <b>One swipe returns to the menu, a second one returns to the desktop</b></td></tr>
+      <tr><td><b>Music</b> <span class="tag">v0.5.0</span></td><td><span class="swatch" style="background:#a855f7"></span>violet</td><td>Music remote (<b>replaced the Sensors module in v0.5.0</b>): HID media keys control playback on the Mac, and title/artist/album/position/artwork come back over BLE and are drawn on screen</td><td>Prev / play-pause / next / volume / mute; on the Keyboard3 <code>Space</code> = play-pause, <code>←/→</code> = prev/next. Artwork and position are pushed by the Mac-side Bridge every 2 seconds</td></tr>
+      <tr><td><b>Settings</b></td><td><span class="swatch" style="background:#ff4d4d"></span>red</td><td>Brightness −/+, <b>language (简中/English)</b>, auto-sleep (30s/60s/2min/always on), <b>recording mode (built-in voice / system dictation)</b>, <b>focus after new (OFF / S-TAB1-3 / TAB1-3 / <span style="color:#39ff88">WAKE</span>)</b>, restart BLE advertising, version</td><td>Tap the box on the right of each row; the middle brightness box shows the current value; switching language redraws the whole screen at once and stores it in NVS. “Recording mode” → NVS key <code>recmode</code> (serial <code>rec 0/1</code>); “focus after new” → key <code>fmode</code> (serial <code>focus 0-7</code>); <code>WAKE</code> = double Cmd+D to borrow the app's own focusInput (<b>★ default, 7</b>), <code>S-TAB</code> = Shift+Tab backwards, <code>TAB</code> = forward fallback, <code>OFF</code> = don't press anything; the wait before focusing is key <code>fdelay</code> (serial <code>fdelay &lt;ms&gt;</code>, default 1800, range 200-5000). <b>The cancel-key option isn't in the settings page (all 7 rows are taken) — switch it with serial <code>clear 0/1/2</code></b>: <code>0</code> = ESC (stop only, matching VibeKey), <code>1</code> = WIPE (Cmd+A+Backspace, clear the draft only), <code>2</code> = <b>ESC+WIPE (★ default, both)</b>, NVS key <code>clrmode</code></td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Keyboard3 key map <span class="tag">v0.4.9</span></h2>
+    <table>
+      <tr><th style="width:16%">Physical key</th><th style="width:12%">Raw code</th><th style="width:18%">Controller action</th><th>Sent to the Mac</th></tr>
+      <tr><td><b>Space</b></td><td><code>0x20</code></td><td><b>Record</b> (toggle)</td><td><code>Cmd+D</code> (WorkBuddy built-in voice) or <code>Ctrl+Opt+D</code> (system dictation mode)</td></tr>
+      <tr><td><b>Enter</b></td><td><code>0x0D</code></td><td><b>Confirm</b> (send)</td><td><code>Return</code></td></tr>
+      <tr><td><b>del</b></td><td><code>0x7F</code> ★</td><td><b>Cancel</b> (stop + clear draft)</td><td><code>Esc</code> → <code>Cmd+A</code> → <code>Backspace</code></td></tr>
+      <tr><td><b>⌫ / BS</b></td><td><code>0x08</code></td><td><b>Cancel</b> (same; either key works)</td><td>same as above</td></tr>
+      <tr><td><code>1</code> / <code>2</code> / <code>3</code></td><td><code>0x31/32/33</code></td><td>previous / next / new task</td><td><code>Cmd+[</code> / <code>Cmd+]</code> / <code>Cmd+N</code></td></tr>
+      <tr><td><b>Esc</b></td><td><code>0x1B</code></td><td>back one level (caught by the shell, apps never see it)</td><td>no key sent</td></tr>
+      <tr><td>Tab</td><td><code>0x09</code></td><td>unmapped</td><td>—</td></tr>
+    </table>
+    <div class="warn" style="margin-top:14px">
+      <b>★ Biggest trap: <code>del</code> sends <code>0x7F</code>, not <code>0x08</code>.</b>
+      The Keyboard3 has two delete keys: the one labelled <code>del</code> is <code>0x7F</code>, the one
+      labelled <code>⌫/BS</code> is <code>0x08</code> (codes live in the <code>keyboard3_key_t</code> enum
+      in <code>M5Faces_Keyboard3.hpp</code>, alongside extension codes like <code>FN+arrows</code>=180-193
+      and <code>ALT+letters</code>=144-176).
+      <b>v0.4.8 and earlier only mapped <code>0x08</code>, so pressing <code>del</code> did nothing at
+      all</b> — v0.4.9 wired both to cancel.
+      <br>Before remapping anything, confirm the code: serial <code>key &lt;0-255&gt;</code> goes through the
+      same <code>onKey</code> dispatch path (e.g. <code>key 127</code> == pressing del), no need to press
+      anything for real.
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Serial commands <span class="tag">debug</span></h2>
+      <ul class="tight">
+        <li><code>status</code> — current app / BLE / keyboard / battery / brightness / sleep</li>
+        <li><code>apps</code> — list all app indices and names (follows the current language)</li>
+        <li><code>lang cn</code> / <code>lang en</code> — switch language, stored in NVS; bare <code>lang</code> toggles</li>
+        <li><code>launch N</code> — launch app N</li>
+        <li><code>home</code> — back to the desktop</li>
+        <li><code>back</code> — back one level (same as the swipe)</li>
+        <li><code>unpair</code> — restart BLE advertising (for re-pairing)</li>
+        <li><code>bright 0-255</code> — brightness</li>
+        <li><code>sleep secs</code> — screen timeout, 0 = always on</li>
+        <li><code>focus 0-7</code> — focus behaviour after a new conversation (<b>0=OFF default</b>, 1-3=S-TAB1-3, 4-6=TAB1-3, 7=WAKE <b>steals focus in practice — don't use it</b>)</li>
+        <li><code>fdelay &lt;ms&gt;</code> — how long to wait before focusing (200-5000, default 1800)</li>
+        <li><code>rec 0|1</code> — recording mode (0 = WorkBuddy built-in voice Cmd+D, 1 = macOS dictation)</li>
+        <li><code>clear 0|1|2</code> — cancel-key mode (0=ESC, 1=WIPE, <b>2=ESC+WIPE default</b>)</li>
+        <li><code>act rec|send|cancel|new|prev|next</code> — <b>runs the firmware's real key path</b> (for self-tests; don't hand-assemble key sequences)</li>
+        <li><code>key &lt;0-255&gt;</code> — <b>simulates a physical Keyboard3 key</b> through the same <code>onKey</code> path (<code>key 127</code> = del, <code>key 32</code> = space, <code>key 13</code> = Enter). Use it to verify mappings</li>
+        <li><code>music</code> — print track metadata and artwork receive progress (<code>art=received/total (ready)</code>)</li>
+        <li><code>time [YYYY-MM-DD HH:MM:SS]</code> — <b>RTC time sync</b> (v0.5.1). No argument = print the current RTC; with an argument = set it, weekday is computed</li>
+        <li><code>note</code> — notepad status (<code>fs/sub/sending/queued/sent/len/draws</code>).
+          <code>draws</code> is the redraw counter: <b>it must not increase while idle</b> — if it does, the screen went back to repainting on a timer</li>
+        <li><code>note push &lt;text&gt;</code> — push a note <b>through the real send path</b> (verify the chain without touching the screen, v0.6.0)</li>
+        <li><code>note type &lt;text&gt;</code> — <b>feeds characters one by one into <code>appNoteKey()</code> then sends ALT+S</b>, i.e. “simulate a human typing this line and pressing send”. Verifies key mapping (including <code>0x08/0x7F</code> backspace and <code>0x0D</code> newline)</li>
+        <li><code>fs</code> — flash filesystem check: partition info (label=<code>lfs</code>) / mount / write test / list root; if no partition is found it dumps the whole data partition table (v0.6.0)</li>
+        <li><code>fs2</code> — lower level: raw partition erase+write+read-back verify, and a comparison of <code>open("/x")</code> vs <code>open("/littlefs/x")</code></li>
+        <li><code>reboot</code> — hard reboot (always send once after flashing; fw.sh does it for you)</li>
+      </ul>
+      <pre># Reading serial (the port changes on every replug — always auto-detect)
+tools/ser.py status            # send a command and read the reply
+tools/rtc.sh                   # sync the Mac's clock into the on-board RTC
+tools/rtc.sh --show            # just print the device's current RTC</pre>
+    </div>
+
+    <div class="panel">
+      <h2>How to add a new app <span class="tag">extending</span></h2>
+      <ul class="tight">
+        <li><b>1.</b> Create <code>app_xxx.ino</code> implementing the 5 entry points (<code>onBack</code> optional)</li>
+        <li><b>2.</b> Declare those functions in <code>shell.h</code></li>
+        <li><b>3.</b> Add the app name to <code>StrID</code> in <code>i18n.h</code> and to <b>both</b> tables in <code>i18n.ino</code></li>
+        <li><b>4.</b> Add a row to <code>g_apps[]</code> in <code>cores3_shell.ino</code>: <code>nameId</code> + neon accent + 8×8 icon</li>
+        <li><b>5.</b> Icons are 8-byte bitmaps where <code>0x80</code> is the leftmost pixel (same format as the C64 font data)</li>
+      </ul>
+      <pre>// app_xxx.ino
+#include "shell.h"
+static const uint8_t ICON[8] = {0x18,0x3C,0x7E,0x5A,0x5A,0x7E,0x3C,0x18};
+void appXxxStart() { clearCanvas(); drawTitle(40, S(S_XXX_TITLE), C_CYAN); }
+void appXxxLoop()  {
+  static uint32_t last = 0;
+  if (!uiTick(last)) return;    // shared 1Hz tick
+  // then a dirty check: if nothing changed, return — no flicker
+}
+void appXxxTouch(int16_t x, int16_t y) { /* y&gt;=CANVAS_Y(36) */ }
+void appXxxKey(uint8_t raw) { /* 0x0D 0x1B 0x20 ... */ }
+void appXxxStop()  { }
+// optional: return true = swipe/Esc goes back inside the app first (second level)
+bool appXxxBack()  { return false; }</pre>
+      <div class="warn" style="margin-top:12px">
+        <b>Trap 1:</b> all <code>.ino</code> files are merged into one translation unit, so
+        <code>static const</code> values and <code>static</code> functions <b>must not share names across
+        files</b>. Prefix constants per app (<code>PMO_X</code>, <code>SEN_X</code>) and rename identical
+        helpers (<code>infoRow</code> / <code>senLine</code>).
+        <br><b>Trap 2:</b> the nav bar owns <code>y &lt; CANVAS_Y(36)</code>, so app content starts at
+        <code>y &gt;= 40</code> and must stay above 226 (240px screen, a Chinese line is 16).
+        <br><b>Trap 3:</b> ASCII value areas may <b>only contain ASCII</b> — drawing Chinese with the 8×8
+        font yields blanks; Chinese always goes through <code>setCnFont()</code> (e.g. write
+        <code>93% BAT</code>, not <code>93% discharging</code>).
+        <br><b>Trap 4 (bilingual):</b> always use <code>S(StrID)</code>, never literals; grouped strings
+        (weekdays, sleep options) must be contiguous in the enum because the code indexes them by
+        base + offset. Use <code>textHeight(s)</code> for vertical centring instead of hard-coding 16 —
+        in English mode it's 8 and everything would sit too high.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Known constraints <span class="tag">important</span></h2>
+    <ul class="tight">
+      <li><b>The LED strip must stay off</b> (<code>ENABLE_BOTTOM3_LED 0</code>): Adafruit NeoPixel has a known bug on the ESP32-S3 (upstream issue #429) — <code>show()</code> uses RMT and trips an assert when the radio is busy, causing endless reboots. Guaranteed once BLE is on.</li>
+      <li><b>The default partition gives 3MB APP and no OTA slot</b>: one firmware holds every app, so adding an app means recompiling and reflashing. Runtime install/uninstall would need a custom table first (launcher 1.5MB + 4×2MB app slots).</li>
+      <li><b>Always <code>compile --clean</code> after editing code</b>: arduino-cli's cache isn't invalidated by changes to <code>config.h</code>, so stale firmware gets flashed.</li>
+      <li><b>The device must be plugged in and powered on before flashing</b>: the serial port is <code>/dev/cu.usbmodem*</code>, but <b>the number changes on every replug or port change</b> (101 and 2101 both seen) — <b>always auto-detect, never hard-code</b> (<code>fw.sh</code> / <code>ser.py</code> already do). If it isn't found, tap the power button and retry.</li>
+      <li><b>The RTC has no backup battery</b>: time resets on power loss or reflash, and the device has no way to obtain time (no Wi-Fi, BLE carries none). Sync it with serial <code>time YYYY-MM-DD HH:MM:SS</code> or just run <code>tools/rtc.sh</code> (fw.sh calls it after every flash). The weekday is computed from the date (Sakamoto's algorithm), no need to pass it.</li>
+      <li><b><code>Cmd+[ / Cmd+] / Cmd+N / Cmd+D</code> are all native WorkBuddy shortcuts</b> (from the app bundle's shortcut table: <code>prev-task=Meta+[</code>, <code>next-task=Meta+]</code>, <code>new-conversation=Meta+N</code>, <code>toggle-voice-recording=Meta+D</code>), so nothing needs mapping on the Mac side.</li>
+      <li><b>“Is focus inside the input box?” is the crux of the whole controller (only understood properly in v0.4.3 — earlier conclusions were wrong).</b>
+        <b><code>Cmd+D</code> bypasses the recording step, but not sending or cancelling.</b> Evidence in the source:
+        ① recording is handled by a <code>window.addEventListener("keydown", …)</code>, <b>bound to window and therefore focus-independent</b> — so you can still record after creating a new conversation and the text still lands in the box;
+        ② but the bundle's <code>APP_SHORTCUT_IDS</code> (window-level shortcut allow-list) <b>does not include <code>send-message</code></b> — it's handled by a React <code>onKeyDown</code> inside the input box (<code>handleInsertNewline</code> returns true on Enter to trigger a send).
+        <b>So Enter only works when focus is inside the input box</b>; same for <code>Cmd+A</code> — inside the box it selects the input text, on <code>body</code> it's Chromium's select-all, which looks like “<b>the whole page got selected and nothing was deleted</b>”.
+        That's why “existing conversations work, new ones don't”: <b>it's not about new, it's about focus</b> — existing ones work because you clicked the box earlier and focus stayed there; <code>new-conversation</code> only navigates, it doesn't focus.</li>
+      <li><b>Tab walking (v0.4.3–v0.4.5) and the WAKE option (v0.4.6) all failed in on-screen tests — v0.4.8 went back to “press nothing” by default.</b>
+        <br>Why Tab walking fails: ① in Electron the Tab landing order follows DOM order, so forward hits a pile of sidebar buttons and backward doesn't necessarily land on the input box; ② <b>you can't know when the new conversation's input box mounts</b> (widening the wait from 800ms to 1800ms didn't save it).
+        <br><b>The WAKE option (double Cmd+D) was disproven, and that matters:</b> the assumption was that the voice result callback <code>text =&gt; { appendInputText(text); focusInput(); }</code> returns focus to the box when recording ends, but <b>when there's no audio WorkBuddy takes the “no speech detected, please retry” branch, and focus is taken away by the voice panel instead</b>.
+        OCR evidence: type <code>QZDD</code> in the box → <code>wake</code> → <code>wipe</code> leaves <code>QZD</code> (select-all failed, Backspace degraded to deleting one char); <code>esc</code> → <code>wipe</code> clears all the way back to the placeholder.
+        <br>→ Hence the default is <code>FOCUS_OFF</code> again: <b>better to press nothing than to send keys that lose focus</b>.
+        The option cycles in <b>Settings → focus after new</b> (serial <code>focus 0-7</code>, NVS key <code>fmode</code>); WAKE is kept but no longer default.
+        <b>New conversations still aren't solved</b> — for now, tap the input box once after creating one.</li>
+      <li><b>v0.4.4: the cancel key now sends <code>ESC</code>, matching VibeKey (the earlier Cmd+A+Delete was a wrong guess).</b>
+        The full answer from WorkBuddy's shortcut table: <code>stop-generation = Escape</code>,
+        <code>send-message = Enter</code>, <code>newline = Shift+Enter</code>, <code>new-conversation = Meta+N</code>,
+        <code>prev/next-task = Meta+[ / Meta+]</code>, <code>toggle-voice-recording = Meta+D</code>.
+        → <b>In WorkBuddy, Esc means “stop generating”, not “clear the input box”</b>: pressing it while a task runs interrupts it; to clear the draft text you need the <code>WIPE</code> mode (serial <code>clear 1</code>, = Cmd+A + Delete, requires focus in the box).
+        <b>Why Cmd+A+Delete isn't the default</b>: without focus in the box it degrades into Chromium's select-all — “the whole page gets selected and nothing is deleted”, exactly what v0.4.2/v0.4.3 measured.</li>
+      <li><b>v0.4.5: cancel = <code>ESC</code> + clear draft, as a two-step combo (default).</b>
+        Order: <code>Esc</code> → wait 220ms → <code>Cmd+A</code> → wait 80ms → <code>Backspace</code>.
+        Esc handles “stop generating” (focus-independent, reliable); Cmd+A+Backspace clears the draft (<b>needs focus in the box</b>).
+        <br><b>v0.4.8 fixed the regression where cancelling broke in existing conversations too</b>: in v0.4.6/v0.4.7 <code>actClear()</code> performed a wake according to the <code>focus</code> setting (then default WAKE = double Cmd+D), and the voice panel took focus away → select-all failed, Backspace deleted one char, i.e. “cancel doesn't clear the draft”.
+        <b>The fix is to send no extra key at all when cancelling</b> (<code>CANCEL_WAKE_FOCUS = 0</code>) — in an existing conversation focus is already in the box (being able to type proves it), so waking only loses it. Set <code>CANCEL_WAKE_FOCUS</code> to 1 in config.h to restore the wake.
+        <br><b>v0.4.6 also fixed a hidden bug: the delete key changed from <code>KEY_DELETE</code>(0x4C) to <code>KEY_BACKSPACE</code>(0x2A).</b>
+        HID Delete on macOS means Fn+Delete (forward delete) and often does nothing when a selection exists in Electron/Chromium; Backspace is what the physical delete key on a Mac keyboard actually sends — quite possibly the culprit behind “selected but won't delete”.
+        Why the combo: ESC alone leaves the old draft in place when you re-record after misspeaking (text gets appended); WIPE alone can't interrupt a running task.
+        Worst case (focus on body) is only “draft not cleared” and <b>never deletes anything by mistake</b>, which is acceptable.
+        Serial <code>clear 0</code> goes back to plain ESC, <code>clear 1</code> only clears.</li>
+      <li><b>Full on-screen (OCR) test record for existing conversations (v0.4.8, subject = a chronicle-skill conversation).</b>
+        <table style="margin-top:8px">
+          <tr><th>Action</th><th>Criterion (read from OCR)</th><th>Result</th></tr>
+          <tr><td>record <code>act rec</code> (Cmd+D)</td><td>“no speech detected” appears = the voice chain was invoked</td><td>✅</td></tr>
+          <tr><td>type → into the input box</td><td>the text just typed appears at the bottom</td><td>✅ focus was already there</td></tr>
+          <tr><td>confirm <code>act send</code> (Enter)</td><td>the input box returns to its placeholder</td><td>✅ sent</td></tr>
+          <tr><td>cancel <code>act cancel</code></td><td>Esc has no side effect; after WIPE it's back to the placeholder</td><td>✅ stop + clear</td></tr>
+        </table>
+        <b>Using OCR as eyes is new here</b>: a BLE keyboard is one-way and can't see focus, so everything used to be guesswork. <code>/tmp/wbpix</code> (Swift + Vision) screenshots the WorkBuddy window and OCRs text lines with coordinates; combined with the new <code>act …</code> serial commands that run the firmware's real path, guessing turned into measuring.</li>
+      <li><b>Always reboot once after flashing (user requirement, baked into the script).</b>
+        The ESP32-S3 uses native USB (CDC) with <b>no EN/RTS reset line</b>, so esptool's software reset after upload is sometimes incomplete (BLE/NVS keep old state). The firmware therefore exposes a <code>reboot</code> serial command that the script sends after flashing.
+        One-shot script: <code>tools/fw.sh</code> — auto-detect port → clean build → upload → send <code>reboot</code> →
+        capture the boot log and judge “booted fine / crashed”. Flags: <code>--fast</code> (skip clean, <b>don't use it after editing a .h</b>), <code>--no-up</code> (compile only).
+        <b>Trap: settings stored in NVS are not reset by reflashing</b> (language, recording mode, cancel mode and focus mode all persist) — after changing a default, send the serial command once (e.g. <code>clear 2</code>) to apply it.</li>
+      <li><b>The screen doesn't show conversation titles</b>: a BLE keyboard is one-way (it can only send keys) and can't read WorkBuddy's session state, so only status is shown (idle / recording / sent / cleared).</li>
+      <li><b>The Keyboard3 can only enter ASCII</b>: Chinese goes through voice (built-in or macOS dictation) or text replacement, never the keyboard.</li>
+      <li><b>Language lives in NVS</b> (namespace <code>cores3</code>, key <code>lang</code>): reflashing doesn't clear it. For a true factory default, send <code>lang cn</code> over serial.</li>
+      <li><b>The swipe only works inside apps</b>: the desktop is already the root, so nothing happens. Changing your mind mid-swipe (returning to the left edge before lifting) cancels it.</li>
+      <li><b>The 8×8 bitmap only has 6 usable rows</b> (2 blank rows at the top): lay out with an 8px line height but expect the optical centre to sit low; when mixing with 16px Chinese lines, give the Chinese line a <code>+4</code> offset to align.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Music remote <span class="tag">replaced Sensors in v0.5.0</span></h2>
+    <p><b>The device never decodes audio — it's only a remote</b>; sound always comes from the Mac.
+       Control goes over HID media keys (nothing to install on the Mac), display over a custom GATT
+       service added to the same BLE connection (no Wi-Fi to configure, no LAN dependency).</p>
+    <p class="credit">Credit: the overall design comes from
+       <a href="https://github.com/isalicema/m5-faces-core-s3" target="_blank">isalicema/m5-faces-core-s3</a>
+       (MIT) — “the device only controls and displays, audio always comes from the computer”.
+       The implementation here was written independently (NimBLE custom GATT for metadata, artwork sent as
+       a chunked 160×160 JPEG); no code was copied.</p>
+    <table class="tbl">
+      <tr><th>Action</th><th>On-screen button</th><th>Keyboard3</th><th>Actually sent</th></tr>
+      <tr><td>Play / pause</td><td><code>PLAY</code>/<code>PAUSE</code></td><td>Space or <code>2</code></td><td><code>MEDIA_PLAY_PAUSE</code> 0x00CD</td></tr>
+      <tr><td>Previous / next</td><td><code>PREV</code>/<code>NEXT</code></td><td><code>1</code> / <code>3</code></td><td>0x00B6 / 0x00B5</td></tr>
+      <tr><td>Volume ±</td><td><code>VOL-</code>/<code>VOL+</code></td><td>—</td><td>0x00EA / 0x00E9</td></tr>
+      <tr><td>Mute</td><td>—</td><td><code>del</code></td><td><code>MEDIA_MUTE</code> 0x00E2</td></tr>
+    </table>
+    <h3>The Mac-side Music Bridge</h3>
+    <p><code>mac-bridge/MusicBridge.app</code> (source <code>Bridge.swift</code>): every 2 seconds it runs
+       <code>media-control get</code> (MediaRemote) and writes title/artist/album/position into the META
+       characteristic, then pushes the artwork as a 160×160 JPEG in chunks into ART.
+       <b>On first run you must allow it in System Settings → Privacy &amp; Security → Bluetooth</b>,
+       otherwise CoreBluetooth never calls back (the log stops at <code>[bridge] scanning…</code>).</p>
+    <ul class="notes">
+      <li><b>The bundle must be signed explicitly</b>: <code>codesign -s - -f --deep MusicBridge.app</code>.
+        Unsigned, the signature says <code>Info.plist=not bound</code>, TCC can't read
+        <code>NSBluetoothAlwaysUsageDescription</code> → immediate SIGABRT (crash report namespace=TCC).
+        After signing you should see <code>Info.plist entries=7</code>.</li>
+      <li><b>NimBLE stops advertising as soon as it connects</b> → the Mac can't find it. So the main loop
+        calls <code>NimBLEDevice::startAdvertising()</code> every 15 seconds (idempotent while connected —
+        it won't drop the existing connection).</li>
+      <li><b>QQ Music 11.9.1 is confirmed working</b>: its binary contains
+        <code>-[QQMusicMainPlayerController setupMPRemoteCommand]</code>, so MPRemoteCommandCenter is
+        registered and both channels (media keys and MediaRemote metadata) are open.
+        <b>But it ships no sdef and no <code>NSAppleScriptEnabled</code></b> → native AppleScript is
+        unavailable, so “like / play mode” can only be driven through System Events by clicking the
+        “playback control” menu (<b>locate it by name, not by index</b>).</li>
+      <li><b>Apple Music hijacks the media keys</b> (MediaRemote gives it top priority) — quit it
+        completely with ⌘Q before use; closing the window isn't enough.</li>
+      <li>Serial: <code>music</code> prints the track state received so far and the artwork progress.</li>
+    </ul>
+
+    <h3>Two problems fixed in v0.5.1</h3>
+    <ul class="notes">
+      <li><b>Artwork never showed (NO ART)</b> — the buffer cap was too small. QQ Music's artwork is
+        <b>14777 bytes</b> once downscaled to 160×160 JPEG, while <code>MUSIC_ART_MAX</code> was
+        <b>12288</b>: the total in the first chunk was rejected as “over limit” and dropped,
+        <b>while following chunks were still accepted</b> → the buffer filled up, <code>artTotal</code>
+        stayed 0 and <code>artReady</code> never rose. The serial tell is clear: <code>art=12288/0</code>.
+        <br>Fix: raise the cap to <b>32768</b> (there's 8MB of PSRAM) and gate the continuation chunks —
+        <b>drop them when no valid first chunk arrived, and drop duplicates once the image is complete</b>,
+        so a half image can never be mistaken for a whole one. Afterwards the serial reads
+        <code>art=14777/14777 (ready)</code> and the log says <code>[music] artwork decoded and drawn</code>.</li>
+      <li><b>The whole screen repainted once per second</b> — the artwork JPEG was decoded again every
+        second (visible flicker) even though only the progress bar actually moved.
+        <br>Three tiers now: ① track/play state/BLE changed, or a new artwork arrived complete → full
+        repaint (<code>dirty</code> is set by the GATT callback); ② playback time advanced by a second →
+        repaint only the “time + progress bar” strip (<code>clearArea</code> restores the grid texture, so
+        the seam is invisible); ③ paused, or the next second hasn't arrived → <b>not a single pixel</b>.
+        <br>Key detail: the Mac pushes metadata every 2 seconds (including position), so
+        <code>musParseMeta</code> must distinguish “track/state changed” from “just a position refresh” —
+        otherwise <code>dirty</code> gets set every 2 seconds and you're back to a flickering screen.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Notes <span class="tag">v0.6.2</span></h2>
+    <p>Type an ASCII note on the Keyboard3 → send → pushed to the Mac over BLE <b>notify</b> → the Bridge
+       appends it to <code>face3notes.md</code>.</p>
+    <table class="tbl">
+      <tr><th>Action</th><th>Keyboard3</th><th>Notes</th></tr>
+      <tr><td>Input</td><td>letters / digits / symbols</td><td>the Keyboard3 only emits ASCII (0x20–0x7E); <b>this version has no Chinese input method</b></td></tr>
+      <tr><td>Newline</td><td><code>Enter</code></td><td>Tab is a space; it doesn't move focus</td></tr>
+      <tr><td>Backspace</td><td><code>⌫</code>(0x08) or <code>del</code>(0x7F)</td><td>both delete keys work</td></tr>
+      <tr><td>Move cursor</td><td><code>Fn+←</code>(191) / <code>Fn+→</code>(193)</td><td>—</td></tr>
+      <tr><td><b>Send</b></td><td><code>Alt+S</code>(155) or tap <code>SEND</code></td><td>clears the draft afterwards</td></tr>
+      <tr><td>Clear</td><td><code>Alt+D</code>(156) or tap <code>CLEAR</code></td><td>—</td></tr>
+    </table>
+    <h3>Chain and protocol</h3>
+    <ul class="notes">
+      <li><b>The direction is the opposite of the music module</b>: music is Mac-writes / device-reads,
+        notes are device-notifies / Mac-subscribes. A second service <code>NOTE_SVC</code> hangs off the
+        same <code>NimBLEServer</code> (OUT = NOTIFY, ACK = WRITE).</li>
+      <li><b>The chunking protocol mirrors the artwork one</b>: first chunk <code>[0]=0xA5 +
+        [1..2]=total length (u16 LE)</code>, continuation chunks <code>[0]=0x5A</code>; the Mac assembles
+        once it has the full length, writes it out, then writes <code>0x01</code> to ACK.</li>
+      <li><b>If the Mac doesn't subscribe you receive nothing</b> — <code>setNotifyValue(true, for:)</code>
+        is mandatory; forget it and <code>[note] →</code> never appears in the Bridge log.</li>
+      <li><b>Not subscribed / send failed / ack timed out (5s)</b> → the content goes to a flash queue
+        (<code>/nq00000001.txt</code>, with a monotonic counter in NVS) and is replayed automatically on
+        the next connection; the file is deleted only after a successful replay. Drafts are persisted too,
+        so nothing is lost on power loss. This uses <b>the 9.9MB partition</b> from the partition table —
+        unrelated to the exFAT TF card that won't mount.</li>
+      <li><b>★ Storage is LittleFS, not FFat</b>: FFat mounts on this board (<code>total=9996KB</code>) but
+        every <code>FILE_WRITE</code> fails. Hence the custom <code>partitions.csv</code> in the sketch
+        directory, which changes that data partition's subtype from <code>fat</code> to <code>0x83</code>
+        (littlefs).</li>
+      <li><b>★ <code>open()</code> paths must not carry the mount prefix</b>: the mount point is for
+        <code>begin()</code> (<code>/littlefs</code>) while <code>open()</code> takes the filesystem-internal
+        path <code>"/nq00000001.txt"</code>; <code>"/littlefs/nq00000001.txt"</code> always fails —
+        <b>this was also the real reason FFat “couldn't write”</b>, not a broken filesystem (raw partition
+        erase/write tests succeed). Run <code>fs2</code> to diagnose.</li>
+      <li><b>Both replay and draft saving are throttled</b> (once per 2 seconds): replaying scans a
+        directory, and doing that every frame would hammer the flash. The draft is written 2 seconds after
+        you stop typing, not on every keystroke.</li>
+      <li><b>★ Offline notes carry their writing time, not the delivery time (v0.6.2)</b>: the moment the
+        text leaves the editor, the device stamps the RTC into the front of the body as a fixed 19-byte
+        <code>[YYYY-MM-DD HH:MM] </code> prefix; the queue file carries it too, so however long the replay
+        takes, the time isn't lost. The Bridge recognises the prefix and uses it as the entry time and as
+        the <code>## date</code> sub-heading — something written yesterday is filed under yesterday and
+        inserted in the right date order. Only when the prefix is missing (old firmware / RTC at zero) does
+        it fall back to the Mac's current time.</li>
+      <li><b>★ Connecting to the Bridge syncs the clock automatically (v0.6.2)</b>: the CoreS3's RTC
+        (BM8563) <b>has no backup battery</b>; it resets on power loss or reflash, and without a correct
+        time the writing-time stamp is meaningless. So every time the Bridge discovers the ACK
+        characteristic it writes 7 bytes <code>0x02 + year-2000 + month + day + hour + min + sec</code>
+        into it (reusing the ACK channel, no new characteristic).
+        <b>Year/month/day rather than an epoch</b> — the device sets no TZ, so an epoch would need a
+        timezone conversion too.</li>
+      <li><b>A failed enqueue no longer clears the editor (v0.6.2)</b>: previously a full queue (32 items)
+        or an unavailable filesystem still returned “success” and the layer above cleared the editor —
+        the content was genuinely gone. Now it returns failure and the text stays on screen.</li>
+      <li><b>★ The screen is static now, no per-second repaint (v0.6.1)</b>: it used to hang off a 1Hz
+        tick, i.e. a full repaint every second, which you could see flicker. Now it only repaints when
+        something actually changed — typing / backspace / clear / cursor move, the send result, and BLE
+        connection &amp; subscription state or queue count changes; the rest of the time not a pixel moves.
+        <code>draws=</code> in the serial <code>note</code> output is the repaint counter: <b>it must not
+        increase while idle</b>.</li>
+      <li>Serial: <code>note</code> shows the state; <code>note push Hello</code> pushes a note directly
+        (through the real send path); <code>note type Hello</code> simulates typing and then pressing send
+        (so <code>appNoteKey()</code> is exercised too).</li>
+      <li><b>Reflashing doesn't lose pending notes</b>: the queue lives in a separate data partition and
+        <code>fw.sh</code> only writes the app partition. Verified: after a reboot, as soon as the Bridge
+        subscribes it replays, <code>queued</code> goes to 0 and <code>last=delivered</code>.</li>
+    </ul>
+    <h3>Why “replace Clock” instead of adding a 7th</h3>
+    <ul class="notes">
+      <li>Adding a 7th app was tried first, but <b>3 columns can't fit it</b>: the 7th would land at
+        <code>y=218</code> with a bottom edge at <code>296</code>, past the 240px screen. Switching to
+        4 columns × 2 rows shrank tiles to 71px wide and forced the English app names down to
+        <code>CTRL / POMO / SYS / SET</code>.</li>
+      <li>So Notes replaced Clock and the count stayed at 6: the desktop went back to
+        <b>3 columns × 2 rows</b> (tiles 94×78) and full English names returned
+        <code>CONTROLLER / NOTES / POMODORO / SYSTEM / MUSIC / SETTINGS</code>.</li>
+      <li>The clock wasn't really lost — <b>the status bar always shows HH:MM</b> and the
+        <code>time</code> serial command still works. The clock source is kept as
+        <code>app_clock.ino.bak</code> (a non-<code>.ino</code> suffix keeps it out of the build); rename
+        it to bring it back.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Mac-side Bridge <span class="tag">runs at login</span></h2>
+    <p>In <code>mac-bridge/</code>. It does two things: push the Mac's now-playing track to the device
+       screen, and subscribe to the device's notes and write them into a markdown file.
+       <b>It must stay running</b> — while it isn't, notes on the device just queue up and wait.</p>
+    <table class="tbl">
+      <tr><th>Command</th><th>Effect</th></tr>
+      <tr><td><code>./bridge.sh install</code></td><td>install the LaunchAgent and start it now (<b>run once</b>)</td></tr>
+      <tr><td><code>./bridge.sh status</code></td><td>running? managed by launchd? plus the log tail</td></tr>
+      <tr><td><code>./bridge.sh restart</code></td><td>restart (<code>./build.sh</code> does this automatically after a rebuild)</td></tr>
+      <tr><td><code>./bridge.sh stop</code> / <code>uninstall</code></td><td>stop temporarily / remove auto-start entirely</td></tr>
+      <tr><td><code>./bridge.sh log</code></td><td>follow <code>/tmp/cores3-bridge.log</code></td></tr>
+    </table>
+    <h3>Two traps when setting it up</h3>
+    <ul class="notes">
+      <li><b>★ <code>launchctl bootstrap</code> always fails in a background shell</b>: in processes with
+        no GUI audit session (an AI tool's shell, an ssh session) it reports
+        <code>Bootstrap failed: 5: Input/output error</code> regardless of plist content — even Apple's own
+        plists fail the same way.
+        <b>Workaround</b>: <code>osacompile</code> a tiny app that just runs the shell command and
+        <code>open</code> it so it executes inside the GUI session. <code>bridge.sh</code> already contains
+        that fallback, so <b>don't type launchctl by hand</b> — use the script.</li>
+      <li><b>Don't use <code>open MusicBridge.app</code> as the auto-start entry</b>: <code>open</code>
+        returns immediately, launchd thinks the process exited and restarts it forever. Put the absolute
+        path <code>.app/Contents/MacOS/MusicBridge</code> in the plist.</li>
+      <li><b>Rebuilding means re-granting Bluetooth</b>: <code>./build.sh</code> re-signs, the cdhash
+        changes, and TCC may ask again. Symptom: the log stops at <code>[bridge] scanning…</code> followed
+        by <code>✗ 蓝牙未授权</code>; go to System Settings → Privacy &amp; Security → Bluetooth, tick it,
+        then <code>./bridge.sh restart</code>.</li>
+      <li><code>KeepAlive=true</code> + <code>ThrottleInterval=10</code>: relaunched 10 seconds after a
+        crash. Verified — after <code>kill -9</code> it comes straight back with a new pid.</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+<script>
+(function(){
+  var KEY='cores3os-lang';
+  var btns=document.querySelectorAll('.langbar [data-set]');
+  function set(l){
+    document.body.setAttribute('data-lang',l);
+    try{localStorage.setItem(KEY,l);}catch(e){}
+    document.documentElement.lang = (l==='cn') ? 'zh-CN' : 'en';
+    Array.prototype.forEach.call(btns,function(b){b.classList.toggle('on', b.getAttribute('data-set')===l);});
+  }
+  Array.prototype.forEach.call(btns,function(b){b.addEventListener('click',function(){set(b.getAttribute('data-set'));});});
+  var init='cn'; try{init=localStorage.getItem(KEY)||'cn';}catch(e){}
+  set(init);
+})();
+</script>
 </body>
 </html>

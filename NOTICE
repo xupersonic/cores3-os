@@ -1,3 +1,7 @@
+================================================================================
+简体中文
+================================================================================
+
 CoreS3 OS
 Copyright (c) 2026 xupersonic
 
@@ -44,3 +48,90 @@ Copyright (c) 2026 xupersonic
 
   - media-control（Mac 端读取「正在播放」曲目信息用的命令行工具，通过 Homebrew 安装）。
     缺失时音乐遥控应用仍能发媒体键，只是屏上不显示歌名/封面。
+
+
+六、致谢
+
+  - 音乐遥控应用（firmware/cores3_shell/app_music.ino 与 mac-bridge/Bridge.swift 中的曲目部分）
+    的整体思路参考了
+      isalicema/m5-faces-core-s3 —— https://github.com/isalicema/m5-faces-core-s3 （MIT）
+    「设备只做控制与显示、声音永远由电脑出；控制走 HID 媒体键，正在播放的信息回传到设备屏幕」
+    这一设计来自该项目。
+    本项目的实现为独立编写（NimBLE 自定义 GATT 回传歌名/歌手/专辑/进度，封面走 160×160
+    JPEG 分包协议），未复制其代码。特此感谢原作者的分享。
+  - docs/hardware-setup.html 中的产品图来自 M5Stack 官方文档与产品页（docs.m5stack.com），
+    版权归 M5Stack Technology Co., Ltd. 所有，仅作组装说明用途。
+
+
+================================================================================
+English
+================================================================================
+
+CoreS3 OS
+Copyright (c) 2026 xupersonic
+
+The project itself is released under the MIT License (see LICENSE). The sections
+below cover third-party dependencies, trademarks and compatibility statements.
+
+
+1. Third-party libraries (not vendored here — install them before building)
+
+  Library                   Version (tested)  License               How to install
+  -------------------------------------------------------------------------------------------------
+  M5Unified                 0.2.22            MIT © M5Stack        arduino-cli lib install M5Unified
+  M5GFX                     0.2.29            MIT © M5Stack        arduino-cli lib install M5GFX
+  M5Faces                   0.1.0             MIT © M5Stack        arduino-cli lib install M5Faces
+  NimBLE-Arduino            2.5.1             Apache-2.0           arduino-cli lib install NimBLE-Arduino
+  HijelHID_BLEKeyboard      0.5.0             Apache-2.0 © Hijel   ★ NOT in the arduino-cli index, clone it:
+                                                                    git clone https://github.com/HijelHub/HijelHID_BLEKeyboard \
+                                                                        ~/Documents/Arduino/libraries/
+
+  Each library is governed by the LICENSE file in its own repository.
+
+
+2. Toolchain
+
+  - arduino-cli + ESP32 Arduino Core 3.x (FQBN: m5stack:esp32:m5stack_cores3).
+    ESP32 Arduino Core is LGPL-2.1. This repository publishes only its own sketch
+    sources; it neither ships nor modifies Arduino Core. Normal compiling/linking
+    use does not affect this project's MIT licensing.
+  - In partitions.csv, the 9.9MB data partition uses subtype 0x83 (littlefs).
+
+
+3. Trademarks
+
+  M5Stack, CoreS3, Faces, Bottom3 and Keyboard3 are trademarks of M5Stack
+  Technology Co., Ltd. This is a personal project with no affiliation or
+  partnership with M5Stack.
+
+
+4. About WorkBuddy
+
+  "WorkBuddy" is a third-party desktop product. The controller app only talks to
+  its shortcuts via standard BLE HID keyboard/consumer-control keys and does not
+  call any private API. This project is unofficial, unaffiliated and unendorsed.
+  The shortcut mapping was verified against the 2026-09 version of WorkBuddy and
+  may break after future updates.
+
+
+5. Optional external dependency (not included, not distributed)
+
+  - media-control (a CLI used on the Mac side to read the "now playing" track,
+    installed via Homebrew). Without it the music remote still sends media keys;
+    it just won't show title/artwork on screen.
+
+
+6. Acknowledgements
+
+  - The music remote app (firmware/cores3_shell/app_music.ino and the track-info
+    part of mac-bridge/Bridge.swift) takes its overall design from
+      isalicema/m5-faces-core-s3 — https://github.com/isalicema/m5-faces-core-s3 (MIT)
+    The idea "the device only controls and displays, audio always comes from the
+    computer; control goes over HID media keys, now-playing info is pushed back to
+    the device screen" comes from that project.
+    The implementation here was written independently (NimBLE custom GATT pushing
+    title/artist/album/position, artwork sent as a chunked 160x160 JPEG); no code
+    was copied. Thanks to the original author for sharing.
+  - Product photos in docs/hardware-setup.html come from M5Stack's official docs
+    and product pages (docs.m5stack.com); copyright M5Stack Technology Co., Ltd.,
+    used here only to illustrate assembly.

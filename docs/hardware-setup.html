@@ -87,16 +87,29 @@ table.tbl tr:nth-child(even) td{background:#fbfdff;}
 .links a span{display:block;font-size:11.5px;color:var(--sub);margin-top:3px;}
 footer{text-align:center;font-size:12px;color:var(--sub);padding:10px 0 40px;}
 @media (max-width:1000px){.three{grid-template-columns:1fr;}.links{grid-template-columns:1fr;}}
-@media print{body{background:#fff;}.toc{display:none;}.panel{box-shadow:none;page-break-inside:avoid;}}
+/* ── 双语切换 / language switch ── */
+.langbar{display:flex;gap:6px;justify-content:flex-end;align-items:center;margin:0 0 18px}
+.langbar button{font:inherit;font-size:12px;line-height:1;padding:6px 14px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(0,0,0,.15);background:#fff;color:#374151;opacity:.55}
+.langbar button.on{opacity:1;border-color:#006EFF;color:#006EFF;font-weight:600}
+body[data-lang="cn"] [data-lang="en"],body[data-lang="en"] [data-lang="cn"]{display:none !important}
+@media print{body{background:#fff;}.toc{display:none;}.panel{box-shadow:none;page-break-inside:avoid;}.langbar{display:none}}
 </style>
 </head>
-<body>
+<body data-lang="cn">
 <header>
   <h1>M5Stack CoreS3 × Faces Bottom3 × Keyboard3</h1>
-  <div class="sub">从零开始 · 第一步：把它组装起来并通电跑通（组装约 10 分钟，全程不需要写代码）<br><span style="font-size:13px;color:#8a94a6">v2 更新：修正「背面两个开关」的说明（实际只有 1 个）· 新增「键盘蓝灯怎么才算正常」的判定方法</span></div>
+  <div class="sub" data-lang="cn">从零开始 · 第一步：把它组装起来并通电跑通（组装约 10 分钟，全程不需要写代码）<br><span style="font-size:13px;color:#8a94a6">v2 更新：修正「背面两个开关」的说明（实际只有 1 个）· 新增「键盘蓝灯怎么才算正常」的判定方法</span></div>
+  <div class="sub" data-lang="en">From zero · step one: assemble it and get it powered on (about 10 minutes, no code required)<br><span style="font-size:13px;color:#8a94a6">v2: corrected the “two switches on the back” claim (there is only one) · added “how to tell whether the keyboard's blue LEDs are normal”</span></div>
 </header>
 
 <div class="wrap">
+
+<div class="langbar">
+  <button type="button" data-set="cn">中文</button><button type="button" data-set="en">English</button>
+</div>
+
+<div class="lang" data-lang="cn">
   <div class="banner">
     <b>一句话结论：</b>CoreS3（主机+屏幕）和 Keyboard3（键盘面板）分别装在 Faces Bottom3（基座）正面的两半上；基座附的 6 颗 M3×12 螺丝正好是 主机 4 颗 + 面板 2 颗。装完把基座背面那个电源开关拨到 <b>1</b>，就能开机了。
   </div>
@@ -317,6 +330,358 @@ footer{text-align:center;font-size:12px;color:var(--sub);padding:10px 0 40px;}
     页内图片版权归 M5Stack Technology Co., Ltd. 所有，此处仅作组装说明用途，本项目与其无隶属关系；如权利方提出异议将立即移除。</footer>
 </div>
 
+<div class="lang" data-lang="en">
+  <div class="banner">
+    <b>The short version:</b> the CoreS3 (the computer + screen) and the Keyboard3 (the keyboard panel)
+    each mount on one half of the front of the Faces Bottom3 base; the 6 M3×12 screws that come with the
+    base are exactly 4 for the computer + 2 for the panel. When you're done, flip the power switch on the
+    back of the base to <b>1</b> and it turns on.
+  </div>
+
+  <div class="toc">
+    <a href="#en1">① What the three parts are</a>
+    <a href="#en2">② 4 assembly steps</a>
+    <a href="#en3">③ First power-on checks</a>
+    <a href="#en4">④ Bring the keyboard to life (no code)</a>
+    <a href="#en5">⑤ How the keyboard works</a>
+    <a href="#en6">⑥ Power and charging</a>
+    <a href="#en7">⑦ Troubleshooting</a>
+    <a href="#en8">⑧ Three paths forward</a>
+    <a href="#en9">⑨ Official links</a>
+  </div>
+
+  <div class="panel" id="en1">
+    <h2><span class="num">1</span>What the three parts are <span class="tag">know the roles first</span></h2>
+    <p class="lead">M5Stack is a building-block system: the computer does the computing and display, the
+      base handles power and expansion, and the panel is the input device. The three plug together with
+      pin headers/sockets — no soldering.</p>
+    <div class="three">
+      <div class="box">
+        <span class="role">Brain · screen unit</span>
+        <div class="nm">CoreS3</div>
+        <div class="ds">ESP32-S3 dual core, 16MB flash / 8MB PSRAM, 2.0" touch screen, camera, dual
+          microphones + speaker, 6-axis IMU, microSD slot. Power button and USB-C on the left, RST on the
+          bottom edge.</div>
+      </div>
+      <div class="box">
+        <span class="role">Frame · battery bay</span>
+        <div class="nm">Faces Bottom3 base</div>
+        <div class="ds">600mAh battery + charging circuit, 5 RGB LEDs on each side, PORT.B/PORT.C
+          expansion ports on top, magnetic charging contacts on the back. Left half of the front takes
+          the computer (M5-Bus 2×30), right half takes the panel (22P socket).</div>
+      </div>
+      <div class="box">
+        <span class="role">Input · keyboard</span>
+        <div class="nm">Faces Keyboard3 panel</div>
+        <div class="ds">35-key QWERTY with an STM32 inside, talking to the host over I2C (address 0x08).
+          Each key carries three layers of characters (black / blue / red), switched with aA, Fn and sym;
+          two blue LEDs show the active layer.</div>
+      </div>
+    </div>
+    <div class="shot"><img data-img="1" alt="CoreS3 ports and buttons"><div class="cap">CoreS3 buttons and ports:
+      <b>PWR</b> (single tap = on, hold 6s = off), <b>USB-C</b>, <b>RST</b> on the bottom edge (single tap =
+      reset, hold 3s = download mode, green LED lights). The photo also shows the factory-fitted DinBase
+      and the 500mAh battery.</div></div>
+  </div>
+
+  <div class="panel" id="en2">
+    <h2><span class="num">2</span>4 assembly steps <span class="tag">about 10 minutes</span></h2>
+    <p class="lead">Clear the desk first. You need the <b>2.5mm hex key</b> and the <b>6 M3×12 screws</b>
+      from the Faces Bottom3 box. Keep everything unplugged (no USB-C) throughout.</p>
+    <div class="steps">
+      <div class="step"><div class="no"></div><div class="bd">
+        <div class="hd">Remove the DinBase from the back of the CoreS3</div>
+        <p>The CoreS3 ships with a grey DinBase (DIN-rail base, containing a 500mAh battery) screwed to its
+          back. Using the 2.5mm hex key from the box, undo the <b>4 corner screws</b> and put the DinBase
+          aside — you can refit it later for standalone use.</p>
+        <p>With it removed you can see the <b>2×30 socket (M5-Bus)</b> on the back of the CoreS3.</p>
+      </div></div>
+      <div class="step"><div class="no"></div><div class="bd">
+        <div class="hd">Seat the CoreS3 on the M5-Bus half of the base</div>
+        <p>On the front of the base, the half printed with the <code>PIN MAP</code> pinout table is the
+          “computer side”, next to a long <b>2×30 pin header (M5-Bus)</b>. Line the CoreS3's socket up with
+          the header and <b>press straight down gently until it bottoms out</b> (screen facing up and out),
+          then fit the <b>4 M3×12</b> screws once the corner holes line up.</p>
+        <p>Don't lever it in at an angle, and don't press on the glass.</p>
+      </div></div>
+      <div class="step"><div class="no"></div><div class="bd">
+        <div class="hd">Plug the Keyboard3 panel into the middle socket</div>
+        <p>The panel has a <b>2×11 (22P) header</b> on its back; the base has the matching
+          <b>22P socket</b> in the middle (printed <code>M5FACESIII</code> next to it). Align the header,
+          lay it down — it should settle naturally — then fit <b>2 M3×12</b> screws.</p>
+        <p>If it clearly stops short and won't seat, it's the wrong way round: pull it out, turn it 180°
+          and try again. <b>Never force it</b> (reversed pins can connect a power pin to a signal pin).</p>
+      </div></div>
+      <div class="step"><div class="no"></div><div class="bd">
+        <div class="hd">Set the power switch on the back of the base to 1</div>
+        <p>There is <b>only one switch on the back of the case</b>: the <b>battery power switch</b>,
+          silkscreened <code>1 / 0</code> (some batches say ON / OFF): <b>1 (ON) = powered, 0 (OFF) =
+          fully disconnected</b>. Set it to 1 and you can press PWR on the left of the CoreS3 to boot.</p>
+        <p><b>Correction:</b> an earlier version of this manual claimed “two switches on the back” — that
+          was wrong. The other switch (the <b>LED IO selector</b>) is on the main board, hidden under the
+          case; it only affects the side RGB strips and has <b>nothing to do with the keyboard panel</b>,
+          so don't open the case for it (see the end of section 5).</p>
+        <p><b>Added (measured):</b> with the board's <code>SELECTION</code> slider pushed towards the
+          <code>Core2 / CoreS3</code> silkscreen, the strips show a <b>flowing pale-blue effect</b>; pushed
+          the other way (<code>Core</code>) the whole strip is <b>solid white</b>. So you can judge the
+          position by what you see.</p>
+      </div></div>
+    </div>
+    <h3 class="st">Reference: the base (pinout table, M5-Bus 2×30, FACES-BUS 22P, battery, buttons)</h3>
+    <div class="shot"><img data-img="2" alt="Faces Bottom3 top view"><div class="cap">The long vertical strip is
+      the <b>M5-Bus 2×30</b> (for the CoreS3); the horizontal row in the middle is the
+      <b>FACES-BUS 2×11 / 22P</b> (for the keyboard panel). The <code>PIN MAP</code> table tells you which
+      pins each host/panel bus uses — for the CoreS3: PORT.A 2/1, PORT.B 8/9, PORT.C 18/17, I2C 11/12,
+      RGB LED 5. <b>Note: the 10 side LEDs do not follow this table</b> — their data line is hard-wired and
+      only passes through the SELECTION slider (G15 / G25), see the end of section 5.</div></div>
+    <h3 class="st">Close-up of the battery power switch (the only switch on the case)</h3>
+    <div class="shot"><img data-img="3" alt="Battery power switch 1 / 0"><div class="cap">Only this one switch
+      on the back of the case: silkscreen <code>1 / 0</code>, <b>1 = ON (powered)</b>, <b>0 = OFF (fully
+      disconnected to save battery)</b>. A dark screen doesn't mean it's broken — check this switch first.</div></div>
+  </div>
+
+  <div class="panel" id="en3">
+    <h2><span class="num">3</span>First power-on checks <span class="tag">tick them off</span></h2>
+    <p class="lead">Don't start programming yet — confirm the hardware works first, in this order.
+      Click an item to tick it.</p>
+
+    <div class="note warn"><b>First, understand those two blue LEDs: they don't light for just any key</b>
+      <p style="margin:10px 0 6px">M5Stack's own Keyboard3 panel firmware gives a definitive answer:
+        <b>after power-on both blue LEDs are off by default</b> (the firmware defaults to
+        <code>led_mode = 0</code>), and they only light for “modifier” keys:</p>
+      <ul style="margin:0 0 6px">
+        <li>tap <code>aA</code> → <b>left LED on</b>; tap <code>Fn</code> → <b>right LED on</b>;
+          tap <code>sym</code> → <b>the two LEDs blink alternately</b></li>
+        <li>hold <code>alt</code> → left LED blinks fast</li>
+        <li><b>pressing letters / digits / space: no LED lights at all</b> — by design, not a fault</li>
+      </ul>
+      <p style="margin:0">Also, every time the panel powers up (i.e. when the host boots) both LEDs
+        <b>blink alternately for about half a second</b> — a self-test hard-coded in the panel firmware.
+        <b>So “is the panel alive?” comes down to two things: ① did it blink alternately at power-on;
+        ② do the LEDs respond to aA / sym / Fn.</b></p>
+    </div>
+
+    <ul class="chk" id="chk2">
+      <li><span class="dot"></span><span>The power switch on the back of the case is at <b>1</b> (ON), not 0</span></li>
+      <li><span class="dot"></span><span>Connect the CoreS3's left USB-C port to the computer (or a charger) — for the first test keep the cable in, to rule out a flat battery</span></li>
+      <li><span class="dot"></span><span>Single-tap <b>PWR</b> on the left of the CoreS3: the screen should light up with the CoreS3 splash</span></li>
+      <li><span class="dot"></span><span>Touch works and the screen is bright → the computer side is fine (the panel draws its power from the host's M5-Bus)</span></li>
+      <li><span class="dot"></span><span><b>At the moment of power-on</b> watch the keyboard: do the two blue LEDs blink alternately for about half a second? → blinking means the panel is powered and running</span></li>
+      <li><span class="dot"></span><span>Tap <code>aA</code>, <code>sym</code>, <code>Fn</code>, or hold <code>alt</code>: the matching LED reacts → panel communication is fine</span></li>
+      <li><span class="dot"></span><span>Unplug USB-C and it keeps running → the base battery is supplying power</span></li>
+      <li><span class="dot"></span><span>Side strips: once the board's SELECTION slider is in the right position you get an effect (a flowing pale blue on the CoreS3); wrong position = <b>solid white</b> → see the end of section 5</span></li>
+    </ul>
+    <div class="note warn"><b>Can't reach the RST button once assembled?</b> The CoreS3's RST is on the
+      bottom edge and the keyboard panel may cover it. To enter download mode for flashing, loosen the
+      panel's 2 screws and lift it slightly to reach RST, or simply flash with the panel not fitted and
+      assemble afterwards (the firmware lives in the host, so the panel makes no difference).</div>
+    <div class="note ok"><b>About “weird magnetometer readings”</b> Both the base and the DinBase contain
+      magnets (for magnetic charging/mounting), which affect the CoreS3's on-board BMM150 magnetometer
+      (compass). Normal behaviour, not a fault.</div>
+  </div>
+
+  <div class="panel" id="en4">
+    <h2><span class="num">4</span>Bring the keyboard to life: flash the official demo <span class="tag">no code · in the browser</span></h2>
+    <p class="lead">M5Stack publishes a demo firmware for this Faces3 combination that auto-detects the
+      panel; you flash it from the browser without installing Arduino. Afterwards, plugging in the
+      Keyboard3 drops you straight into a keyboard test game.</p>
+    <p><b>What's in the Faces3 User Demo:</b> auto-detection of the fitted panel; with a Keyboard3 →
+      <b>Basic Input Test</b> + <b>Keyboard Whack-a-Mole</b>.</p>
+    <div class="steps">
+      <div class="step"><div class="no"></div><div class="bd"><div class="hd">Open the flash page in Chrome or Edge</div>
+        <p>Open the official share page:
+          <a href="https://burner.m5stack.com/share/firmware/TNP2U4" target="_blank">burner.m5stack.com/share/firmware/TNP2U4</a>
+          (that's the Faces3 User Demo). <b>Must be Chrome or Edge</b> (it uses Web Serial); Safari won't
+          work.</p>
+      </div></div>
+      <div class="step"><div class="no"></div><div class="bd"><div class="hd">Put the CoreS3 into download mode</div>
+        <p>Connect it to the Mac with USB-C, then <b>hold RST on the bottom edge of the CoreS3 for about
+          3 seconds</b> until the green LED lights, then release. When the green LED goes out it's in
+          download mode.</p>
+      </div></div>
+      <div class="step"><div class="no"></div><div class="bd"><div class="hd">Connect</div>
+        <p>Click “Connect” on the page and pick the CoreS3 entry from the serial list (usually
+          <code>USB JTAG/serial debug unit</code> or something starting with <code>usbmodem</code>). The
+          CoreS3 uses the chip's native USB, so macOS normally needs no driver.</p>
+      </div></div>
+      <div class="step"><div class="no"></div><div class="bd"><div class="hd">Flash and wait</div>
+        <p>Follow the prompts and click Burn; after the progress bar completes (about a minute) the device
+          reboots itself. <b>Don't unplug or cut power during the process.</b></p>
+      </div></div>
+      <div class="step"><div class="no"></div><div class="bd"><div class="hd">Play</div>
+        <p>When the menu appears, pick the keyboard entry on the touch screen, or just boot with the
+          Keyboard3 attached and let it auto-detect. Try typing, then play whack-a-mole.</p>
+      </div></div>
+    </div>
+    <div class="note"><b>If the browser route doesn't work</b> you can also download M5Stack's desktop
+      <b>M5Burner</b> (macOS supported), search for <code>Faces3 User Demo</code> inside it, or flash any
+      other ready-made CoreS3 firmware. Neither requires writing code.</div>
+    <div class="shot"><img data-img="4" alt="Faces Bottom3 connectors"><div class="cap">Base connectors at a
+      glance: two HY2.0-4P ports on top (PORT.B / PORT.C) for M5Stack sensor units; RGB strips down the
+      sides; magnetic contacts on the back for the charging dock.</div></div>
+  </div>
+
+  <div class="panel" id="en5">
+    <h2><span class="num">5</span>How the keyboard works <span class="tag">three layers</span></h2>
+    <p class="lead">35 keys, but each keycap is printed with 3 characters (black / blue / red). Shift-like
+      keys switch the “input layer”, and the two blue LEDs indicate the current layer.</p>
+    <div class="keyrow"><span class="sw" style="background:#1677ff"></span><div><b>Left LED on</b> = base layer (black characters: letters, digits…)</div></div>
+    <div class="keyrow"><span class="sw" style="background:#1677ff"></span><div><b>Right LED on</b> = symbol layer (blue characters: ~ ! @ # …)</div></div>
+    <div class="keyrow"><span class="sw" style="background:#f0932b"></span><div><b>LEDs blinking alternately</b> = function layer (red characters: arrows, del, ok, alt, ESC…)</div></div>
+    <div class="keyrow"><span class="sw" style="background:#d5dbe5"></span><div><b>Both LEDs off</b> = the factory default (no modifier held). <b>LEDs staying dark while you type letters is normal</b> — not a fault.</div></div>
+    <p>Switching: <code>aA</code> (case / base layer), <code>sym</code> (symbols), <code>Fn</code>
+      (functions) — tap to switch, double-tap to lock. The keyboard also has TAB, alt, ESC, arrows,
+      backspace, del and ok, handy for menu-driven little tools.</p>
+    <div class="shot"><img data-img="5" alt="Faces Keyboard3 front"><div class="cap">Keyboard front: QWERTY
+      layout, with aA / 0 / SPACE / sym / Fn along the bottom row. The black, blue and red colours above
+      each row correspond to the three input layers.</div></div>
+    <div class="shot"><img data-img="6" alt="Faces Keyboard3 back, 22P socket"><div class="cap">Keyboard back:
+      the <b>2×11 (22P) socket</b> along the lower edge (the black plastic block with 22 small square holes)
+      is what plugs onto the base's panel header; the row below the holes is its solder pads. Note it's a
+      <b>socket</b> while the base has <b>pins</b>, so it can also be forced on backwards —
+      <b>“it fits” does not mean “it's the right way round”</b>. Always confirm visually as below.</div></div>
+    <div class="note warn"><b>How to confirm the panel is the right way round (don't guess)</b>
+      <ol style="margin:8px 0 0">
+        <li><b>Character orientation:</b> once fitted, the characters on every keycap must be <b>upright</b>,
+          the same way round as the silkscreen on the base (e.g. <code>M5FACESIII</code>,
+          <code>PIN MAP</code>). Upside down = inserted backwards.</li>
+        <li><b>Is it seated?</b> The panel's grey frame should sit <b>flush against the base with no gap</b>;
+          a 1–2mm gap all round that wobbles means it isn't fully down.</li>
+        <li><b>Screw holes:</b> the panel's corner standoffs must line up with the base's holes; both
+          M3×12 screws should thread in smoothly. If they bind, the position is wrong.</li>
+      </ol>
+      <p style="margin:8px 0 0"><b>Never “try it the other way to see if it fits”</b> — of the 22 pins,
+        some are 3V3 and some are GND, so reversing can put a power pin onto a signal pin. Confirm visually
+        first; if you're unsure, take a photo and ask.</p>
+    </div>
+    <div class="note ok"><b>The SELECTION switch on the board: which way (measured on this unit)</b>
+      <p style="margin:8px 0 6px">On the base's <b>main board</b> (not the back of the case) there is a
+        white slider with <code>SELECTION</code> printed beside it, with <code>Core</code> at one end and
+        <code>Core2 / CoreS3</code> at the other. The official schematic settles what it does: the 10
+        SK6812 LEDs on both sides are chained, and the chain's <b>data line</b> goes to this switch's
+        common pin, which selects between two pins —</p>
+      <ul style="margin:0 0 6px">
+        <li>the <code>Core</code> side = <b>G15</b> (the pin used by the M5Stack Core / Basic / Fire generation)</li>
+        <li>the <code>Core2 / CoreS3</code> side = <b>G25</b> (Core2 and CoreS3 share this position)</li>
+      </ul>
+      <p style="margin:0 0 6px"><b>For a CoreS3, set it to the <code>Core2 / CoreS3</code> side.</b> Don't
+        bother counting silkscreen — read the effect instead: <b>right → the host program can drive the
+        strip and you see a smooth effect (a flowing pale blue on the CoreS3); wrong → the whole strip stays
+        solid white</b>. The reason is physical: the idle data pin sits high, and an SK6812 reads a
+        continuous high as a long run of “1”s, so all 10 LEDs go full white.</p>
+      <p style="margin:0"><b>It only affects the two side strips and has nothing to do with the keyboard
+        panel; the wrong position can't damage anything</b> — experiment freely.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="en6">
+    <h2><span class="num">6</span>Power and charging <span class="tag">don't drain the battery flat</span></h2>
+    <ul>
+      <li><b>Normal power:</b> the base's 600mAh battery feeds the CoreS3 through the M5-Bus — provided the
+        battery switch on the back is <b>ON</b>.</li>
+      <li><b>Charging (recommended):</b> just place the base onto the <b>Faces Charging3 magnetic dock</b>;
+        it snaps on (pogo pins + magnets) and you plug USB-C into the dock. The dock doubles as a stand.</li>
+      <li><b>Charging (temporary):</b> plugging USB-C straight into the CoreS3 also powers it and charges
+        the base battery.</li>
+      <li><b>Saving power:</b> for long storage, set the battery switch to OFF so the battery doesn't slowly
+        drain.</li>
+    </ul>
+    <div class="shot"><img data-img="7" alt="Faces Charging3 magnetic dock"><div class="cap">Faces Charging3
+      magnetic dock: USB-C on the front, magnets in the base — the device snaps on.</div></div>
+  </div>
+
+  <div class="panel" id="en7">
+    <h2><span class="num">7</span>Troubleshooting <span class="tag">table</span></h2>
+    <table class="tbl">
+      <thead><tr><th style="width:26%">Symptom</th><th style="width:32%">Most likely cause</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>Power button does nothing, screen dark</td><td>Battery switch at 0 (OFF); battery empty; wrong button</td><td>Set the switch on the back to <b>1</b>; power via USB-C first, then single-tap PWR on the left</td></tr>
+        <tr><td>CoreS3 won't seat on the base</td><td>The DinBase on the back hasn't been removed</td><td>Undo the DinBase's 4 screws with the 2.5mm hex key, take it off, then mount</td></tr>
+        <tr><td><b>Blue LEDs don't light when typing letters</b></td><td><b>Normal:</b> the panel's default LED mode is “both off”; only modifiers light them</td><td>Judge by pressing <code>aA</code> / <code>sym</code> / <code>Fn</code> instead. Nothing to fix</td></tr>
+        <tr><td>No LED for aA / sym / Fn either, and no alternating blink at power-on</td><td>Panel has no power or no link (not seated / wrong way round / host off)</td><td>① confirm the host screen is on; ② remove and reseat the keyboard, press it home, check the character orientation; ③ reboot once and watch for the blink</td></tr>
+        <tr><td>Panel won't go all the way down, gap around it</td><td>Wrong orientation, or the 22 pins aren't aligned</td><td>Lift it, line the 22 holes up with the header and press straight down. <b>Don't force it at an angle and don't blindly flip it</b></td></tr>
+        <tr><td>Keyboard does nothing at all in the on-screen test</td><td>Panel not seated; firmware doesn't know Faces panels</td><td>Reseat the panel; flash the official Faces3 User Demo to verify the hardware</td></tr>
+        <tr><td>Screen says <code>Keyboard3 init failed</code></td><td>I2C isn't talking (poor contact, or wrong pins in the program)</td><td>Reseat the panel; on the CoreS3 the keyboard's I2C is SDA=G12, SCL=G11, INT=G10 — check the pins in your code/blocks</td></tr>
+        <tr><td>Side RGB strips don't light</td><td>The SELECTION slider on the board is in the wrong position (or the program never drives them)</td><td>Remove the host and set SELECTION to the <b>Core2 / CoreS3</b> side (= G25); the official demo then shows a flowing pale blue</td></tr>
+        <tr><td>Side RGB strips <b>stay solid white</b></td><td>The data line is on a pin nobody drives (slider left at <code>Core</code> / G15)</td><td>Harmless — nothing else is affected. Move SELECTION to the <b>Core2 / CoreS3</b> side and the white turns into a normal effect</td></tr>
+        <tr><td>Shuts down after a short while</td><td>Battery low</td><td>Charge on the magnetic dock, or power the host directly over USB-C</td></tr>
+        <tr><td>Compass / magnetic field readings look wrong</td><td>There are magnets in the base and the DinBase</td><td>Normal — any magnetometer close to a magnet is offset. Ignore it</td></tr>
+        <tr><td>The flash page can't connect to the device</td><td>Not in download mode; wrong browser; charge-only cable</td><td>Hold RST 3s until the green LED lights; use Chrome/Edge; use a USB-C cable that carries data</td></tr>
+        <tr><td>Flash fails halfway</td><td>Unstable cable or power</td><td>Change cable and port, avoid USB hubs; re-enter download mode and flash again</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel" id="en8">
+    <h2><span class="num">8</span>Three paths forward <span class="tag">pick one</span></h2>
+    <p class="lead">Once the hardware works, choose one of these to make it do something. The first two
+      need no traditional code.</p>
+    <h3 class="st">Path A: only official ready-made firmware (no code, easiest)</h3>
+    <p>Use M5Burner / WebBurner to flash existing firmware: Faces3 User Demo (keyboard games), the CoreS3
+      factory demo, the XiaoLing voice assistant, ESP-Claw, etc. Good for getting familiar with the device
+      and proving the hardware.</p>
+    <h3 class="st">Path B: UiFlow2 block programming (drag and drop, recommended for starters)</h3>
+    <p>UiFlow2 already ships a <code>Faces Keyboard3</code> module with a Normal mode (get characters) and a
+      Direct mode (get specific key names, and control the keyboard LEDs). Official one-click example
+      projects are available too — change a few blocks and you have a “keyboard-controlled menu” app.</p>
+    <h3 class="st">Path C: Arduino code (requires coding, but most freedom)</h3>
+    <p>The official tutorial has a full example: install <code>M5Unified</code> + <code>M5Faces</code>, treat
+      the keyboard as a plain input device and echo keys on screen in real time. The way to go if you later
+      want your own tools (notepad, quick timers, shortcut panels…).</p>
+    <div class="chips">
+      <span class="chip">Verify the hardware with official firmware</span>
+      <span class="chip">Build your first small app with UiFlow2</span>
+      <span class="chip">Move to Arduino when you need to</span>
+    </div>
+  </div>
+
+  <div class="panel" id="en9">
+    <h2><span class="num">9</span>Official links <span class="tag">bookmark this</span></h2>
+    <div class="links">
+      <a href="https://docs.m5stack.com/en/core/CoreS3" target="_blank">CoreS3 product docs<span>specs, button operation, pin map, factory firmware restore</span></a>
+      <a href="https://docs.m5stack.com/en/faces/Faces_Bottom3" target="_blank">Faces Bottom3 product docs<span>box contents, battery switch, pin compatibility</span></a>
+      <a href="https://docs.m5stack.com/en/faces/Faces_Keyboard3" target="_blank">Faces Keyboard3 product docs<span>35-key layout, I2C address 0x08, indicator LEDs</span></a>
+      <a href="https://docs.m5stack.com/en/arduino/projects/faces/faces_keyboard3" target="_blank">Faces Keyboard3 Arduino tutorial<span>full example + pin notes + build &amp; flash steps</span></a>
+      <a href="https://burner.m5stack.com/share/firmware/TNP2U4" target="_blank">Faces3 User Demo one-click flash<span>browser flash page (Chrome/Edge)</span></a>
+      <a href="https://uiflow-micropython.readthedocs.io/en/develop/module/faces_keyboard3.html" target="_blank">UiFlow2 · Faces Keyboard3 module<span>blocks, API and example projects</span></a>
+      <a href="https://uiflow2.m5stack.com/" target="_blank">UiFlow2 block IDE<span>drag blocks and flash, right in the browser</span></a>
+      <a href="https://docs.m5stack.com/en/products" target="_blank">M5Stack product overview<span>start here when adding sensors or modules later</span></a>
+    </div>
+  </div>
+
+  <footer>Compiled from the M5Stack official docs (docs.m5stack.com) and official product images ·
+    models: CoreS3 (K128) / Faces Bottom3 (A168) / Faces Keyboard3 (A003-V3)<br>
+    Images on this page are copyright M5Stack Technology Co., Ltd., used here only to illustrate assembly;
+    this project is not affiliated with them and images will be removed on request.</footer>
+</div>
+
+</div>
+<script>
+(function(){
+  var KEY='cores3os-lang';
+  var btns=document.querySelectorAll('.langbar [data-set]');
+  function set(l){
+    document.body.setAttribute('data-lang',l);
+    try{localStorage.setItem(KEY,l);}catch(e){}
+    document.documentElement.lang = (l==='cn') ? 'zh-CN' : 'en';
+    Array.prototype.forEach.call(btns,function(b){b.classList.toggle('on', b.getAttribute('data-set')===l);});
+  }
+  Array.prototype.forEach.call(btns,function(b){b.addEventListener('click',function(){set(b.getAttribute('data-set'));});});
+  var init='cn'; try{init=localStorage.getItem(KEY)||'cn';}catch(e){}
+  set(init);
+})();
+</script>
+<script>
+/* 英文版复用中文版内嵌的同一份 base64 图片：data-img="N" = 中文版第 N 张 <img>。
+   这样同一张图在文件里只存一份，不必把 750KB 再翻倍。 */
+(function(){
+  var cn = document.querySelectorAll('.lang[data-lang="cn"] img[src^="data:"]');
+  Array.prototype.forEach.call(document.querySelectorAll('img[data-img]'), function(im){
+    var i = parseInt(im.getAttribute('data-img'), 10) - 1;
+    if (cn[i]) im.src = cn[i].src;
+  });
+})();
+</script>
 <script>
 document.querySelectorAll('.chk li').forEach(function(li){
   li.addEventListener('click', function(){ li.classList.toggle('done'); });

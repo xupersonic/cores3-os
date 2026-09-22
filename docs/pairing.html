@@ -57,16 +57,29 @@ code { background:#f4f8ff; border:1px solid var(--line); border-radius:6px; padd
   font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
 .note { background:#fff8ec; border:1px solid #f6e2c2; color:#8a6a2f; border-radius:12px; padding:11px 14px; font-size:12.5px; margin-top:12px; }
 .ok { background:#eefaf2; border:1px solid #c9ecd8; color:#1f7a45; border-radius:12px; padding:11px 14px; font-size:12.5px; margin-top:12px; }
+/* ── 双语切换 / language switch ── */
+.langbar{display:flex;gap:6px;justify-content:flex-end;align-items:center;margin:0 0 16px}
+.langbar button{font:inherit;font-size:12px;line-height:1;padding:6px 14px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(0,0,0,.15);background:#fff;color:#374151;opacity:.55}
+.langbar button.on{opacity:1;border-color:#006EFF;color:#006EFF;font-weight:600}
+@media print{ .langbar{display:none} }
+body[data-lang="cn"] [data-lang="en"],body[data-lang="en"] [data-lang="cn"]{display:none !important}
 @media (max-width:1000px){ .stats{grid-template-columns:repeat(2,1fr);} .grid2{grid-template-columns:1fr;} }
 </style>
 </head>
-<body>
+<body data-lang="cn">
 <header>
-  <h1>CoreS3 × WorkBuddy 控制器 · 使用速查卡</h1>
-  <div class="sub">M5Stack CoreS3 + Faces Bottom3 + Keyboard3 → Mac 上的 WorkBuddy 派活遥控器 · 2026-09-19 全链路验证通过</div>
+  <h1>CoreS3 × WorkBuddy 控制器 · 使用速查卡 <span style="font-size:15px;font-weight:500;color:var(--sub)">/ Quick Reference</span></h1>
+  <div class="sub">M5Stack CoreS3 + Faces Bottom3 + Keyboard3 → 用它在 Mac 上给 WorkBuddy 派活 · 2026-09-19 全链路验证通过 · <b>v0.3 存档 / archived</b></div>
 </header>
 
 <div class="wrap">
+
+<div class="langbar">
+  <button type="button" data-set="cn">中文</button><button type="button" data-set="en">English</button>
+</div>
+
+<div class="lang" data-lang="cn">
 
   <div style="margin:0 0 18px;padding:12px 16px;border-radius:10px;background:#fff4e5;border:1px solid #f0b37e;color:#7a4b12;font-size:14px;line-height:1.6">
     <b>⚠️ 本页是 v0.3 时代的存档，讲的已不是当前方案。</b>
@@ -197,7 +210,161 @@ code { background:#f4f8ff; border:1px solid var(--line); border-radius:6px; padd
     </table>
     <div class="ok"><b>已实测通过的一次：</b>派发「只回复一句话：CoreS3 控制器链路测试成功。」→ 10 秒内拿到 <code>done:true</code>，回文「CoreS3 控制器链路测试成功。」</div>
   </div>
+</div>
+
+<div class="lang" data-lang="en">
+  <div style="margin:0 0 18px;padding:12px 16px;border-radius:10px;background:#fff4e5;border:1px solid #f0b37e;color:#7a4b12;font-size:14px;line-height:1.6">
+    <b>⚠️ This page is an archive of the v0.3 design — it no longer describes the current one.</b>
+    Back then the CoreS3 joined Wi-Fi and polled an HTTP bridge on the Mac, so you had to configure
+    an SSID/password, watch the IP address and install a launchd job. The current firmware (v0.7.x)
+    is <b>pure BLE</b>: no Wi-Fi, no IP, just <code>mac-bridge/MusicBridge.app</code> running on the Mac.
+    Kept here only to show how the design evolved — for actual use see the
+    <a href="cheat-sheet.html" style="color:#7a4b12">cheat sheet</a> and the README.
+  </div>
+
+  <div class="stats">
+    <div class="stat blue"><div class="n">192.168.1.x</div><div class="l">The CoreS3's own IP</div></div>
+    <div class="stat"><div class="n">192.168.1.y:8788</div><div class="l">Bridge service address on the Mac</div></div>
+    <div class="stat green"><div class="n">YOUR_SSID</div><div class="l">Wi-Fi joined (2.4 GHz band)</div></div>
+    <div class="stat orange"><div class="n">kb=1 / wifi=1</div><div class="l">Keyboard detected / network up</div></div>
+  </div>
+
+  <div class="banner">
+    <b>In one sentence:</b> type an English task on the Keyboard3 → press <kbd>Enter</kbd> → WorkBuddy
+    running in the background on the Mac actually executes it → the result is sent back and shown on
+    the CoreS3 screen. You never touch the Mac and never steal focus.
+  </div>
+
+  <div class="grid2">
+
+    <div class="panel">
+      <h2>What the screen looks like <span class="tag">5 regions</span></h2>
+      <div class="screen">
+        <div class="bar"><span>WiFi 192.168.1.x</span><span>BAT 84%</span></div>
+        <div class="rowb">
+          <div class="btnx">Clear</div>
+          <div class="btnx on">Send</div>
+        </div>
+        <div class="lab">Input area (what you type lands here)</div>
+        <div class="inp">check today's calendar</div>
+        <div class="hint">Hint line: Enter sends · ESC clears</div>
+        <div class="lab">Result area (WorkBuddy's reply)</div>
+        <div class="res">CoreS3 controller link test succeeded.</div>
+      </div>
+      <div class="ok">What you see in the “result area” above is WorkBuddy's verbatim reply after really running the task.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Keyboard key map <span class="tag">Keyboard3</span></h2>
+      <table>
+        <tr><th>Key</th><th>Effect</th></tr>
+        <tr><td><kbd>A-Z 0-9 space , .</kbd></td><td>Normal character input (goes to the input area)</td></tr>
+        <tr><td><kbd>Backspace</kbd></td><td>Delete one character</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td><b>Send the task to WorkBuddy</b></td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Clear the input area</td></tr>
+        <tr><td>On-screen “Clear / Send”</td><td>Same as the two keys above — you can just tap the screen</td></tr>
+        <tr><td><kbd>aA</kbd> <kbd>sym</kbd> <kbd>Fn</kbd> <kbd>alt</kbd></td><td>Switch input layer; the blue LED lights while held (by design)</td></tr>
+      </table>
+      <div class="note"><b>One important limitation:</b> the Keyboard3 is a physical English keyboard and
+        <b>can only produce ASCII</b> — it cannot type Chinese directly. Write Chinese tasks in pinyin or
+        English; a voice channel can solve this later.</div>
+    </div>
+
+  </div>
+
+  <div class="panel">
+    <h2>Check this table first when something breaks <span class="tag">troubleshooting</span></h2>
+    <table>
+      <tr><th style="width:26%">Symptom</th><th style="width:37%">Most likely cause</th><th>What to do</th></tr>
+      <tr>
+        <td>No IP on the top line of the screen</td>
+        <td>Wi-Fi not joined (wrong password, or a 5 GHz-only network)</td>
+        <td>Send <code>status</code> over serial and check whether <code>wifi=</code> is 0 or 1; change networks with <code>wifi NAME PASSWORD</code></td>
+      </tr>
+      <tr>
+        <td>Stuck on “running” after sending, then times out</td>
+        <td>The bridge service isn't running on the Mac; or the CLI login expired (~3 days)</td>
+        <td>Double-click <code>~/.workbuddy/m5-bridge/启动桥接.command</code>; if that fails, double-click <code>登录.command</code> and log in again</td>
+      </tr>
+      <tr>
+        <td>Typing on the keyboard does nothing on screen</td>
+        <td>The Keyboard3 isn't seated properly, or I2C didn't initialise</td>
+        <td>Send <code>status</code> and look at <code>kb=</code>; if it's 0, unplug the panel, reseat it and press the CoreS3 reset button</td>
+      </tr>
+      <tr>
+        <td>Both side LED strips are solid white and static</td>
+        <td>The SELECTION switch on the Bottom3 board is in the wrong position</td>
+        <td>Move it to the side marked <b>Core2 / CoreS3</b> (the lower position); normal is a flowing pale-blue effect</td>
+      </tr>
+      <tr>
+        <td>The two blue keyboard LEDs never light</td>
+        <td>The firmware defaults to <code>led_mode=0</code>, so they are simply off</td>
+        <td>Not a fault. They light only when you press <kbd>aA</kbd>/<kbd>sym</kbd>/<kbd>Fn</kbd>/<kbd>alt</kbd>, and they blink once at power-on</td>
+      </tr>
+      <tr>
+        <td>Edited config.h, reflashed, behaviour unchanged</td>
+        <td>Arduino reused a stale build cache</td>
+        <td>Delete <code>~/Library/Caches/arduino/sketches/&lt;HASH&gt;</code> before compiling; confirm with <code>strings *.bin | grep &lt;new string&gt;</code></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Mac-side housekeeping <span class="tag">3 things</span></h2>
+      <ol class="steps">
+        <li><b>Runs at login:</b> once the launchd job (<code>com.cores3os.bridge</code>) is registered it starts at the next login; to start it right now, double-click <code>启动桥接.command</code>.</li>
+        <li><b>Changing Wi-Fi:</b> no need to reflash. Send <code>wifi YOUR_SSID YOUR_PASSWORD</code> over serial — the device stores it in flash and reboots; <code>reset</code> restores the default.</li>
+        <li><b>Login expiring:</b> the CLI token lasts about 3 days. When it expires, double-click <code>登录.command</code> and go through the interactive login once.</li>
+      </ol>
+      <div class="note">The bridge does exactly one thing: receive an HTTP request → spawn a CLI subprocess → write the result back to an outbox the device polls. It never touches your UI and needs no accessibility permission.</div>
+    </div>
+
+    <div class="panel">
+      <h2>The reverse direction: let WorkBuddy reach the device <span class="tag">MCP</span></h2>
+      <ol class="steps">
+        <li>An MCP server is already written: <code>~/.workbuddy/m5-bridge/mcp_cores3.py</code> (zero dependencies, stdio).</li>
+        <li>It is registered in <code>~/.workbuddy/mcp.json</code> under the name <code>m5-cores3</code>.</li>
+        <li><b>One step left for you:</b> restart WorkBuddy, open the connector management page and click “Trust” on the newly appeared <code>m5-cores3</code>.</li>
+      </ol>
+      <table style="margin-top:8px">
+        <tr><th>Tool</th><th>Effect</th></tr>
+        <tr><td><code>cores3_display</code></td><td>Show a piece of text on the CoreS3 screen (Chinese OK)</td></tr>
+        <tr><td><code>cores3_led</code></td><td>Control the 10 RGB LEDs on both sides of Bottom3</td></tr>
+        <tr><td><code>cores3_status</code></td><td>Query online status and battery level</td></tr>
+        <tr><td><code>cores3_last_result</code></td><td>Fetch the result of the most recent task</td></tr>
+      </table>
+      <div class="note">Direction note: MCP can only be <b>initiated by WorkBuddy</b>, so “device → dispatch a task” goes over the HTTP bridge while “WorkBuddy → device” goes over MCP. The two paths are separate and both work.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Three sentences to try now <span class="tag">start short</span></h2>
+    <table>
+      <tr><th style="width:44%">Type this on the keyboard</th><th>What happens</th></tr>
+      <tr><td><code>what time is it</code></td><td>WorkBuddy looks up the current time and returns it to the screen (fastest, a few seconds)</td></tr>
+      <tr><td><code>list files in WorkBuddy folder</code></td><td>It really lists the directory — proves it has permission to act</td></tr>
+      <tr><td><code>summarize my day in one line</code></td><td>Exercises a longer task; watch how the result area wraps lines</td></tr>
+    </table>
+    <div class="ok"><b>A run that was verified end to end:</b> dispatching “Reply with one sentence only: CoreS3 controller link test succeeded.” → <code>done:true</code> within 10 seconds, and the reply came back as “CoreS3 controller link test succeeded.”</div>
+  </div>
+</div>
 
 </div>
+<script>
+(function(){
+  var KEY='cores3os-lang';
+  var btns=document.querySelectorAll('.langbar [data-set]');
+  function set(l){
+    document.body.setAttribute('data-lang',l);
+    try{localStorage.setItem(KEY,l);}catch(e){}
+    document.documentElement.lang = (l==='cn') ? 'zh-CN' : 'en';
+    Array.prototype.forEach.call(btns,function(b){b.classList.toggle('on', b.getAttribute('data-set')===l);});
+  }
+  Array.prototype.forEach.call(btns,function(b){b.addEventListener('click',function(){set(b.getAttribute('data-set'));});});
+  var init='cn'; try{init=localStorage.getItem(KEY)||'cn';}catch(e){}
+  set(init);
+})();
+</script>
 </body>
 </html>

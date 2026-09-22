@@ -29,12 +29,24 @@ td{padding:10px 12px;border-top:1px solid rgba(0,0,0,.06);vertical-align:top}
 border-radius:6px;padding:1px 7px;font-size:12px;font-family:ui-monospace,Menlo,monospace;margin:0 2px}
 .ok{color:#0F9960;font-weight:600}
 .foot{text-align:center;color:#9AA3AF;font-size:12px;margin-top:24px}
+/* ── 双语切换 / language switch ── */
+.langbar{display:flex;gap:6px;justify-content:flex-end;align-items:center;margin:0 0 18px}
+.langbar button{font:inherit;font-size:12px;line-height:1;padding:6px 14px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(0,0,0,.15);background:#fff;color:#374151;opacity:.55}
+.langbar button.on{opacity:1;border-color:#006EFF;color:#006EFF;font-weight:600}
+@media print{ .langbar{display:none} }
+body[data-lang="cn"] [data-lang="en"],body[data-lang="en"] [data-lang="cn"]{display:none !important}
 @media(max-width:600px){body{padding:20px 14px}.card{padding:20px}}
 </style>
 </head>
-<body>
+<body data-lang="cn">
 <div class="wrap">
 
+<div class="langbar">
+  <button type="button" data-set="cn">中文</button><button type="button" data-set="en">English</button>
+</div>
+
+<div class="lang" data-lang="cn">
 <h1>CoreS3 控制器 · 配对与设置</h1>
 <p class="sub">固件已刷好。设备上电后屏幕顶部显示「BLE 等待配对」，按下面三步走完即可使用。</p>
 
@@ -117,7 +129,109 @@ border-radius:6px;padding:1px 7px;font-size:12px;font-family:ui-monospace,Menlo,
 </div>
 
 <p class="foot">CoreS3 控制器 · 纯 BLE HID 形态 · 不需要 Wi-Fi，Mac 上无需安装或运行任何程序</p>
+</div>
+
+<div class="lang" data-lang="en">
+<h1>CoreS3 Controller · Pairing &amp; Setup</h1>
+<p class="sub">The firmware is already flashed. After power-up the screen shows “BLE waiting for pairing” — follow the three steps below.</p>
+
+<div class="card">
+<h2><span class="num">1</span>Pair Bluetooth (once only)</h2>
+<p class="h2sub">Just-works pairing — no PIN dialog will appear.</p>
+<ol>
+<li>On the Mac open <strong>System Settings → Bluetooth</strong> (or click the Bluetooth icon in the menu bar).</li>
+<li>After a few seconds <strong>CoreS3 Controller</strong> appears under “Nearby Devices”.</li>
+<li>Click <strong>Connect</strong>. No passkey is required.</li>
+<li>Once connected, the CoreS3 status bar changes to <span class="ok">“BLE connected”</span>.</li>
+</ol>
+<div class="note">Pairing is remembered permanently: from now on the CoreS3 reconnects automatically at power-on.</div>
+</div>
+
+<div class="card">
+<h2><span class="num">2</span>Set the dictation shortcut (once only)</h2>
+<p class="h2sub">Lets the CoreS3 voice key trigger macOS dictation.</p>
+<ol>
+<li>Open <strong>System Settings → Keyboard</strong> and scroll down to <strong>Dictation</strong>.</li>
+<li>Turn Dictation on and pick <strong>Mandarin (Mainland China)</strong> as the language.</li>
+<li>Click <strong>Shortcut</strong> → <strong>Customize…</strong> → press <span class="kbd">Control</span>+<span class="kbd">Option</span>+<span class="kbd">D</span>.</li>
+</ol>
+<div class="note">The firmware sends exactly <code>Control + Option + D</code>. To use another combination, change
+<code>DICT_MODS</code> / <code>DICT_KEY</code> in <code>config.h</code> and reflash — just keep both sides in sync.<br>
+For faster, fully offline dictation, tick “Use Enhanced Dictation” on the same page (requires downloading the language pack first).</div>
+</div>
+
+<div class="card">
+<h2><span class="num">3</span>Set up Chinese presets (optional, but worth it)</h2>
+<p class="h2sub">A HID keyboard can't type Chinese — macOS Text Replacement expands short codes into long Chinese prompts.</p>
+<ol>
+<li>Open <strong>System Settings → Keyboard → Text Replacements</strong> and click <strong>+</strong>.</li>
+<li>Put the short code in “Replace” and the Chinese prompt you want in “With”.</li>
+</ol>
+<table>
+<tr><th style="width:34%">Replace (code)</th><th>With (make these your own)</th></tr>
+<tr><td><code>;;daily</code></td><td>List what I need to do today, sorted by priority</td></tr>
+<tr><td><code>;;mail</code></td><td>Summarise the key points and pending replies in today's email</td></tr>
+<tr><td><code>;;sum</code></td><td>Summarise the current project's progress, risks and next steps</td></tr>
+<tr><td><code>;;plan</code></td><td>Plan my day, keeping a block of deep-work time</td></tr>
+</table>
+<div class="note">The <code>;;</code> prefix avoids clashing with normal typing. Codes may only contain English letters and symbols.</div>
+</div>
+
+<div class="card">
+<h2><span class="num">4</span>Key map</h2>
+<table>
+<tr><th style="width:32%">On the CoreS3</th><th style="width:26%">Sent to the Mac</th><th>Effect</th></tr>
+<tr><td>Big button / <strong>Space</strong></td><td>Control+Option+D</td><td>Start dictation; press again to stop</td></tr>
+<tr><td>“Send” / <strong>Enter</strong></td><td>Return</td><td>Send what's in the input box</td></tr>
+<tr><td>“Cancel” / <strong>Esc</strong></td><td>Escape</td><td>Cancel the current input</td></tr>
+<tr><td>“Preset”</td><td>—</td><td>Open the preset page with four Chinese buttons</td></tr>
+<tr><td><strong>Keys 1–4</strong></td><td>code + Return</td><td>Send the matching preset directly</td></tr>
+<tr><td>“New chat”</td><td>Cmd + N</td><td>Start a new conversation (changeable if the shortcut differs)</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2><span class="num">5</span>Everyday use</h2>
+<ol>
+<li>Tap the big button (or press Space) → the screen switches to “Recording…”.</li>
+<li>Speak towards the Mac — the text lands in <strong>whichever input box currently has focus</strong>.</li>
+<li>Tap “Send” → it goes out.</li>
+</ol>
+<div class="warn">Dictation types into “whatever box has the cursor”, so click the WorkBuddy input box first. This is exactly how VibeKey works too.</div>
+</div>
+
+<div class="card">
+<h2><span class="num">6</span>Troubleshooting</h2>
+<table>
+<tr><th style="width:38%">Symptom</th><th>Fix</th></tr>
+<tr><td>Stuck on “waiting for pairing”</td><td>Power-cycle the CoreS3; toggle Bluetooth off/on on the Mac; send <code>unpair</code> over serial to restart advertising</td></tr>
+<tr><td>Not visible in the Bluetooth list</td><td>Make sure the switch on the bottom of Bottom3 is set to <strong>1</strong>; move the device closer to the Mac</td></tr>
+<tr><td>Screen flashes red after a keypress</td><td>Not connected yet — finish pairing first</td></tr>
+<tr><td>Voice key does nothing</td><td>Check that the dictation shortcut really is <code>Control+Option+D</code></td></tr>
+<tr><td>Presets come out as the raw code</td><td>Text Replacement isn't matching — check the “Replace” column character for character</td></tr>
+<tr><td>Device reboots at random</td><td>Leave <code>ENABLE_BOTTOM3_LED</code> off (the LED strip has a known crash bug on the ESP32-S3)</td></tr>
+</table>
+<div class="note">Serial commands (while USB is connected): <code>status</code> shows the link state, <code>unpair</code> restarts BLE advertising.</div>
+</div>
+
+<p class="foot">CoreS3 Controller · pure BLE HID · no Wi-Fi, nothing to install or run on the Mac</p>
+</div>
 
 </div>
+<script>
+(function(){
+  var KEY='cores3os-lang';
+  var btns=document.querySelectorAll('.langbar [data-set]');
+  function set(l){
+    document.body.setAttribute('data-lang',l);
+    try{localStorage.setItem(KEY,l);}catch(e){}
+    document.documentElement.lang = (l==='cn') ? 'zh-CN' : 'en';
+    Array.prototype.forEach.call(btns,function(b){b.classList.toggle('on', b.getAttribute('data-set')===l);});
+  }
+  Array.prototype.forEach.call(btns,function(b){b.addEventListener('click',function(){set(b.getAttribute('data-set'));});});
+  var init='cn'; try{init=localStorage.getItem(KEY)||'cn';}catch(e){}
+  set(init);
+})();
+</script>
 </body>
 </html>

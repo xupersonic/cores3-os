@@ -136,7 +136,7 @@ python3 tools/ser.py 'status'      # 一条命令一次，省得开串口工具
 ### 七、目录结构
 
 ```
-cores3-os/
+m5stack-face3keyboard-os/
 ├── README.md  LICENSE  NOTICE  CHANGELOG.md  .gitignore
 ├── firmware/cores3_shell/
 │   ├── cores3_shell.ino    外壳：桌面 / 导航 / 串口命令 / NVS
@@ -321,7 +321,7 @@ python3 tools/ser.py 'status'      # one command per run, no serial terminal nee
 ### 7. Layout
 
 ```
-cores3-os/
+m5stack-face3keyboard-os/
 ├── README.md  LICENSE  NOTICE  CHANGELOG.md  .gitignore
 ├── firmware/cores3_shell/
 │   ├── cores3_shell.ino    shell: desktop / navigation / serial commands / NVS

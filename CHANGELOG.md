@@ -3,6 +3,16 @@
 桌面固定 **6 格**：每加一个应用就得换掉一个，所以这份记录里「X 取代 Y」的写法会反复出现。
 被换下的应用不删，改名成 `*.ino.bak` 留在 `firmware/cores3_shell/` 里（arduino-cli 只编译 `.ino`）。
 
+## 仓库改名 + 文档上线（无固件版本变化）
+- 仓库改名为 **`m5stack-face3keyboard-os`**（原名 `cores3-os`）。旧 `github.com` 链接会自动 301 跳到新地址，
+  **但旧的 Pages 网址 `xupersonic.github.io/cores3-os/` 已失效**，新地址是
+  `https://xupersonic.github.io/m5stack-face3keyboard-os/`。
+- 文档同步：README 目录树、导航首页的仓库链接、Bridge 模板与安装脚本里的路径占位符全部换成新名。
+- 顺手修掉发布时重组目录后遗留的过时路径：速查卡与源码注释里的 `cores3-firmware/xxx` 现在指向真实存在的
+  `tools/xxx`、`firmware/cores3_shell/`、`mac-bridge/`。
+- 新增 `docs/index.html` 导航首页 + `docs/.nojekyll`，GitHub Pages 已启用（源：`main` 分支的 `/docs`）。
+- 固件内部名称与 BLE 广播名（`CoreS3 Controller`）**未改动** —— 那是设备对外的身份，改了会导致已配对的设备认不出来。
+
 ## 文档 — 双语 + 音乐致谢（无固件版本变化）
 - README、NOTICE 和四个 docs 页面全部改成**中英双语**（原来只有 README 第 8 节一段英文简介）。
   页面右上角一组 `中文 / EN` 切换按钮，纯前端、`localStorage` 记住选择、不另生成第二份文件；

@@ -70,7 +70,7 @@ body[data-lang="cn"] [data-lang="en"], body[data-lang="en"] [data-lang="cn"] { d
 <body data-lang="cn">
 <header>
   <h1>&gt; CoreS3 OS 速查卡 / CHEAT SHEET<span class="cur">_</span></h1>
-  <div class="sub" data-lang="cn">v0.7.1 · RETRO PIXEL / CYBERPUNK / TERMINAL 主题 · 简中 / 英文双语 · 六应用：控制器 / <b>记事本（v0.6.0 取代时钟）</b> / 番茄钟 / <b>游戏（v0.7.0 取代系统信息）</b> / <b>音乐遥控（v0.5.0 起取代传感器）</b> / 设置 · 音乐：HID 媒体键控制 + BLE 自定义 GATT 回传歌名封面（配 Mac 端 <b>Music Bridge</b>） · 记事本：Keyboard3 打字 → BLE notify → Bridge 追加进 Obsidian <code>face3notes.md</code> · <b>QQ 音乐 11.9.1 已验证可用</b> · <b>v0.5.1：封面能显示了 + 只重画进度条 + 串口对时</b> · <b>v0.6.1：静态界面不再每秒重绘（不闪）</b> · <b>v0.6.2：离线笔记带书写时间 + 连上自动对时</b> · <b>v0.7.0：俄罗斯方块 + 2048</b> · <b>v0.7.1：两个游戏都能静音（M 键 / 点开关，存 NVS）</b> · 源码 cores3-firmware/cores3_shell/ · 烧录 cores3-firmware/fw.sh</div>
+  <div class="sub" data-lang="cn">v0.7.1 · RETRO PIXEL / CYBERPUNK / TERMINAL 主题 · 简中 / 英文双语 · 六应用：控制器 / <b>记事本（v0.6.0 取代时钟）</b> / 番茄钟 / <b>游戏（v0.7.0 取代系统信息）</b> / <b>音乐遥控（v0.5.0 起取代传感器）</b> / 设置 · 音乐：HID 媒体键控制 + BLE 自定义 GATT 回传歌名封面（配 Mac 端 <b>Music Bridge</b>） · 记事本：Keyboard3 打字 → BLE notify → Bridge 追加进 Obsidian <code>face3notes.md</code> · <b>QQ 音乐 11.9.1 已验证可用</b> · <b>v0.5.1：封面能显示了 + 只重画进度条 + 串口对时</b> · <b>v0.6.1：静态界面不再每秒重绘（不闪）</b> · <b>v0.6.2：离线笔记带书写时间 + 连上自动对时</b> · <b>v0.7.0：俄罗斯方块 + 2048</b> · <b>v0.7.1：两个游戏都能静音（M 键 / 点开关，存 NVS）</b> · 源码 firmware/cores3_shell/ · 烧录 tools/fw.sh</div>
   <div class="sub" data-lang="en">v0.7.1 · RETRO PIXEL / CYBERPUNK / TERMINAL themes · CN/EN bilingual · six apps: Controller /
     <b>Notes (replaced Clock in v0.6.0)</b> / Pomodoro / <b>Games (replaced System Info in v0.7.0)</b> /
     <b>Music (replaced Sensors in v0.5.0)</b> / Settings · Music: HID media keys out + BLE custom GATT
@@ -261,9 +261,9 @@ body[data-lang="cn"] [data-lang="en"], body[data-lang="en"] [data-lang="cn"] { d
         <li><code>reboot</code> — 硬重启（烧录后必发一次，fw.sh 已自动带上）</li>
       </ul>
       <pre># 读串口（端口每次插拔都可能变，一律自动探测）
-cores3-firmware/ser.py status            # 发命令并读回
-cores3-firmware/rtc.sh                   # 把 Mac 时间同步进板载 RTC
-cores3-firmware/rtc.sh --show            # 只看设备当前 RTC</pre>
+tools/ser.py status            # 发命令并读回
+tools/rtc.sh                   # 把 Mac 时间同步进板载 RTC
+tools/rtc.sh --show            # 只看设备当前 RTC</pre>
     </div>
 
     <div class="panel">
@@ -313,7 +313,7 @@ bool appXxxBack()  { return false; }</pre>
       <li><b>烧录前设备要接 USB 并开机</b>：串口是 <code>/dev/cu.usbmodem*</code>，<b>但编号每次插拔/换 USB 口都会变</b>
         （实测见过 <code>101</code> 和 <code>2101</code>）——<b>一律自动探测，别硬编码</b>（<code>fw.sh</code> / <code>ser.py</code> 已这么做）。找不到就单击电源键开机再试。</li>
       <li><b>RTC 没有后备电池</b>：掉电或重烧后时间归零，而设备本身没有任何对时来源（没 Wi-Fi、BLE 也不给时间）。
-        用串口 <code>time YYYY-MM-DD HH:MM:SS</code> 对时，或直接跑 <code>cores3-firmware/rtc.sh</code>
+        用串口 <code>time YYYY-MM-DD HH:MM:SS</code> 对时，或直接跑 <code>tools/rtc.sh</code>
         （<code>fw.sh</code> 每次烧完会顺手同步一次）。星期由日期自己算（Sakamoto 算法），不用传。</li>
       <li><b>Cmd+[ / Cmd+] / Cmd+N / Cmd+D 都是 WorkBuddy 原生快捷键</b>（应用包内快捷键定义表：
         <code>prev-task=Meta+[</code>、<code>next-task=Meta+]</code>、<code>new-conversation=Meta+N</code>、<code>toggle-voice-recording=Meta+D</code>），
@@ -376,7 +376,7 @@ bool appXxxBack()  { return false; }</pre>
       <li><b>烧录后一定要重启一次（用户要求，已固化进脚本）。</b>
         ESP32-S3 走的是 native USB(CDC)，<b>没有 EN/RTS 硬件复位线</b>，esptool 上传结束后的软复位
         偶尔不彻底（BLE/NVS 会留旧状态），所以固件里加了 <code>reboot</code> 串口命令，烧完发一次硬重启。
-        一键脚本：<code>cores3-firmware/fw.sh</code> —— 自动探测端口 → clean 编译 → 上传 → 发 <code>reboot</code> →
+        一键脚本：<code>tools/fw.sh</code> —— 自动探测端口 → clean 编译 → 上传 → 发 <code>reboot</code> →
         抓启动日志并判断「启动正常 / 有崩溃」。参数 <code>--fast</code>（跳过 clean，<b>改过 .h 别用</b>）、<code>--no-up</code>（只编译）。
         <b>坑：NVS 里存的设置不会因为重烧固件而重置</b>（语言、录音方式、取消档、聚焦档都持久化），
         改了默认值想生效要手动发一次串口命令（例如 <code>clear 2</code>）。</li>
@@ -405,7 +405,7 @@ bool appXxxBack()  { return false; }</pre>
       <tr><td>静音</td><td>—</td><td><code>del</code></td><td><code>MEDIA_MUTE</code> 0x00E2</td></tr>
     </table>
     <h3>Mac 端 Music Bridge</h3>
-    <p><code>cores3-music-bridge/MusicBridge.app</code>（源码 <code>Bridge.swift</code>）：每 2 秒跑
+    <p><code>mac-bridge/MusicBridge.app</code>（源码 <code>Bridge.swift</code>）：每 2 秒跑
        <code>media-control get</code>（MediaRemote），把歌名/歌手/专辑/进度写进 META 特征，
        封面压成 160×160 JPEG 后分包写进 ART。<b>首次运行必须在「系统设置 → 隐私与安全性 → 蓝牙」里允许它</b>，
        否则 CoreBluetooth 不回调（日志只停在 <code>[bridge] scanning…</code>）。</p>
@@ -510,7 +510,7 @@ bool appXxxBack()  { return false; }</pre>
 
   <div class="panel">
     <h2>Mac 端 Bridge <span class="tag">开机自启</span></h2>
-    <p>目录 <code>cores3-firmware/../cores3-music-bridge/</code>。它干两件事：把 Mac 正在播的歌推给设备屏幕，
+    <p>目录 <code>mac-bridge/</code>。它干两件事：把 Mac 正在播的歌推给设备屏幕，
        以及订阅设备的速记写进 Obsidian。<b>必须常驻</b> —— 不在跑的时候，设备上的速记只会排队等它。</p>
     <table class="tbl">
       <tr><th>命令</th><th>作用</th></tr>

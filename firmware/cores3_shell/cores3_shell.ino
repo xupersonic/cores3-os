@@ -382,7 +382,7 @@ static void handleKeyboard() {
 // ─── RTC ─────────────────────────────────────────────────────────────────
 // CoreS3 的 RTC（BM8563）没有后备电池，掉电 / 重烧之后时间会归零，
 // 而设备自己没有任何对时来源（没有 Wi-Fi、BLE 那边也不给时间），
-// 所以只能靠串口从 Mac 喂进来。配套脚本 cores3-firmware/rtc.sh，
+// 所以只能靠串口从 Mac 喂进来。配套脚本 tools/rtc.sh，
 // fw.sh 每次烧完也会顺手同步一次。
 // 星期几由日期算出来（Sakamoto 算法），不用 Mac 端传 —— 少一个出错点。
 static int rtcWeekday(int y, int m, int d) {   // 0=周日 … 6=周六

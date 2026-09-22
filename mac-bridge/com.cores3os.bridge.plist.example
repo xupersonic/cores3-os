@@ -6,13 +6,13 @@
     <string>com.cores3os.bridge</string>
 
     <!-- ⚠️ 把下面这行换成你自己机器上的绝对路径
-         （./build.sh 之后，真实路径形如 /Users/你/…/cores3-os/mac-bridge/MusicBridge.app/…）。
+         （./build.sh 之后，真实路径形如 /Users/你/…/m5stack-face3keyboard-os/mac-bridge/MusicBridge.app/…）。
          ./bridge.sh install 会自动读本文件、替换路径并装到 ~/Library/LaunchAgents。
          直接跑 app 包里的二进制，不能用 `open MusicBridge.app`：
          open 会立刻返回，launchd 以为进程退了，会无限重启。 -->
     <key>ProgramArguments</key>
     <array>
-        <string>/PATH/TO/cores3-os/mac-bridge/MusicBridge.app/Contents/MacOS/MusicBridge</string>
+        <string>/PATH/TO/m5stack-face3keyboard-os/mac-bridge/MusicBridge.app/Contents/MacOS/MusicBridge</string>
     </array>
 
     <key>RunAtLoad</key>

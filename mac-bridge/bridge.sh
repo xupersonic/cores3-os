@@ -60,10 +60,10 @@ running() { pgrep -f "$BIN" | head -1; }
 
 case "${1:-status}" in
   install)
-    # 本地还没有真实 plist 就从模板生成一份，顺手把 /PATH/TO/cores3-os 换成当前仓库路径
+    # 本地还没有真实 plist 就从模板生成一份，顺手把 /PATH/TO/m5stack-face3keyboard-os 换成当前仓库路径
     if [ ! -f "$SRC" ]; then
       [ -f "$TPL" ] || { echo "✗ 找不到模板 $TPL"; exit 1; }
-      sed "s|/PATH/TO/cores3-os|${ROOT}|g" "$TPL" > "$SRC"
+      sed "s|/PATH/TO/m5stack-face3keyboard-os|${ROOT}|g" "$TPL" > "$SRC"
       echo "→ 已从模板生成 $(basename "$SRC")（路径替换成 ${ROOT}）"
     fi
     mkdir -p "$HOME/Library/LaunchAgents"
